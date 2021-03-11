@@ -1,8 +1,8 @@
-/* ------------------ Sophos.com/RapidResponse ------------------ */
-/* Getting process execution details from Sophos Journals */
-/* $$begin$$ = start date */
-/* $$end$$ = end date */
-/* -------------------------------------------------------------- */
+/* ------------------ Sophos.com/RapidResponse ------------------
+Getting process execution details from Sophos Journals
+$$begin$$ = start date
+$$end$$ = end date
+----------------------------------------------------------------- */
 SELECT 
 CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS TEXT) DATE_TIME,  
 spj.sophosPID, 
