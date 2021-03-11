@@ -1,0 +1,27 @@
+/* ------------------ Sophos.com/RapidResponse ------------------ */
+/* Getting process execution details from Sophos Journals */
+/* $$begin$$ = start date */
+/* $$end$$ = end date */
+/* -------------------------------------------------------------- */
+SELECT 
+CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS TEXT) DATE_TIME,  
+spj.sophosPID, 
+spj.pathname, 
+spj.cmdline, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) AS First_Created_On_Disk, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) AS Last_Changed, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) AS Last_Modified, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) AS Last_Accessed, 
+spj.parentSophosPid, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Process_Start_Time, 
+CASE WHEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) = '1970-01-01 00:00:00' 
+THEN '-' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
+spj.fileSize, 
+spj.sid, 
+u.username, 
+spj.sha256 
+FROM sophos_process_journal spj 
+JOIN file f ON spj.pathname = f.path 
+JOIN users u ON spj.sid = u.uuid 
+WHERE spj.time >= CAST($$begin$$ AS INT) 
+AND spj.time <= CAST($$end$$ AS INT) 
