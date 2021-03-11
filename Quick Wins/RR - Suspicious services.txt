@@ -1,5 +1,5 @@
 /* ------------------ Sophos.com/RapidResponse ------------------ */
-/* Suspicious service installs, good for Cobalt Strike and other encoded commands*/
+/* Suspicious service installs, good for Cobalt Strike and other encoded commands */
 /* -------------------------------------------------------------- */
 SELECT swe.datetime, swe.eventid, 
 JSON_EXTRACT(swe.data, '$.EventData.AccountName') AS AccountName, 
