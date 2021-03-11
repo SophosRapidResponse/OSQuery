@@ -1,0 +1,60 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+Get all RDP login events from the terminal services event logs, as well as the 
+4624 (login) and 4625 (failed login) events from the security event log. 
+If this fails use the individual SELECT querys to get the 3 sets of data one at a time.
+----------------------------------------------------------------- */
+SELECT datetime, eventid, 
+CASE   
+   WHEN eventid = 1149 THEN 'User authentication succeeded' 
+END AS eventid_text, 
+'TS Remote' AS Source, 
+JSON_EXTRACT(data, '$.UserData.Param1') AS Account, 
+JSON_EXTRACT(data, '$.UserData.Param2') AS Source_Machine_Network, 
+JSON_EXTRACT(data, '$.UserData.Param3') AS Source_IP, 
+'-' AS Process_Name, 
+'-' AS Logon_Type, 
+'-' AS User_SID, 
+'-' AS SessionID, 
+'-' AS Session_ID 
+FROM sophos_windows_events 
+WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational' and eventid = 1149 
+UNION ALL 
+SELECT datetime, eventid, 
+CASE   
+   WHEN eventid = 4624 THEN 'Successful Login' 
+   WHEN eventid = 4625 THEN 'Failed login' 
+END AS eventid_text, 
+'Security' AS Source, 
+JSON_EXTRACT(data, '$.EventData.TargetUserName') AS Account, 
+JSON_EXTRACT(data, '$.EventData.WorkstationName') AS Source_Machine_Network, 
+JSON_EXTRACT(data, '$.EventData.IpAddress') AS Source_IP, 
+JSON_EXTRACT(data, '$.EventData.ProcessName') AS Process_Name, 
+JSON_EXTRACT(data, '$.EventData.LogonType') AS Logon_Type, 
+JSON_EXTRACT(data, '$.EventData.TargetUserSid') AS User_SID, 
+'-' AS SessionID, 
+'-' AS Session_ID 
+FROM sophos_windows_events 
+WHERE source = 'Security' and (eventid = 4624 OR eventid = 4625) 
+UNION ALL 
+SELECT datetime, eventid, 
+CASE   
+   WHEN eventid = 21 THEN 'Logon succeeded' 
+   WHEN eventid = 22 THEN 'Shell start' 
+   WHEN eventid = 23 THEN 'Logoff succeeded' 
+   WHEN eventid = 24 THEN 'Session disconnected' 
+   WHEN eventid = 25 THEN 'Reconnection succeeded' 
+   WHEN eventid = 39 THEN 'Disconnected by another session' 
+   WHEN eventid = 40 THEN 'Disconnect/Reconnect' 
+   ELSE 'Unknown' 
+END AS eventid_text, 
+'TS Local' AS Source, 
+JSON_EXTRACT(data, '$.UserData.User') AS Account, 
+'-' AS Source_Machine_Network, 
+JSON_EXTRACT(data, '$.UserData.Address') AS Source_IP, 
+'-' AS Process_Name, 
+'-' AS Logon_Type, 
+'-' AS User_SID, 
+JSON_EXTRACT(data, '$.UserData.Session') AS SessionID, 
+JSON_EXTRACT(data, '$.UserData.SessionID') AS Session_ID 
+FROM sophos_windows_events 
+WHERE source = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operational' ORDER BY datetime DESC; 
