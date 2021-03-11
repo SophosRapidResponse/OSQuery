@@ -15,4 +15,5 @@ SELECT
       THEN 'Patched'
     ELSE 'NOT_PATCHED'
   END PatchStatus
-FROM file AS f LEFT JOIN hash AS h ON f.path = h.path WHERE f.path = ((SELECT r.data from registry as r where r.key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup' AND r.path='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup\MsiInstallPath') || 'bin\Microsoft.Exchange.RpcClientAccess.Service.exe')
+FROM file AS f LEFT JOIN hash AS h ON f.path = h.path 
+WHERE f.path = ((SELECT r.data from registry as r where r.key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup' AND r.path='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup\MsiInstallPath') || 'bin\Microsoft.Exchange.RpcClientAccess.Service.exe')
