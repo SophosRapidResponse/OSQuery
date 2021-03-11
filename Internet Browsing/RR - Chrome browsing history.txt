@@ -6,3 +6,4 @@ $$data$$ = 'urls' or 'downloads'
 ATTACH DATABASE 'C:\Users\$$user$$\AppData\Local\Google\Chrome\User Data\Default\History' AS chrome_history_db; 
 SELECT * FROM chrome_history_db.$$data$$; 
 DETACH DATABASE chrome_history_db; 
+hello
