@@ -1,0 +1,9 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+Locating all PowerShell console logs
+----------------------------------------------------------------- */
+select path,  
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(btime,'unixepoch')) AS First_Created_On_Disk,   
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(ctime,'unixepoch')) AS Last_Changed,   
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS Last_Modified,   
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(atime,'unixepoch')) AS Last_Accessed 
+from file where path like 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt'; 
