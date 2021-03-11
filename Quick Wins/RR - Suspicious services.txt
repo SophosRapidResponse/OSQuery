@@ -1,0 +1,16 @@
+/* ------------------ Sophos.com/RapidResponse ------------------ */
+/* Suspicious service installs, good for Cobalt Strike and other encoded commands*/
+/* -------------------------------------------------------------- */
+SELECT swe.datetime, swe.eventid, 
+JSON_EXTRACT(swe.data, '$.EventData.AccountName') AS AccountName, 
+JSON_EXTRACT(swe.data, '$.EventData.ServiceName') AS ServiceName, 
+JSON_EXTRACT(swe.data, '$.EventData.ImagePath') AS ImagePath, 
+swe.user_id, 
+u.username, 
+u.directory, 
+JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS ServiceType, 
+JSON_EXTRACT(swe.data, '$.EventData.StartType') AS StartType 
+FROM sophos_windows_events swe 
+JOIN users u ON swe.user_id = u.uuid 
+WHERE swe.source = 'System' AND swe.eventid = 7045 
+AND (ImagePath LIKE '%JAB%' OR ImagePath LIKE '%SQB%' OR ImagePath LIKE '%H4s%' OR ImagePath LIKE '%invoke%' OR ImagePath LIKE '%-enc%' OR ImagePath LIKE '%-e %' OR ImagePath LIKE '%-ec %' OR ImagePath LIKE '%IEX%' OR ImagePath LIKE '%downloadstring%' OR ImagePath like '%COMSPEC%' OR ImagePath like '%Admin$%' OR ImagePath like '%Psex%' ); 
