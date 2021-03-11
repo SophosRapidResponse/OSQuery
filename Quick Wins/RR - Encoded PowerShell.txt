@@ -1,0 +1,63 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+Get powershell commands from Sophos journals, decode one layer of base64
+$$from$$ = how many days in the past to start the search at, e.g. 30 = 30 days ago
+$$to$$ = how many days ago to stop the search, e.g. 0 = today
+$$encoded$$ = '1' for only encoded strings, '0' for everything 
+----------------------------------------------------------------- */
+-- Go find processes that have command lines with encodedcommand data 
+WITH Encoded_Data AS ( 
+SELECT 
+datetime(time,'unixepoch') DATE_TIME, 
+-- replace(pathname, rtrim(pathname, replace(pathname, '\', '')), '') ProcessName, 
+cmdline, 
+sophospid, 
+replace(substr(cmdline, instr(cmdline, ' -e')+2, length(cmdline)),rtrim(substr(cmdline, instr(cmdline, ' -e')+2, length(cmdline)),replace(substr(cmdline, instr(cmdline, ' -e')+2, length(cmdline)),' ','')),'') Encoded_Data, 
+sid, 
+parentSophosPID, 
+u.username 
+FROM sophos_process_journal spj LEFT JOIN users u ON spj.sid = u.uuid 
+WHERE pathname LIKE '%powershell%' AND eventtype = 0 AND time > strftime('%s','now','-$$from$$ days') and time < strftime('%s','now','-$$to$$ days') 
+AND ( cmdline LIKE '% -e %' OR cmdline LIKE '% -en %' OR cmdline LIKE '% -enc %' OR cmdline LIKE '% -enco %' OR cmdline LIKE '% -encod %' OR cmdline LIKE '% -encode %' OR cmdline LIKE '% -encoded %' 
+OR cmdline LIKE '% -encodedc %' OR cmdline LIKE '% -encodedco %' OR cmdline LIKE '% -encodedcom %' OR cmdline LIKE '% -encodedcomm %' OR cmdline LIKE '% -encodedcomma %' 
+OR cmdline LIKE '% -encocodedcomman %' OR cmdline LIKE '% -encodedcommand %') 
+) 
+-- With a table of process information that includes encoded data in the command lines, we will convert the base64 encoding to text 
+-- WARNING this is ugly as we have to handle embeded NULLS and to 'see' them we have to convert to HEX and back to characters 
+SELECT 
+CAST(ed.DATE_TIME AS TEXT) Date_Time, 
+-- CAST(ed.ProcessName AS TEXT) ProcessName, 
+CAST(ed.cmdline AS TEXT) CmdLine, 
+CAST(ed.sophospid AS TEXT) SophosPID, 
+--------------- CONVERT ENCODED BASE 64 DATA FROM A POWERSHELL TO DECODED DATA 
+CAST ( ( 
+WITH RECURSIVE test(c,cur) AS ( 
+select '', (replace(hex(from_base64(ed.Encoded_Data) ),'00','') ) 
+UNION ALL 
+select c || char((case substr(cur,1,1) when 'A' then 10 when 'B' then 11 when 'C' then 12 when 'D' then 13 when 'E' then 14 when 'F' then 15 else substr(cur,1,1) end)*16 + 
+(case substr(cur,2,1) when 'A' then 10 when 'B' then 11 when 'C' then 12 when 'D' then 13 when 'E' then 14 when 'F' then 15 else substr(cur,2,1) end)), substr(cur,3) 
+FROM test where length(cur)>0 
+) 
+SELECT c Decoded_value FROM test WHERE length (cur) = 0 
+) AS TEXT) Decoded_base64_section, 
+--------------- END CONVERSION 
+CAST(ed.sid AS TEXT) SID, 
+CAST(ed.parentSophosPID AS TEXT) ParentSophosPID, 
+CAST(ed.username AS TEXT) Username 
+FROM Encoded_Data ed 
+WHERE length(Decoded_base64_section) > 0 
+UNION ALL 
+SELECT 
+datetime(time,'unixepoch') DATE_TIME, 
+-- replace(pathname, rtrim(pathname, replace(pathname, '\', '')), '') ProcessName, 
+cmdline, 
+sophospid, 
+'' Encoded_Data, 
+sid, 
+parentSophosPID, 
+u.username 
+FROM sophos_process_journal spj LEFT JOIN users u ON spj.sid = u.uuid 
+WHERE $$encoded$$ <> 1 AND 
+pathname LIKE '%powershell%' AND eventtype = 0 AND time > strftime('%s','now','-$$from$$ days') and time < strftime('%s','now','-$$to$$ days') 
+AND NOT ( cmdline LIKE '% -e %' OR cmdline LIKE '% -en %' OR cmdline LIKE '% -ec %' OR cmdline LIKE '% -enc %' OR cmdline LIKE '% -enco %' OR cmdline LIKE '% -encod %' OR cmdline LIKE '% -encode %' OR cmdline LIKE '% -encoded %' 
+OR cmdline LIKE '% -encodedc %' OR cmdline LIKE '% -encodedco %' OR cmdline LIKE '% -encodedcom %' OR cmdline LIKE '% -encodedcomm %' OR cmdline LIKE '% -encodedcomma %' 
+OR cmdline LIKE '% -encocodedcomman %' OR cmdline LIKE '% -encodedcommand %') 

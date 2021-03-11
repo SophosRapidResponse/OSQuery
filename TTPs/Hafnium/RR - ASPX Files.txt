@@ -1,6 +1,6 @@
-/* ------------------ Sophos.com/RapidResponse ------------------ */
-/* Potential webshells related to Hafnium */
-/* -------------------------------------------------------------- */
+/* ------------------ Sophos.com/RapidResponse ------------------
+Potential webshells related to Hafnium
+----------------------------------------------------------------- */
 SELECT
    filename, directory, strftime('%Y-%m-%dT%H:%M:%SZ',datetime(btime,'unixepoch') AS created_time,
    size AS fileSize,

@@ -1,6 +1,6 @@
-/* ------------------ Sophos.com/RapidResponse ------------------ */
-/* Check for Exchange zero day patches */
-/* -------------------------------------------------------------- */
+/* ------------------ Sophos.com/RapidResponse ------------------
+Check for Exchange zero day patches
+----------------------------------------------------------------- */
 SELECT 
   f.path,
   h.sha256,
