@@ -2,4 +2,3 @@
 Simple query to bring back user details from machines
 ----------------------------------------------------------------- */
 SELECT uuid, username, type, description from Users; 
-hello world
