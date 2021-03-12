@@ -1,0 +1,9 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+The query checks in the Windows Prefetch folder for anomaly process execution ( processes likely used in an attack).
+$$date$$ = start date
+Author: Elida001
+----------------------------------------------------------------- */
+
+
+select path, filename, size, datetime(mtime,'unixepoch') from file WHERE directory = 'C:\Windows\Prefetch\'
+AND (filename like '%attrib%' OR filename like '%chtasks%' OR filename like 'taskeng%' OR filename like 'mstsc%' OR filename like 'at.exe%' OR filename like 'tasklist%' OR filename like 'taskkill%' OR filename like 'whoami%' OR filename like 'xcopy%' OR filename like 'net.exe%' OR filename like '%vssadmin%' OR filename like 'CMD%' OR filename like '%POWERSHELL%' OR filename like '%regsvr%' OR filename like '%PsExec%' OR filename like '%runas%' OR filename like 'bitsadmin%' OR filename like 'certutil%' OR filename like 'netsh%' OR filename like 'sc.exe%') AND mtime > '$$date$$';
