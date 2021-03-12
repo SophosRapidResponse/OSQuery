@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 Hello World!
 SophosRobert Test. TTFN!
+=======
+Hello World!
+>>>>>>> upstream/main
