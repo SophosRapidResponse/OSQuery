@@ -14,6 +14,7 @@ JOIN users u ON spj.sid = u.uuid
 WHERE sdj.name LIKE '%mega%nz%'
 OR sdj.name LIKE '%sendspace%'
 OR sdj.name LIKE '%tinyupload%'
+OR sdj.name LIKE '%dropbox.com%'
 OR sdj.name LIKE '%1fichier%'
 OR sdj.name LIKE '%4downfiles%'
 OR sdj.name LIKE '%bit.ai%'
