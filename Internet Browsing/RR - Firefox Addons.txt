@@ -1,7 +1,0 @@
-/* ------------------ Sophos.com/RapidResponse ------------------
-Detecting Firefox Addons
------------------------------------------------------------------ */
-SELECT *
-FROM firefox_addons
-WHERE firefox_addons.uid IN (SELECT uid FROM users) 
-AND (location NOT LIKE '%app-builtin%' AND location NOT LIKE '%app-system-defaults%') /* excludes default Firefox addons */
