@@ -2,6 +2,7 @@
 Getting process execution details from Sophos Journals
 $$begin$$ = start date
 $$end$$ = end date
+Author: @AltShiftPrtScn
 ----------------------------------------------------------------- */
 SELECT 
 CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS TEXT) DATE_TIME,  
