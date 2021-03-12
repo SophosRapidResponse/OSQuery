@@ -1,0 +1,16 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+Locating for signs of exfiltration to common services in he dns journals,
+joins on process journal and uses to get cmdline and username
+----------------------------------------------------------------- */
+WITH RECURSIVE
+   for(x) AS (
+      VALUES ( (CAST ('$$begin$$' AS INT) ) )
+      UNION ALL
+      SELECT x+1200 FROM for WHERE x < (CAST ('$$begin$$' AS INT) + CAST( ('$$days$$' * 86400) AS INT)))
+SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sdj.time, 'unixepoch')) AS datetime,sdj.name, spj.cmdline, spj.sid, u.username, sdj.sophosPID
+FROM for LEFT JOIN sophos_dns_journal sdj ON sdj.time >= for.x and sdj.time <= for.x+1200 
+JOIN sophos_process_journal spj on sdj.sophosPID = spj.sophosPID 
+JOIN users u ON spj.sid = u.uuid 
+WHERE sdj.name LIKE '%mega%nz%'
+OR sdj.name LIKE '%sendspace%'
+OR sdj.name LIKE '%tinyupload%';
