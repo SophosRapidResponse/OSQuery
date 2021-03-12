@@ -1,0 +1,179 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+Locating common commands and processes seen in hands-on-keyboard attacks
+$$begin$$ = datetime to start
+$$days$$ = number of days to search
+----------------------------------------------------------------- */
+WITH Aggragate AS ( WITH IOC_HUNT_BY_TYPE AS (
+   WITH IOC_LIST (TechniqueID, Technique_Name,  IOC_Type, Indicator) AS (
+      VALUES 
+      ('T????','Memory loaded Software','cmdline','%IEX (New-Object Net.WebClient).DownloadString%'),
+      ('T????','Powershell Install','cmdline','%download%powershell%'),
+      ('T1003','Credential Dumping','cmdline','%mimikatz%'),
+      ('T1003','Credential Dumping','cmdline','%dumpcreds%'),
+      ('T1003','Credential Dumping','process','%gsecdump.exe'),
+      ('T1003','Credential Dumping','process','%wce.exe'),
+      ('T1003','Credential Dumping','cmdline','%save hklm\sam%'),
+      ('T1003','Credential Dumping','cmdline','%save hklm\system%'),
+      ('T1003','Credential Dumping','cmdline','%save hklm\security%'),
+      ('T????','process Dumping','process','%procdump.exe'),
+      ('T1003','Credential Dumping','cmdline','%-ma lsass.exe%'),
+      ('T1003','Credential Dumping','filepath','c:\windows\temp\lsass_dump.dmp'),
+      ('T1003','Credential Dumping','cmdline','%C:\windows\System32\comsvcs.dll, MiniDump (Get-Process lsass).id $env:TEMP\lsass-comsvcs.dmp full%'),
+      ('T1003','Credential Dumping','process','%Outflank-Dumpert.exe'),
+      ('T1003','Credential Dumping','process','%mimikatz.exe'),
+      ('T1003','Credential Dumping','cmdline','lsass.dmp'),
+      ('T1003','Credential Dumping','cmdline','%ac i ntds%ifm%create full%'),
+      ('T1003','Credential Dumping','process','%ntdsutil%'),
+      ('T1003','Credential Dumping','process','%vssadmin.exe'),
+      ('T1003','Credential Dumping','cmdline','%create shadows /for=c:%'),
+      ('T1003','Credential Dumping','cmdline','%\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit%'),
+      ('T1003','Credential Dumping','cmdline','%\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM%'),
+      ('T1003','Credential Dumping','cmdline','%/S cpassword %logonserver%\sysvol\*.xml%'),
+      ('T1003','Credential Dumping','cmdline','%Get-GPPPassword -Verbose%'),
+      ('T1003','Credential Dumping','process','%accesschk.exe'),
+      ('T1012','query registry','process','%reg.exe'),	  
+      ('T1012','query registry','cmdline','%HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce%'),	  
+      ('T1012','query registry','cmdline','%HKCU\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\RunServices%'),	  
+      ('T1012','query registry','cmdline','%HKCU\Software\Microsoft\Windows\CurrentVersion\RunServices%'),	  
+      ('T1012','query registry','cmdline','%HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit%'),	  
+      ('T1012','query registry','cmdline','%HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\\Shell%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\\Shell%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit%'),	  
+      ('T1012','query registry','cmdline','%HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ShellServiceObjectDelayLoad%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnce%'),	  
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnceEx%'),
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\Run%'),
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\Run%'),
+      ('T1012','query registry','cmdline','%HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce%'),
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run%'),
+      ('T1012','query registry','cmdline','%HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run%'),
+      ('T1012','query registry','cmdline','%HKLM\system\currentcontrolset\services /s | findstr ImagePath 2>nul | findstr /Ri ".*\.sys$%'),
+      ('T1012','query registry','cmdline','%HKLM\Software\Microsoft\Windows\CurrentVersion\Run%'),
+      ('T1027','Obfuscated Files or Information','cmdline','%$OriginalCommand =%'),	  
+      ('T1027','Obfuscated Files or Information','cmdline','%[System.Text.Encoding]::Unicode.GetBytes%'),	  
+      ('T1027','Obfuscated Files or Information','cmdline','%[Convert]::ToBase64String%'),	  
+      ('T1027','Obfuscated Files or Information','cmdline','%EncodedCommand%'),	  
+      ('T1027','Obfuscated Files or Information','cmdline','%Set-ItemProperty -Force -Path HKCU%'),	  
+      ('T1027','Obfuscated Files or Information','cmdline','%-Command "IEX%'),	  
+      ('T1027','Obfuscated Files or Information','cmdline','%[Text.Encoding]::UNICODE.GetString([Convert]::FromBase64String%'),	  
+      ('T1028','Windows Remote Management','cmdline','%Enable-PSRemoting -Force%'),	  
+      ('T1028','Windows Remote Management','cmdline','%Document.ActiveView.ExecuteShellCommand%'),	  
+      ('T1028','Windows Remote Management','cmdline','%/user:DOMAIN\Administrator /password:%'),	  
+      ('T1028','Windows Remote Management','process','%wmic.exe'),
+      ('T1028','Windows Remote Management','cmdline','%HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\osk.exe\%/v \%Debugger\% /t REG_SZ /d \%cmd.exe\% /f%'),	  
+	   ('T1028','Windows Remote Management','cmdline','%\\localhost -u DOMAIN\Administrator -p%'),	  
+      ('T1028','Windows Remote Management','process','%psexec.exe'),
+	   ('T1028','Windows Remote Management','cmdline','%invoke-command -ComputerName localhost -scriptblock {ipconfig}%'),	  
+	   ('T1031','Modify Existing Service','cmdline','%binPath= %C:\windows\system32\WindowsPowerShell\v1.0\powershell.exe -noexit -c%'),	  
+	   ('T1028','Windows Remote Management','cmdline','%invoke-command -ComputerName localhost -scriptblock {ipconfig}%'),	  
+	   ('T1028','Windows Remote Management','cmdline','%invoke-command -ComputerName localhost -scriptblock {ipconfig}%'),	  
+	   ('T1037','Logon scripts','cmdline','%ADD HKCU\Environment /v UserInitMprLogonScript /t REG_SZ /d%'),	  
+	   ('T1037','Logon scripts','cmdline','%/sc onlogon /tr%'),	  
+	   ('T1037','Logon scripts','cmdline','%$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup%'),	  
+	   ('T1037','Logon scripts','cmdline','%C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp%'),	  
+ 	   ('T1048','Exfiltration Over Alternative Protocol','cmdline','%$ping = New-Object System.Net.Networkinformation.ping; foreach%'),	  
+ 	   ('T1049','System Network Connections Discovery','process','%netstat.exe'),	  
+ 	   ('T1049','System Network Connections Discovery','process','%net.exe'),	  
+  	   ('T1049','System Network Connections Discovery','cmdline','%Get-NetTCPConnection%'),	  
+ 	   ('T1050','Service Instalation','cmdline','%New-Service -Name%'),	  
+ 	   ('T1050','Service Instalation','cmdline','%Start-Service -Name%'),	  
+ 	   ('T1053','Scheduled Task','cmdline','%/Create /SC ONCE /TN spawn /TR%'),	  
+ 	   ('T1053','Scheduled Task','process','%schtasks.exe'),	  
+ 	   ('T1053','Scheduled Task','cmdline','%/Create /S localhost /RU DOMAIN\user%'),	  
+ 	   ('T1053','Scheduled Task','cmdline','%New-ScheduledTaskAction -Execute%'),	  
+ 	   ('T1053','Scheduled Task','cmdline','%New-ScheduledTaskTrigger -AtLogon%'),
+ 	   ('T1053','Scheduled Task','cmdline','%New-ScheduledTaskPrincipal -GroupId%'),
+ 	   ('T1053','Scheduled Task','cmdline','%New-ScheduledTaskSettingsSet%'),
+ 	   ('T1053','Scheduled Task','cmdline','%New-ScheduledTask -Action%'),
+ 	   ('T1053','Scheduled Task','cmdline','%Register-ScheduledTask%'),	  
+ 	   ('T1063','Security Software Discovery','cmdline','%| findstr /i virus%'),
+ 	   ('T1063','Security Software Discovery','cmdline','%| findstr /i cb%'),
+ 	   ('T1063','Security Software Discovery','cmdline','%| findstr /i sophos%'),
+ 	   ('T1063','Security Software Discovery','cmdline','%| findstr /i defender%'),
+      ('T1063','Security Software Discovery','cmdline','%findstr.exe 385201%'),
+ 	   ('T1063','Security Software Discovery','cmdline','%get-process | ?{$_.Description -like "*virus*"}%'),
+ 	   ('T1063','Security Software Discovery','cmdline','%get-process | ?{$_.Description -like "*defender*"}%'),
+ 	   ('T1063','Security Software Discovery','cmdline','%get-process | ?{$_.Description -like "*sophos*"}%'),	  
+ 	   ('T1063','Security Software Discovery','cmdline','%/Namespace:\\root\SecurityCenter2 Path AntiVirusProduct Get displayNam%'),	  
+ 	   ('T1069','Permission Groups Discovery','cmdline','%localgroup%'),	  
+ 	   ('T1069','Security Software Discovery','cmdline','%get-localgroup%'),	  
+ 	   ('T1069','Security Software Discovery','cmdline','%group /domai% "Domain Admins"%'),	  
+ 	   ('T1069','Security Software Discovery','cmdline','%groups "Account Operators" /doma%'),	  
+ 	   ('T1069','Security Software Discovery','cmdline','%groups "Exchange Organization Management" /doma%'),	  
+ 	   ('T1069','Security Software Discovery','cmdline','%group "BUILTIN\Backup Operators" /doma%'),	  
+ 	   ('T1070','Indicator Removal on Host','cmdline','%cl System%'),	  
+ 	   ('T1070','Indicator Removal on Host','cmdline','%usn deletejournal /D%'),
+   	('T1070','Indicator Removal on Host','cmdline','%Remove-Item C:\Windows\System32\winevt\Logs\Security.evtx%'),
+   	('T1070','Indicator Removal on Host','cmdline','%Clear-EventLog -logname%'),
+   	('T1531','Account Removal','cmdline','%user%/delete%')
+   )
+
+/* CHECK filepath of */
+SELECT DISTINCT
+   strftime('%Y-%m-%dT%H:%M:%SZ',datetime(time,'unixepoch')) AS Datetime,
+   CASE sfj.pathname NOT NULL  
+      WHEN 1 THEN 'DETECTED' || ' ' || sfj.pathname 
+      ELSE 'INDICATOR NOT PRESENT' 
+   END Result,
+   TechniqueID, 
+   Technique_Name,
+   IOC_type, 
+   Indicator,
+   '' CmdLine,
+   '' SophosPID
+FROM IOC_LIST ioc 
+   LEFT JOIN sophos_file_journal sfj ON sfj.subject = 'FileDataChanges' AND sfj.pathname LIKE ioc.indicator
+      AND sfj.time > $$begin$$ and sfj.time < $$begin$$ + $$days$$ * 86400
+WHERE ioc.ioc_type = 'filepath'
+UNION ALL
+
+/* CHECK cmdline of historic Processes */
+SELECT DISTINCT 
+   strftime('%Y-%m-%dT%H:%M:%SZ',datetime(time,'unixepoch')) AS Datetime,
+   CASE spj.cmdline NOT NULL  
+      WHEN 1 THEN 'DETECTED' || ' ' || spj.cmdline 
+      ELSE 'INDICATOR NOT PRESENT' 
+   END Result,
+   TechniqueID, 
+   Technique_Name,
+   IOC_type, 
+   Indicator,
+   spj.cmdline CmdLine,
+   spj.SophosPID
+FROM IOC_LIST ioc 
+   LEFT JOIN sophos_process_journal spj ON spj.eventtype = 0 AND spj.cmdline LIKE ioc.indicator
+      AND spj.time > $$begin$$ and spj.time < $$begin$$ + $$days$$ * 86400
+WHERE ioc.ioc_type = 'cmdline'
+
+UNION ALL
+
+/* CHECK processes */
+SELECT DISTINCT 
+      strftime('%Y-%m-%dT%H:%M:%SZ',datetime(time,'unixepoch')) AS Datetime,
+      CASE spj.SophosPID NOT NULL  
+      WHEN 1 THEN 'DETECTED' || ' ' || spj.pathname 
+      ELSE 'INDICATOR NOT PRESENT' 
+   END Result,
+   TechniqueID, 
+   Technique_Name,
+   IOC_type, 
+   Indicator,
+   spj.cmdline CmdLine,
+   spj.sophosPID
+FROM IOC_LIST ioc 
+   LEFT JOIN sophos_process_journal spj ON spj.eventtype = 0 AND spj.pathname LIKE ioc.indicator
+      AND spj.time > $$begin$$ and spj.time < $$begin$$ + $$days$$ * 86400
+WHERE ioc.ioc_type = 'process' 
+)
+
+SELECT * 
+FROM IOC_HUNT_BY_TYPE
+ORDER BY Result
+)
+SELECT Datetime, Result, TechniqueID, Technique_Name, IOC_Type, Indicator, CmdLine, COUNT(SophosPID) Number_of_Detections, CAST(GROUP_CONCAT (SophosPID, CHAR(10)) AS TEXT) SophosPIDS
+FROM Aggragate
+GROUP BY Result,Indicator, CmdLine
