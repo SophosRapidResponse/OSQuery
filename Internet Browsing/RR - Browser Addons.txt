@@ -1,0 +1,21 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+Detecting Browser Extensions or Addons
+----------------------------------------------------------------- */
+
+/* --- Detecting High Risk Chrome Extensions --- */
+SELECT uid, name, identifier, version, description, author, path, permissions as permissions_or_location
+FROM chrome_extensions
+WHERE chrome_extensions.uid IN (SELECT uid FROM users) 
+AND (permissions LIKE '%clipboardWrite%' /* allows access to modify all data copied or pasted into the clipboard */
+OR permissions LIKE '%all_urls%' /* allows all websites and URLs access to read and modify all data on visited sites */
+OR permissions LIKE '%tabs%'  /* allows each extension to establish a list of sites that have been visited */
+OR permissions LIKE '%cookies%') /* access to all cookies, including those that may contain access tokens */
+AND (name NOT LIKE '%Chrome%' AND name NOT LIKE '%Google%') /* excludes default Chrome extensions */
+
+UNION ALL
+
+/* --- Detecting Firefox Addons --- */
+SELECT uid, name, identifier, version, description, creator, path, location
+FROM firefox_addons
+WHERE firefox_addons.uid IN (SELECT uid FROM users) 
+AND (location NOT LIKE '%app-builtin%' AND location NOT LIKE '%app-system-defaults%') /* excludes default Firefox addons */
