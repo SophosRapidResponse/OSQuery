@@ -57,6 +57,7 @@ OR sdj.name LIKE '%tresorit%'
 OR sdj.name LIKE '%uploaded%'
 OR sdj.name LIKE '%uptobox%'
 OR sdj.name LIKE '%userscloud%'
+OR sdj.name LIKE '%wasabi%'
 OR sdj.name LIKE '%wesendit%'
 OR sdj.name LIKE '%wetransfer%'
 OR sdj.name LIKE '%zippyshare%';
