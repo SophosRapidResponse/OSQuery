@@ -4,7 +4,7 @@
 | Each line has an identified IOC Type, Indicator and Notes so we will use some string    |
 | functions to seperate each element into our IOC_List                                    |
 \*****************************************************************************************/
-WITH IOC_LIST (IOC_Type, Indicator, note) AS (
+WITH IOC_LIST (IOC_Type, Indicator, note, category, technique) AS (
  WITH IOC_FILE(Line, str) AS (
   SELECT 'ip,127.0.0.1,TEST DATA', (SELECT result from curl where url = '$$url$$') ||char(10)
   UNION ALL
@@ -14,6 +14,8 @@ SELECT
  replace(Line, ltrim(Line, replace(Line, ',', '')), '') 'Indicator Type', /* IOC type */
  replace(replace(substr(Line, instr(Line, ',')+1), ltrim(substr(Line, instr(Line, ',')+1), replace(substr(Line, instr(Line, ',')+1), ',', '')), ''),'*','%')  Indicator,       /* Actual IOC Data */ /* Convert wildcard * to % */
  replace(Line, rtrim(Line, replace(Line, ',', '')), '') 'Note' /* Note */
+ replace(Line, rtrim(Line, replace(Line, ',', '')), '') 'Category' /* Mitre Category */
+ replace(Line, rtrim(Line, replace(Line, ',', '')), '') 'Technique' /* Mitre Technique */
 FROM IOC_FILE WHERE Line != '' AND Line != 'Indicator type,Data,Note' AND Line NOT LIKE 'Description%' AND Line NOT LIKE '%TEST DATA%' AND Line NOT LIKE '%indicator_type%'
 )
 
@@ -31,24 +33,25 @@ FROM IOC_FILE WHERE Line != '' AND Line != 'Indicator type,Data,Note' AND Line N
 \**********************************************************************/
 
 , for(x) AS (
-   VALUES ( (CAST ($$Start Search From$$ AS INT) ) )
+   VALUES ( (CAST ($$begin$$ AS INT) ) )
    UNION ALL
    SELECT x+1200 FROM for WHERE x < (CAST ($$begin$$ AS INT) + CAST( ($$hours$$ * 3600) AS INT))
 )
 
 
 SELECT DISTINCT
- CAST( datetime(file.btime,'unixepoch') AS TEXT) DATE_TIME,
- 'MATCH FOUND' Detection,
- ioc.IOC_Type,
- ioc.Indicator,
- ioc.note,
- 'File_system',
- '' ,
- file.filename,
- 'on disk',
- file.path,
- ''
+ioc.category,
+ioc.technique,
+file.path,
+file.filename, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.btime,'unixepoch')) AS First_Created_On_Disk, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.ctime,'unixepoch')) AS Last_Changed, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.mtime,'unixepoch')) AS Last_Modified, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.atime,'unixepoch')) AS Last_Accessed, 
+file.Size, 
+ioc.IOC_Type,
+ioc.Indicator,
+ioc.note
+ 
 FROM IOC_LIST ioc 
  LEFT JOIN file ON LOWER(ioc.IOC_Type) IN('pathname', 'file_path', 'file_path_name', 'filename') AND file.path LIKE ioc.indicator
-WHERE DATE_TIME <> ''
