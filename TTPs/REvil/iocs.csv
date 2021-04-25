@@ -4,4 +4,5 @@ file_path_name,C:\PerfLogs\%.bat,bats
 file_path_name,C:\PerfLogs\%.ps1,ps1
 file_path_name,C:\PerfLogs\%.txt,txt
 file_path_name,C:\PerfLogs\%%,all
+file_path_name,C:\%,all
 file_path_name,C:\users\%\Desktop\%\ff.exe,Cobalt
