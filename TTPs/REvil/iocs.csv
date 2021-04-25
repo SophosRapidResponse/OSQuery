@@ -1,4 +1,4 @@
 Indicator_type,Data,Note,Category,Technique
 file_path_name,C:\PerfLogs\procdump64.exe,Procdump,Credential_Access,T1003.001
 file_path_name,C:\PerfLogs\%.bat,bats,Execution,T1059.003
-file_path_name,C:\users\%\Downloads\%.exe,test
+file_path_name,C:\users\%\Downloads\%.exe,test,,
