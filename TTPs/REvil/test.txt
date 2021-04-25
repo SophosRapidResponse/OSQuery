@@ -4,7 +4,7 @@
 | Each line has an identified IOC Type, Indicator and Notes so we will use some string    |
 | functions to seperate each element into our IOC_List                                    |
 \*****************************************************************************************/
-WITH IOC_LIST (IOC_Type, Indicator, Note, Category, Technique) AS (
+WITH IOC_LIST (IOC_Type, Indicator, Category) AS (
  WITH IOC_FILE(Line, str) AS (
   SELECT 'ip,127.0.0.1,TEST DATA', (SELECT result from curl where url = '$$url$$') ||char(10)
   UNION ALL
@@ -13,10 +13,8 @@ WITH IOC_LIST (IOC_Type, Indicator, Note, Category, Technique) AS (
 SELECT
  replace(Line, ltrim(Line, replace(Line, ',', '')), '') 'Indicator Type', /* IOC type */
  replace(replace(substr(Line, instr(Line, ',')+1), ltrim(substr(Line, instr(Line, ',')+1), replace(substr(Line, instr(Line, ',')+1), ',', '')), ''),'*','%')  Indicator,       /* Actual IOC Data */ /* Convert wildcard * to % */
- replace(Line, rtrim(Line, replace(Line, ',', '')), '') 'Note', /* Note */
- replace(Line, ltrim(Line, replace(Line, ',', '')), '') 'Category', /* Mitre Category */
- replace(Line, ltrim(Line, replace(Line, ',', '')), '') 'Technique' /* Mitre Technique */
-FROM IOC_FILE WHERE Line != '' AND Line != 'Indicator_type,Data,Note,Category,Technique' AND Line NOT LIKE 'Description%' AND Line NOT LIKE '%TEST DATA%' AND Line NOT LIKE '%indicator_type%'
+ replace(Line, rtrim(Line, replace(Line, ',', '')), '') 'Category' /* Mitre Category */
+FROM IOC_FILE WHERE Line != '' AND Line != 'IOC_type,Indicator,Category' AND Line NOT LIKE 'Description%' AND Line NOT LIKE '%TEST DATA%' AND Line NOT LIKE '%indicator_type%'
 )
 
 --SELECT IOC_Type, CAST(LOWER('%'||Indicator||'%') AS TEXT), note FROM IOC_LIST -- Uncomment this line out to check if we are importing the IOC data correctly 
@@ -41,7 +39,6 @@ FROM IOC_FILE WHERE Line != '' AND Line != 'Indicator_type,Data,Note,Category,Te
 
 SELECT DISTINCT
 ioc.Category,
-ioc.Technique,
 file.path,
 file.filename, 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.btime,'unixepoch')) AS First_Created_On_Disk, 
@@ -51,7 +48,6 @@ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.atime,'unixepoch')) AS Last_Accessed
 file.Size, 
 ioc.IOC_Type,
 ioc.Indicator,
-ioc.Note
  
 FROM IOC_LIST ioc 
  LEFT JOIN file ON LOWER(ioc.IOC_Type) IN('pathname', 'file_path', 'file_path_name', 'filename') AND file.path LIKE ioc.indicator
