@@ -1,4 +1,7 @@
 IOC_type,Indicator,Category
-file_path_name,C:\PerfLogs\procdump64.exe,"Credential_Access - T1003.001"
+file_path_name,C:\PerfLogs\procdump64.exe,"Credential Access - T1003.001"
 file_path_name,C:\PerfLogs\%.bat,"Execution - T1059.003"
 file_path_name,C:\users\%\Downloads\%.exe,"test - T1.1"
+sha256,c1d5e8f5759b352081f1845f4c39cb8a1d95d6beb12b7f3be564dd8260ccb596,ff
+sha256,a20d93e7dc3711e8b8a8f63bd148ddc70de8c952de882c5495ac121bfedb749f,7z
+sha256,1c702e234542e2bb53e45211cc3ae4426a5088de9510dae58a9ff8b7a65e294f,anydesk
