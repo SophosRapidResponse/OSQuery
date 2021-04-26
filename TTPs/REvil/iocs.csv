@@ -9,4 +9,5 @@ sha256,6daedcd8d9747019fb4d95998b184895b05d0d9e610d9dbe87914eaed04a7369,netscan,
 sha256,a20d93e7dc3711e8b8a8f63bd148ddc70de8c952de882c5495ac121bfedb749f,7z,Collection,T098765
 sha256,05732e84de58a3cc142535431b3aa04efbe034cc96e837f93c360a6387d8faad,procdump,"Credential Access",T1003.001
 sha256,16f413862efda3aba631d8a7ae2bfff6d84acd9f454a7adaa518c7a8a6f375a5,procdump64,"Credential Access",T1003.001
+sha256,75a098922d9b39776661a6fa750ab74edc06de3c0079a1a57296e09e0aa17bd4,sophoszap,"Defense Evasion",T1.1
 
