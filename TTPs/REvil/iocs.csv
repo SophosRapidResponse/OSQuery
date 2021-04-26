@@ -1,4 +1,4 @@
-IOC_type,Indicator,Category
+IOC_type,Indicator,Note
 file_path_name,C:\PerfLogs\procdump64.exe,"Credential Access - T1003.001"
 file_path_name,C:\PerfLogs\%.bat,"Execution - T1059.003"
 file_path_name,C:\users\%\Downloads\%.exe,"test - T1.1"
