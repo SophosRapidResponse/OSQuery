@@ -16,4 +16,5 @@ sha256,33b73b5feef241096a14ae1f7b2884b7f753d1e75e2dee770090c0d43197adeb,test,tes
 sha256,ab99ab70cd307653374c691c30b11d54e419d9a85f22cc307ed0ee0dd857aa8b,sophosfs,sophosfs,sophosfs
 sha256,e3ddcc06bd98ae7879a491e0d6167ef95c12f3c0f3b2f73bc435640f9a19717c,sdu,sdu,sdu
 sha256,36c212f96479aafbb823ed284cfb925d06bbdd734229fcf4bc11f28a2e48d623,mmc,mmc,mmc
+filename,powershell.exe,ps,execution,T1.3
 
