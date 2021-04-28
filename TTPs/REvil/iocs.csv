@@ -9,7 +9,6 @@ sha256,4de2c2746e1dbe66faa9dd7f5e2e76ea2bcce4f5e8e58d244b16bc8bf6e9e9f7,t1,t1,t6
 sha256,435ba26328fb5eacbb1e8a7aca86326f610acbb8ed7d0df3fb18b43c53998f28,t1,t1,t7
 file_path_name,c:\programdata\mmk.exe,t8,t8,t8
 file_path_name,\\%\admin$\%.exe,t9,t9,t9
-file_path_name,c:\windows\%.exe,t9,t9,t10
 file_path_name,\%\admin$\%.exe,t9,t9,t11
 file_path_name,C:\Windows\536.dll,t12,t12,t12
 file_path_name,C:\Windows\Temp\536.dll,t13,t13,t13
