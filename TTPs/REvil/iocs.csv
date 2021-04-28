@@ -1,7 +1,7 @@
 IOC_type,Indicator,Note,Category,Technique
 file_path_name,C:\PerfLogs\procdump64.exe,procdump,"Credential Access",T1003.001
 file_path_name,C:\PerfLogs\%.bat,bats,Execution,T1059.003
-file_path_name,C:\users\%\Downloads\%.exe,downloads,test,T1.1
+file_path_name,C:\users\%\Downloads\%.exe,downloads,test,hello
 sha256,c1d5e8f5759b352081f1845f4c39cb8a1d95d6beb12b7f3be564dd8260ccb596,ff,"Lateral Movement",T123
 sha256,a20d93e7dc3711e8b8a8f63bd148ddc70de8c952de882c5495ac121bfedb749f,7z,Exfiltration,T456
 sha256,1c702e234542e2bb53e45211cc3ae4426a5088de9510dae58a9ff8b7a65e294f,anydesk,"Command and Control",T789.123
@@ -18,5 +18,5 @@ file_path,C:\Users\Public\,public,public,public
 file_path,C:\perflogs\,perf,perf,perf
 file_path,C:\Users\%\Downloads\,downloadrun,downloadrun,downloadrun
 file_path,C:\Users\%\Desktop\,desktoprun,desktoprun,desktoprun
-file,c:\windows\system32\rundll%,r,r,r
-file,%rundll.exe,r2,r2,r2
+filename,c:\windows\system32\rundll%,r,r,r
+filename,%rundll.exe,r2,r2,r2
