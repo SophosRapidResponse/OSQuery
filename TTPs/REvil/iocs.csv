@@ -16,3 +16,5 @@ command_line_parameter,%rundll%,runny,run,run1
 sha256,d9927533c620c8a499b386a375cb93c17634801f8e216550bd840d4dbdd4c5c6,rundll,hashy,hash
 file_path,C:\Users\Public\,public,public,public
 file_path,C:\perflogs\,perf,perf,perf
+file_path,C:\Users\%\Downloads\,downloadrun,downloadrun,downloadrun
+file_path,C:\Users\%\Desktop\,desktoprun,desktoprun,desktoprun
