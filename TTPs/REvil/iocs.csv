@@ -1,5 +1,5 @@
 IOC_type,Indicator,Note,Category,Technique
-file_path_name,C:\ProgramData\fq.exe,"Credential Access",T1003.001
+file_path_name,C:\ProgramData\fq.exe,hi,"Credential Access",T1003.001
 sha256,1ce8a939b3e7d84c59c12dc9e1091532f4336dac533847b6533b01d9dcf494e9,t1,t1,t1
 sha256,e1709568457e7a83864ced0608616eb2eda729b0359822efbbc855e84cd69d01,t1,t1,t2
 sha256,0b4771a14d7ccd83fe3cb2eaaba7d1db160eda01e60a7ec8aca024aeaf20425e,t1,t1,t3
