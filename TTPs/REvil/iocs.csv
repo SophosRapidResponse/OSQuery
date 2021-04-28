@@ -14,3 +14,5 @@ sha256,b1102ed4bca6dae6f2f498ade2f73f76af527fa803f0e0b46e100d4cf5150682,ADFind,D
 filename,powershell1111.exe,ps,execution,T1.3
 command_line_parameter,%rundll%,runny,run,run1
 sha256,d9927533c620c8a499b386a375cb93c17634801f8e216550bd840d4dbdd4c5c6,rundll,hashy,hash
+file_path,C:\Users\Public\,public,public,public
+file_path,C:\perflogs\,perf,perf,perf
