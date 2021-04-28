@@ -18,5 +18,5 @@ file_path,C:\Users\Public\,public,public,public
 file_path,C:\perflogs\,perf,perf,perf
 file_path,C:\Users\%\Downloads\,downloadrun,downloadrun,downloadrun
 file_path,C:\Users\%\Desktop\,desktoprun,desktoprun,desktoprun
-file,c:\windows\system32\rundll.exe,r,r,r
+file,c:\windows\system32\rundll%,r,r,r
 file,%rundll.exe,r2,r2,r2
