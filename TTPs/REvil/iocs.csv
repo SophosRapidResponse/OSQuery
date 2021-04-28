@@ -1,22 +1,15 @@
 IOC_type,Indicator,Note,Category,Technique
-file_path_name,C:\PerfLogs\procdump64.exe,procdump,"Credential Access",T1003.001
-file_path_name,C:\PerfLogs\%.bat,bats,Execution,T1059.003
-file_path_name,C:\users\%\Downloads\%.exe,downloads,test,hello
-sha256,c1d5e8f5759b352081f1845f4c39cb8a1d95d6beb12b7f3be564dd8260ccb596,ff,"Lateral Movement",T123
-sha256,a20d93e7dc3711e8b8a8f63bd148ddc70de8c952de882c5495ac121bfedb749f,7z,Exfiltration,T456
-sha256,1c702e234542e2bb53e45211cc3ae4426a5088de9510dae58a9ff8b7a65e294f,anydesk,"Command and Control",T789.123
-sha256,6daedcd8d9747019fb4d95998b184895b05d0d9e610d9dbe87914eaed04a7369,netscan,Discovery,T010101
-sha256,a20d93e7dc3711e8b8a8f63bd148ddc70de8c952de882c5495ac121bfedb749f,7z,Collection,T098765
-sha256,05732e84de58a3cc142535431b3aa04efbe034cc96e837f93c360a6387d8faad,procdump,"Credential Access",T1003.001
-sha256,16f413862efda3aba631d8a7ae2bfff6d84acd9f454a7adaa518c7a8a6f375a5,procdump64,"Credential Access",T1003.001
-sha256,75a098922d9b39776661a6fa750ab74edc06de3c0079a1a57296e09e0aa17bd4,sophoszap,"Defense Evasion",T1.1
-sha256,b1102ed4bca6dae6f2f498ade2f73f76af527fa803f0e0b46e100d4cf5150682,ADFind,Discovery,T1111
-filename,powershell1111.exe,ps,execution,T1.3
-command_line_parameter,%rundllzzzzzzz%,runny,run,run1
-sha256,zzzzzzzzd9927533c620c8a499b386a375cb93c17634801f8e216550bd840d4dbdd4c5c6,rundll,hashy,hash
-file_path,C:\Users\Public\,public,public,public
-file_path,C:\perflogs\,perf,perf,perf
-file_path,C:\Users\%\Downloads\,downloadrun,downloadrun,downloadrun
-file_path,C:\Users\%\Desktop\,desktoprun,desktoprun,desktoprun
-filename,c:\windows\system32\rundll%,r,r,r
-filename,%rundll.exe,r2,r2,r2
+file_path_name,C:\ProgramData\fq.exe,"Credential Access",T1003.001
+sha256,1ce8a939b3e7d84c59c12dc9e1091532f4336dac533847b6533b01d9dcf494e9,t1,t1,t1
+sha256,e1709568457e7a83864ced0608616eb2eda729b0359822efbbc855e84cd69d01,t1,t1,t2
+sha256,0b4771a14d7ccd83fe3cb2eaaba7d1db160eda01e60a7ec8aca024aeaf20425e,t1,t1,t3
+sha256,888f8ff9d087be4c3a4603b5f542a358be1c6b9d791ee934d3e33d38b49e7235,t1,t1,t4
+sha256,b68228ccd9531da38df238cc604d32c43473d66aee300eb8becee0d5af60cb32,t1,t1,t5
+sha256,4de2c2746e1dbe66faa9dd7f5e2e76ea2bcce4f5e8e58d244b16bc8bf6e9e9f7,t1,t1,t6
+sha256,435ba26328fb5eacbb1e8a7aca86326f610acbb8ed7d0df3fb18b43c53998f28,t1,t1,t7
+file_path_name,c:\programdata\mmk.exe,t8,t8,t8
+file_path_name,\\%\admin$\%.exe,t9,t9,t9
+file_path_name,c:\windows\%.exe,t9,t9,t10
+file_path_name,\%\admin$\%.exe,t9,t9,t11
+file_path_name,C:\Windows\536.dll,t12,t12,t12
+file_path_name,C:\Windows\Temp\536.dll,t13,t13,t13
