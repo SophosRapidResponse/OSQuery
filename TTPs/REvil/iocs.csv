@@ -1,14 +1,2 @@
 IOC_type,Indicator,Note,Category,Technique
-file_path_name,C:\ProgramData\fq.exe,hi,"Credential Access",T1003.001
-sha256,1ce8a939b3e7d84c59c12dc9e1091532f4336dac533847b6533b01d9dcf494e9,t1,t1,t1
-sha256,e1709568457e7a83864ced0608616eb2eda729b0359822efbbc855e84cd69d01,t1,t1,t2
-sha256,0b4771a14d7ccd83fe3cb2eaaba7d1db160eda01e60a7ec8aca024aeaf20425e,t1,t1,t3
-sha256,888f8ff9d087be4c3a4603b5f542a358be1c6b9d791ee934d3e33d38b49e7235,t1,t1,t4
-sha256,b68228ccd9531da38df238cc604d32c43473d66aee300eb8becee0d5af60cb32,t1,t1,t5
-sha256,4de2c2746e1dbe66faa9dd7f5e2e76ea2bcce4f5e8e58d244b16bc8bf6e9e9f7,t1,t1,t6
-sha256,435ba26328fb5eacbb1e8a7aca86326f610acbb8ed7d0df3fb18b43c53998f28,t1,t1,t7
-file_path_name,c:\programdata\mmk.exe,t8,t8,t8
-file_path_name,\\%\admin$\%.exe,t9,t9,t9
-file_path_name,\%\admin$\%.exe,t9,t9,t11
-file_path_name,C:\Windows\536.dll,t12,t12,t12
-file_path_name,C:\Windows\Temp\536.dll,t13,t13,t13
+file_path_name,C:\Windows\System32\netsh.exe,hi,"Credential Access",T1003.001
