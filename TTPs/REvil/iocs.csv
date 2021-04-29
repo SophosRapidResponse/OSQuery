@@ -1,4 +1,19 @@
 IOC_type,Indicator,Note,Category,Technique
-command_line_parameter,%whoami%,Discovery,test,test
-sha256,95af07f6596a7397b147b9dd3f819d21e2c65bf97b1aca6cd34a8755da3669b1,blah,blah,blah
-file_path_name,C:\ProgramData\fq.exe,Impact,rans,rans
+sha256,a20a88786478e4a780957770244c89c42913eef2081c4d037afb5a7e6c19d3fe,'RDP Tool','Lateral Movement',T123
+sha256,6e0dcbb9710aced2a00c8863b2fe295a9e7677a07d6fc4bbb100714d2ddf0d4d,NLBrute,'Credential Access',T456
+file_path_name,C:\Users\administrator.ROOT\Downloads\Advanced_Port_Scanner_2.5.3869.exe,'Network scanner',Discovery,T123
+file_path_name,C:\Users\%\Downloads\Advanced_Port_Scanner_2.5.3869.exe,'Network scanner',Discovery,T123
+filename,Advanced_Port_Scanner_2.5.3869.exe,'Network scanner',Discovery,T123
+file_path_name,C:\Users\%\Downloads\pscan24.exe,'Port scanner',Discovery,T123
+filename,pscan24.exe,'Port scanner',Discovery,T123
+file_path_name,C:\Users\%\Desktop\PortableRDP5.exe,'RDP Tool','Lateral Movement',T123
+filename,PortableRDP5.exe,'RDP Tool','Lateral Movement',T123
+file_path_name,C:\Users\%\Desktop\collector64\Collector.exe,Tool,Collection,T123
+filename,Collector.exe,Tool,Collection,T123
+file_path_name,C:\Windows\appcompat\zz.bat,Bat,Execution,T456
+command_line_parameter,%zz.bat%,Bat,Execution,T456
+file_path_name,c:\users\%\desktop\mimikatz.exe,Mimikatz,'Credential Access',T456
+filename,mimikatz.exe,Mimikatz,'Credential Access',T456
+file_path_name,c:\users\%\desktop\install.bat,Bat,Execution,T456
+command_line_parameter,%install.bat%,Bat,Execution,T456
+file_path_name,C:\Users\%\Desktop\New folder\svchost.exe,NLBrute,'Credential Access',T456
