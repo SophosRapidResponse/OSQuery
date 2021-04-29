@@ -2,3 +2,5 @@ IOC_type,Indicator,Note,Category,Technique
 file_path_name,C:\Windows\System32\netsh.exe,hi,"Credential Access",T1003.001
 command_line_parameter,whoami,Discovery,test,test
 sha256,95af07f6596a7397b147b9dd3f819d21e2c65bf97b1aca6cd34a8755da3669b1,blah,blah,blah
+file_path_name,C:\ProgramData\fq.exe,Impact,rans,rans
+file_path_name,C:\ProgramData\asdf.Command and Control,dll,dll,dll
