@@ -17,3 +17,7 @@ filename,mimikatz.exe,Mimikatz,'Credential Access',T456
 file_path_name,c:\users\%\desktop\install.bat,Bat,Execution,T456
 command_line_parameter,%install.bat%,Bat,Execution,T456
 file_path_name,C:\Users\%\Desktop\New folder\svchost.exe,NLBrute,'Credential Access',T456
+file_path_name,C:\Users\administrator.ENG\Desktop\putty.exe,Putty,Command and Control,T678
+file_path_name,C:\Users\%\Desktop\putty.exe,Putty,Command and Control,T678
+filename,putty.exe,Putty,Command and Control,T678
+command_line_parameter,%asdf.dll%,Cobalt Beacon,Command and Control,T000
