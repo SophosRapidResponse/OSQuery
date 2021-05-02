@@ -1,4 +1,4 @@
-IOC_type,Indicator,Note,Category,Technique
+IOC_type,Indicator,Description,Category,Technique
 sha256,a20a88786478e4a780957770244c89c42913eef2081c4d037afb5a7e6c19d3fe,'RDP Tool','Lateral Movement',T123
 sha256,6e0dcbb9710aced2a00c8863b2fe295a9e7677a07d6fc4bbb100714d2ddf0d4d,NLBrute,'Credential Access',T456
 file_path_name,C:\Users\administrator.ROOT\Downloads\Advanced_Port_Scanner_2.5.3869.exe,'Network scanner',Discovery,T123
