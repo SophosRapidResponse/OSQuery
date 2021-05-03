@@ -22,3 +22,8 @@ file_path_name,C:\Users\%\Desktop\putty.exe,Putty,Command and Control,T678
 filename,putty.exe,Putty,Command and Control,T678
 command_line_parameter,%asdf.dll%,Cobalt Beacon,Command and Control,T000
 filename,winlogon.exe,TEST,TEST,test
+url,%mega.%,Mega,Exfiltration,test
+url,%amazon.%,test,test,test
+ip,52.242.211.89,test,test,test
+ip,54.71.170.88,test,test,test
+ip,192.168.150.161,test,test,test
