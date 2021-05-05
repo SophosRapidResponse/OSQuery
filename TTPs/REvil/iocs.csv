@@ -24,3 +24,4 @@ command_line_parameter,%asdf.dll%,Cobalt Beacon,Command and Control,T000
 filename,winlogon.exe,TEST,TEST,test
 url,%mega.%,Mega,Exfiltration,test
 url,%amazon.%,test,test,test
+ip,54.%,test,test,test
