@@ -1,0 +1,10 @@
+/* Query for web shells with randomized 6 character names */
+SELECT
+datetime(btime,'unixepoch') AS created_time,
+regex_match(filename, '[0-9a-zA-Z]{6}.aspx', 0) AS filename,
+directory,
+size AS fileSize,
+datetime(atime, 'unixepoch') AS access_time,
+datetime(mtime, 'unixepoch') AS modified_time
+FROM file
+WHERE (path LIKE 'C:\inetpub\wwwroot\aspnet_client\%' OR path LIKE 'C:\inetpub\wwwroot\aspnet_client\system_web\%' OR path LIKE 'C:\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\%' OR path LIKE 'C:\ProgramData\%\%\%.aspx');
