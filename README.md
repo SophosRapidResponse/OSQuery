@@ -7,3 +7,13 @@ Sophos EDR uses a combination of information stored in our Data Lake, as well as
 Many of these queries benefit from the additional Sophos tables added to OSQuery, while others will work with 3rd party products using the standard OSQuery tables.
 
 Each query includes the author details, so if you find the query useful or spot any improvements feel free to reach out.
+
+
+Queries are split into basic categories and use a consistant naming format.
+
+Categories:
+File - Collecting information about files on disk
+Process - Information about running processes
+Task - Windows Scheduled tasks
+
+Want a query we don't have? let me know https://twitter.com/AltShiftPrtScn
