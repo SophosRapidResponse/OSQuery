@@ -30,8 +30,4 @@ FROM file f
 JOIN hash h ON f.path = h.path
 WHERE f.path LIKE 'C:\Windows\SYSVOL\sysvol\%\Policies\%\%\Scripts\%%' AND filename LIKE '$$filename$$' AND filename != '.' AND filename NOT LIKE '%.ini'
 AND f.$$time_type$$ >= CAST($$begin$$ AS INT) 
-AND f.$$time_type$$ < CAST($$end$$ AS INT) 
-
-
-
-
+AND f.$$time_type$$ < CAST($$end$$ AS INT)
