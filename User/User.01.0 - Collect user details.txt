@@ -1,0 +1,27 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Collect all user details or search for specific users.                         |
+|                                                                                |
+| VARIABLES                                                                      |
+| username(username) = username to search for                                    |
+| directory(file path) = Users directory                                         |
+| description(string) = users description                                        |
+| uuid(string) = users UUID/SID                                                  |
+| type(string) = users type e.g. roaming, local                                  |
+|                                                                                |
+| TIP                                                                            |
+| Use wildcards for each variable if you want to bring all users back.           |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT
+username AS Username,
+directory AS Directory,
+description AS Description,
+uuid AS 'UUID_SID',
+type AS Type
+FROM users
+WHERE username LIKE '$$username$$' AND directory LIKE '$$directory$$' AND description LIKE '$$description$$' AND uuid LIKE '$$uuid$$' AND type LIKE '$$type$$'
