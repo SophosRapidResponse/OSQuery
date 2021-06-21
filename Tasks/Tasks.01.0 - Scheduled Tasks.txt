@@ -15,8 +15,6 @@
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-select name, action, path, state, last_run_time, next_run_time, last_run_message from scheduled_tasks
-
 SELECT
 name AS Name,
 action AS Action,
