@@ -1,0 +1,30 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| List all items that load on startup.                                           |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT 
+name AS Name,
+path AS Path,
+args AS Arguments,
+type AS Type,
+source AS Source,
+username AS Username,
+status AS Status
+FROM startup_items
+
+UNION ALL
+
+SELECT 
+name AS Name,
+path AS Path,
+'-' AS Arguments,
+source AS Type,
+'-' AS Source,
+'-' AS Username,
+'-' AS Status
+FROM autoexec
