@@ -23,7 +23,7 @@
 | incorrectly assume you have brought back the entire file. If you are trying to |
 | bring back every row, then normally a space charector for the pattern works    |
 | best, however you use can't use a space as a variable, so use the word 'space' | 
-| instead i.e. pattern = 'space' (lowercase).
+| instead i.e. pattern = 'space' (lowercase).                                    |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
