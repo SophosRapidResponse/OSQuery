@@ -9,6 +9,14 @@
 | everything worth investigating. The 'Bad' ones are snippets of Base64 strings  |
 | often seen when Cobalt Strike is involved.                                     |
 |                                                                                |
+| IMPORTANT                                                                      |
+| This query can bring back large script blocks, if you are exporting these to   |
+| CSV and opening in Excel then be warned that individual cells in Excel can     |
+| hold a maximum of 32,767 characters, any more than this will get cut off, if   |
+| you open the file in NotePad for example though, the whole script will be      |
+| there. So if you spot a long script that ends abruptly open it in NotePad to   |
+| double check.                                                                  |
+|                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
