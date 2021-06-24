@@ -3,6 +3,12 @@
 | Finds all the ConsoleHost_history.txt files and then Greps the content,        |
 | matching on ' ' (a space) which should return most rows but may miss some.     |
 |                                                                                |
+| NOTE                                                                           |
+| The Last_Modified value is for the txt file itself, it doesn't tell you when   |
+| the commands were executed, just the last time the file changed. So for        |
+| example if your attack was a week ago and the last modified date was months    |
+| ago, then it is unlikely that any of the commands are relevant.                |
+|                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
