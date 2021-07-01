@@ -21,12 +21,10 @@ source AS Source,
 provider_name AS Provider_Name,
 eventid AS Event_ID,
 user_id AS SID,
-u.username AS Username,
 data AS Data,
 'EVTX Logs' AS Data_Source,
 'EVTX.01.0' AS Query 
 FROM sophos_windows_events swe
-JOIN users u ON swe.user_id = u.uuid 
 WHERE data like '%$$value$$%'
 AND (
 source LIKE 'System' OR
