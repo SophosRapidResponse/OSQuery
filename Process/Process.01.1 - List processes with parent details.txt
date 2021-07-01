@@ -23,6 +23,8 @@ CAST ( (Select path from processes p2 where p.parent = p2.pid) AS text) Parent_P
 CAST ( (Select cmdline from processes p2 where p.parent = p2.pid) AS text) Parent_CMDLine,
 CASE WHEN p.on_disk = 1 
 THEN 'Yes' ELSE 'No' END AS On_Disk,
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(p.start_time,'unixepoch')) AS 'Start_Time'
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(p.start_time,'unixepoch')) AS 'Start_Time',
+'Processes' AS Data_Source,
+'Process.01.1' AS Query
 FROM processes p
 WHERE $$string_type$$ LIKE '$$value$$'
