@@ -24,6 +24,8 @@ start_type AS Start_Type,
 path AS Path,
 module_path AS Module_Path,
 description AS Description,
-user_account AS User_Account
+user_account AS User_Account,
+'Services' AS Data_Source,
+'Services.01.0' AS Query
 FROM services
 WHERE $$string_type$$ LIKE '$$value$$'
