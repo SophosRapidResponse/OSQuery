@@ -14,5 +14,7 @@ CASE WHEN days <= 7 THEN 'Really good'
      WHEN days >= 91 AND days <= 365 THEN 'Bad'
      WHEN days >= 366 THEN 'Really bad!'
 END AS Status,
-days, hours, minutes, seconds
+days, hours, minutes, seconds,
+'Uptime' AS Data_Source,
+'Device.02.0' AS Query
 FROM uptime
