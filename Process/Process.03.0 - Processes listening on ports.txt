@@ -26,7 +26,9 @@ SELECT
     spp.globalrep,
     spp.puaScore,
     spp.mlscore,
-    spp.sha256
+    spp.sha256,
+    'Listening Ports' AS Data_Source,
+    'Process.03.0' AS Query
 FROM listening_ports lp
 LEFT JOIN sophos_process_properties spp
     ON spp.pid = lp.pid
