@@ -1,0 +1,27 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Look for suspicious services being installed via the System event log and      |
+| Event ID 7045. This is a good query for finding Cobalt Strike services as      |
+| PsExec and other suspicious services.                                          |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT 
+strftime('%Y-%m-%dT%H:%M:%SZ',swe.datetime) AS Datetime, 
+swe.eventid AS Event_ID, 
+JSON_EXTRACT(swe.data, '$.EventData.AccountName') AS Account_Name, 
+JSON_EXTRACT(swe.data, '$.EventData.ServiceName') AS Service_Name, 
+JSON_EXTRACT(swe.data, '$.EventData.ImagePath') AS Image_Path, 
+swe.user_id AS SID, 
+u.username AS Username, 
+u.directory AS Directory, 
+JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS Service_Type, 
+JSON_EXTRACT(swe.data, '$.EventData.StartType') AS Start_Type,
+'System.evtx' AS Data_Source 
+FROM sophos_windows_events swe 
+JOIN users u ON swe.user_id = u.uuid 
+WHERE swe.source = 'System' AND swe.eventid = 7045 
+AND (ImagePath LIKE '%JAB%' OR ImagePath LIKE '%SQB%' OR ImagePath LIKE '%H4s%' OR ImagePath LIKE '%invoke%' OR ImagePath LIKE '%-enc%' OR ImagePath LIKE '%-e %' OR ImagePath LIKE '%-ec %' OR ImagePath LIKE '%IEX%' OR ImagePath LIKE '%downloadstring%' OR ImagePath like '%COMSPEC%' OR ImagePath like '%Admin$%' OR ImagePath like '%Psex%' OR ImagePath like '%BTOBTO%')
