@@ -9,5 +9,7 @@
 \********************************************************************************/
 
 SELECT
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(btime,'unixepoch')) AS Journals_Created
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(btime,'unixepoch')) AS Journals_Created,
+'File' AS Data_Source,
+'Sophos.02.0' AS Query
 FROM file WHERE directory LIKE 'C:\ProgramData\Sophos\Endpoint Defense\Data\Event Journals\'
