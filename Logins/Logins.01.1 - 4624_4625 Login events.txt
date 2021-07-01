@@ -31,7 +31,9 @@ JSON_EXTRACT(data, '$.EventData.ProcessName') AS Process_Name,
 JSON_EXTRACT(data, '$.EventData.LogonType') AS Logon_Type, 
 JSON_EXTRACT(data, '$.EventData.TargetUserSid') AS User_SID, 
 '-' AS SessionID, 
-'-' AS Session_ID 
+'-' AS Session_ID,
+'Security EVTX' AS Data_Source,
+'Logins.01.1' AS Query 
 FROM sophos_windows_events 
 WHERE source = 'Security'
 AND (eventid = 4624 OR eventid = 4625)
