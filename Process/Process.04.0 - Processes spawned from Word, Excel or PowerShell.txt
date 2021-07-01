@@ -22,8 +22,9 @@ SELECT
  u.username AS Username,
  spj.parentSophosPid AS Sophos_Parent_PID, 
  CAST ( (Select spj2.pathname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Path,
- CAST ( (Select spj2.processname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Process_Name
-
+ CAST ( (Select spj2.processname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Process_Name,
+ 'Process Journal/Users' AS Data_Source,
+ 'Process.04.0' AS Query
 FROM sophos_process_journal spj 
 JOIN users u ON swe.user_id = u.uuid
 WHERE (Parent_Process_Name = 'WINWORD.EXE' OR Parent_Process_Name LIKE '%excel%' OR Parent_Process_Name LIKE '%powershell%')
