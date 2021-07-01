@@ -37,7 +37,9 @@ SELECT
     spp.mlScore,
     spp.puaScore,
     spp.localRep,
-    spp.globalRep
+    spp.globalRep,
+	'File Journal/Process Journal/Process_Properties' AS Data_Source,
+	'File.06.0' AS Query
 FROM sophos_file_journal sfj
 LEFT JOIN sophos_process_journal spj 
     ON spj.sophosPID = sfj.sophosPID
