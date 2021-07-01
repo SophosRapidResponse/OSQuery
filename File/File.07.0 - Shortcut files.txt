@@ -26,6 +26,8 @@ filename AS Filename,
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(btime,'unixepoch')) AS First_Created_On_Disk, 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(ctime,'unixepoch')) AS Last_Changed, 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS Last_Modified, 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(atime,'unixepoch')) AS Last_Accessed
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(atime,'unixepoch')) AS Last_Accessed,
+'File' AS Data_Source,
+'File.07.0' AS Query
 FROM file WHERE path LIKE 'C:\Users\$$username$$\AppData\Roaming\Microsoft\%\Recent\%'
 AND filename != '.'
