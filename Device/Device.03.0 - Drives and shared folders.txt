@@ -10,7 +10,9 @@
 SELECT 
 device_id AS Path,
 description AS Description,
-'-' AS Name
+'-' AS Name,
+'Logical Drives' AS Data_Source,
+'Device.03.0' AS Query
 FROM logical_drives
 
 UNION ALL
@@ -18,5 +20,7 @@ UNION ALL
 SELECT
 path AS Path,
 description AS Description,
-name AS Name    
+name AS Name,
+'Logical Drives' AS Data_Source,
+'Device.03.0' AS Query    
 FROM shared_resources
