@@ -13,7 +13,9 @@
 
 SELECT 
 f.path AS Path,
-h.sha256 AS SHA256
+h.sha256 AS SHA256,
+'File/Hash' AS Data_Source,
+'File.03.0' AS Query
 FROM file f 
 JOIN hash h ON f.path = h.path
 WHERE f.path LIKE '$$path$$' AND f.filename != '.'
