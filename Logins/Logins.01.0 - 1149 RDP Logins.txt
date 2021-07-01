@@ -28,7 +28,9 @@ JSON_EXTRACT(data, '$.UserData.Param3') AS Source_IP,
 '-' AS Logon_Type, 
 '-' AS User_SID, 
 '-' AS SessionID, 
-'-' AS Session_ID 
+'-' AS Session_ID,
+'TS Remote Connection EVTX' AS Data_Source,
+'Logins.01.0' AS Query 
 FROM sophos_windows_events 
 WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational' 
 AND eventid = 1149 
