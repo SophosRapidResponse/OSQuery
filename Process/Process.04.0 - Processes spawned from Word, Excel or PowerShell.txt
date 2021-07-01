@@ -9,7 +9,7 @@
 | end(date) = datetime of when to stop hunting                                   |
 |                                                                                |
 | Version: 1.0                                                                   |
-| Author: @AltShiftPrtScn                                                        |
+| Author: @AltShiftPrtScn & Abhijit Gupta                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
