@@ -1,0 +1,46 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Check for process execution, data from 'sophos_process_journal' with joins on  |
+| 'user' and 'file'. Choose the start date and then how many days to collect.    |
+|                                                                                |
+| VARIABLES                                                                      |
+| begin(date) = datetime of when to start hunting                                |
+| days(string) = how many days to search through                                 |
+|                                                                                |
+| TIP                                                                            |
+| You can do multiple days, but you are asking for a lot of data so if it fails  |
+| do one day at a time.                                                          |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+WITH for(x) AS (
+   VALUES ( (CAST ($$begin$$ AS INT) ) )
+   UNION ALL
+   SELECT x+1200 FROM for WHERE x < (CAST ($$begin$$ AS INT) + CAST( ($$days$$ * 86400) AS INT))
+)
+
+SELECT DISTINCT
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Datetime,
+ spj.pathname AS Path, 
+ spj.cmdline AS CMD_line,
+ spj.sophosPID AS Sophos_PID, 
+ CAST (spj.processname AS TEXT) Process_Name,
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Process_Start_Time, 
+ CASE WHEN spj.endTime = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
+ CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
+ spj.sid AS SID,
+ spj.sha256 AS Sha256,
+ spj.fileSize AS File_Size, 
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.pathname) AS text) First_Created_On_Disk,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Changed,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Modified,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Accessed,
+ spj.parentSophosPid AS Sophos_Parent_PID, 
+ CAST ( (Select spj2.pathname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Path,
+ 'Process Journal/File/Users' AS Data_Source,
+ 'Process.05.0' AS Query 
+FROM for
+ LEFT JOIN sophos_process_journal spj ON spj.time >= for.x and spj.time <= for.x+1200  
