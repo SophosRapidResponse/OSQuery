@@ -15,17 +15,6 @@ Each query includes the author details, so if you find the query useful or spot 
 
 Queries are split into basic categories and use a consistant naming format.
 
-Categories:
-
-File - Collecting information about files on disk
-
-Process - Information about running processes
-
-Task - Windows Scheduled tasks
-
-
-== Naming ==
-
 Format: category.ID.variant
 
 
