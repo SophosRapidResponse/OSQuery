@@ -28,7 +28,9 @@ a.original_program_name AS Cert_Original_Program_Name,
 a.serial_number AS Cert_Serial_Number,
 a.issuer_name AS Cert_Issuer_name,
 a.subject_name AS Cert_Subject_Name,
-a.result AS Cert_Result
+a.result AS Cert_Result,
+'Processes' AS Data_Source,
+'Process.01.2' AS Query
 FROM processes p 
 JOIN authenticode a ON p.path = a.path
 WHERE a.$$cert_type$$ LIKE '$$cert_value$$' AND p.$$process_type$$ LIKE '$$process_value$$'
