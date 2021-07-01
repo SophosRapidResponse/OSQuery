@@ -20,6 +20,8 @@ cmdline AS CMDLine,
 parent AS Parent_PID,
 CASE WHEN on_disk = 1 
 THEN 'Yes' ELSE 'No' END AS On_Disk,
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(start_time,'unixepoch')) AS 'Start_Time'
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(start_time,'unixepoch')) AS 'Start_Time',
+'Processes' AS Data_Source,
+'Process.01.0' AS Query
 FROM processes 
 WHERE $$string_type$$ LIKE '$$value$$'
