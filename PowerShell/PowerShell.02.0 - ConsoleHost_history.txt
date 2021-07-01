@@ -17,7 +17,9 @@
 SELECT
 ( SELECT path FROM file WHERE path LIKE 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt' ) AS File_Path,
 ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) FROM file WHERE path LIKE 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt' ) AS Last_Modified,
- line
+ line,
+ 'Grep/ConsoleHost_history' AS Data_Source,
+ 'PowerShell.02.0' AS Query
 FROM grep
 WHERE pattern = ' '
 AND path = File_Path
