@@ -38,7 +38,9 @@ h.sha256 AS SHA256,
 h.sha1 AS SHA1,
 h.md5 AS MD5,
 f.attributes AS Attributes,
-f.file_version AS File_Version
+f.file_version AS File_Version,
+'File/Hash/Authenticode' AS Data_Source,
+'File.02.0' AS Query
 FROM file f 
 JOIN hash h ON f.path = h.path
 JOIN authenticode a ON f.path = a.path
