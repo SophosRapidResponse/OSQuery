@@ -13,5 +13,7 @@ type,
 user,
 tty,
 sid,
-registry_hive
+registry_hive,
+'Logged In Users' AS Data_Source,
+'Logins.03.0' AS Query
 FROM logged_in_users
