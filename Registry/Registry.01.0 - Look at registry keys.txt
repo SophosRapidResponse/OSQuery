@@ -18,5 +18,7 @@ CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS TEXT) Last_Mo
 path AS Path,
 name AS Name,
 type AS Type,
-data AS Data
+data AS Data,
+'Registry' AS Data_Source,
+'Registry.01.0' AS Query
 FROM registry WHERE path LIKE '$$path$$' 
