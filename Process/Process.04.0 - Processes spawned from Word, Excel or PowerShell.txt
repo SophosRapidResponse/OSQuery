@@ -27,7 +27,7 @@ SELECT
  'Process.04.0' AS Query
 FROM sophos_process_journal spj 
 JOIN users u ON swe.user_id = u.uuid
-WHERE (Parent_Process_Name = 'WINWORD.EXE' OR Parent_Process_Name = 'EXCEL.EXE' OR Parent_Process_Name = 'powershell.exe')
+WHERE (Parent_Process_Name = 'WINWORD.EXE' OR Parent_Process_Name = 'EXCEL.EXE' OR Parent_Process_Name = 'powershell.exe' OR Parent_Process_Name = 'pwsh.exe')
 AND (Process_Name != 'WINWORD.EXE' AND Process_Name != 'EXCEL.EXE')
 AND spj.time >= CAST($$begin$$ AS INT) 
 AND spj.time <= CAST($$end$$ AS INT)
