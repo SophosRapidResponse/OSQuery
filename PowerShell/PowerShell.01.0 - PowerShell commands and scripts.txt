@@ -39,7 +39,9 @@ CASE
 END AS Sus,
 '-' AS Script_Blocks,
 REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') AS Script,
-'-' AS Path
+'-' AS Path,
+'Windows PowerShell EVTX' AS Data_Source,
+'PowerShell.01.0' AS Query
 FROM sophos_windows_events WHERE source = 'Windows PowerShell' AND eventid = 400
 
 UNION ALL
@@ -61,5 +63,7 @@ CASE
 END AS Sus,
 script_block_count AS Script_Blocks,
 script_text AS Script,
-script_path AS Path
+script_path AS Path,
+'PowerShell Events' AS Data_Source,
+'PowerShell.01.0' AS Query
 FROM sophos_powershell_events WHERE time > 0
