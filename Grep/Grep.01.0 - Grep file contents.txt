@@ -30,7 +30,9 @@
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-SELECT path, pattern, line
+SELECT path, pattern, line,
+'Grep' AS Data_Source,
+'Grep.01.0' AS Query
 FROM grep
 WHERE pattern IN ( SELECT CASE  WHEN '$$pattern$$' = 'space' THEN ' ' ELSE '$$pattern$$'  END) 
    AND path = '$$path$$'
