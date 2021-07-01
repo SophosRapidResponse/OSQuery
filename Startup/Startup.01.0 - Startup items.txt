@@ -14,7 +14,9 @@ args AS Arguments,
 type AS Type,
 source AS Source,
 username AS Username,
-status AS Status
+status AS Status,
+'Startup Items' AS Data_Source,
+'Startup.01.0' AS Query
 FROM startup_items
 
 UNION ALL
@@ -26,5 +28,7 @@ path AS Path,
 source AS Type,
 '-' AS Source,
 '-' AS Username,
-'-' AS Status
+'-' AS Status,
+'Autoexec' AS Data_Source,
+'Startup.01.0' AS Query
 FROM autoexec
