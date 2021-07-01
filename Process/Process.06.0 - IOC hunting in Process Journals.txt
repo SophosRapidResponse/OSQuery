@@ -1,22 +1,3 @@
-/***********************************************************************************\
-|                         TTP Hunting - Process Execution                           |
-| Check for process execution, data from 'sophos_process_journal' with joins on     |
-| 'user' and 'file'.                                                                |
-|                                                                                   |
-| -VARIABLES-                                                                       |
-| begin = DATE, datetime of when to start hunting                                   |
-| days = STRING, how many days to search through                                    |
-| ioc1 = STRING, additional IOC to hunt (process, cmd, path, sha256 of the process) |
-| ioc2 = STRING, additional IOC to hunt (process, cmd, path, sha256 of the process) |
-| ioc3 = STRING, additional IOC to hunt (process, cmd, path, sha256 of the process) |
-|                                                                                   |
-| -RESULTS-                                                                         |
-| Datetime = Process Start Time                                                     |
-| Primary_Details = Command Line                                                    |
-| Secondary_Details = File Path                                                     |
-| Tertiary_Details = Parent File Path                                               |
-\***********************************************************************************/
-
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Check for process execution, data from 'sophos_process_journal' with joins on  |
