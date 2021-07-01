@@ -24,6 +24,8 @@ uninstall_string,
 CASE
    WHEN install_date != '' 
    THEN substr(Install_Date, 0, 5) || '-' || substr(Install_Date, 5, 2) || '-' || substr(Install_Date, 7, 2)
-   END AS Install_Date
+   END AS Install_Date,
+'Programs' AS Data_Source,
+'Device.04.0' AS Query  
 FROM programs
 WHERE name LIKE '$$name$$' AND install_location LIKE '$$install_location$$'
