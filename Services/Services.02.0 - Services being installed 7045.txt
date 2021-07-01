@@ -26,7 +26,9 @@ u.username AS Username,
 u.directory AS Directory, 
 JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS Service_Type, 
 JSON_EXTRACT(swe.data, '$.EventData.StartType') AS Start_Type,
-'System.evtx' AS Data_Source 
+'System.evtx' AS Data_Source,
+'System EVTX/Users' AS Data_Source,
+'Services.02.0' AS Query 
 FROM sophos_windows_events swe 
 JOIN users u ON swe.user_id = u.uuid 
 WHERE swe.source = 'System' AND swe.eventid = 7045 
