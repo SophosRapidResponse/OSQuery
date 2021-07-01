@@ -22,6 +22,8 @@ username AS Username,
 directory AS Directory,
 description AS Description,
 uuid AS 'UUID_SID',
-type AS Type
+type AS Type,
+'Users' AS Data_Source,
+'User.01.0' AS Query
 FROM users
 WHERE username LIKE '$$username$$' AND directory LIKE '$$directory$$' AND description LIKE '$$description$$' AND uuid LIKE '$$uuid$$' AND type LIKE '$$type$$'
