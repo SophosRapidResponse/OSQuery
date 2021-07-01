@@ -30,7 +30,9 @@ h.sha256 AS SHA256,
 h.sha1 AS SHA1,
 h.md5 AS MD5,
 f.attributes AS Attributes,
-f.file_version AS File_Version
+f.file_version AS File_Version,
+'File/Hash' AS Data_Source,
+'File.01.0' AS Query
 FROM file f 
 JOIN hash h ON f.path = h.path
 WHERE (f.path LIKE '$$path1$$' OR f.path LIKE '$$path2$$' OR f.path LIKE '$$path3$$') AND f.filename != '.'
