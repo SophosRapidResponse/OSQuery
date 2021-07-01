@@ -128,7 +128,9 @@ CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) FRO
 CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) FROM file f WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = f.path) AS text) Last_Changed, 
 CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) FROM file f WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = f.path) AS text) Last_Modified, 
 CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) FROM file f WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = f.path) AS text) Last_Accessed, 
-CAST ( ( SELECT h.sha256 FROM hash h WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = h.path) AS text) SHA256
+CAST ( ( SELECT h.sha256 FROM hash h WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = h.path) AS text) SHA256,
+'UserAssist' AS Data_Source,
+'UserAssist.01.0' AS Query
 from userassist ua LEFT JOIN path_map on ua.path LIKE path_map.code||'%'
 JOIN users u ON ua.sid = u.uuid
 WHERE u.username LIKE '$$username$$'
