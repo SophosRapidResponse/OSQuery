@@ -2,11 +2,6 @@
 | DESCRIPTION                                                                    |
 | Look for services being installed via the System event log and Event ID 7045.  |
 |                                                                                |
-| VARIABLES                                                                      |
-| image_path(string) = contents of the image path                                |
-| service_name(string) = service name                                            |
-| sid(string) = user SID that installed the service                              |
-|                                                                                |
 | SAFE IMAGE PATH                                                                |
 | Some image paths contain malicious scripts or encoded PowerShell that once     |
 | exported to Excel can get detected, if you want to keep a record of            |
