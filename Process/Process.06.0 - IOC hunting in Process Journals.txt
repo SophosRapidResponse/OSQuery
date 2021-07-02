@@ -46,7 +46,7 @@ SELECT DISTINCT
  spj.pathname AS Path, 
  spj.cmdline AS CMD_line,
  spj.sophosPID AS Sophos_PID, 
- spj.processName AS Process_Name,
+ CAST (spj.processname AS TEXT) Process_Name,
  strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Process_Start_Time, 
  CASE WHEN spj.endTime = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
  CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
