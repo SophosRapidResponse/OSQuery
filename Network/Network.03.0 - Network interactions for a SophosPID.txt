@@ -1,0 +1,39 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Check the network interactions of a specific process from a SophosPID.         |
+|                                                                                |
+| VARIABLES                                                                      |
+| begin(date) = datetime of when to start hunting                                |
+| end(date) = datetime of when to stop hunting                                   |
+| SophosPID(SophosPID) = SophosPID of the process                                |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Sophos / @AltShiftPrtScn                                               |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT
+    strftime('%Y-%m-%dT%H:%M:%SZ', datetime(time,'unixepoch')) AS Datetime,
+    sophosPID,
+    strftime('%Y-%m-%dT%H:%M:%SZ', datetime(processStartTime,'unixepoch')) Process_Start_Time,
+    source AS Source,
+    sourcePort AS Source_Port,
+    destination AS Destination,
+    destinationPort AS Destination_Port,
+    CASE
+        protocol
+        WHEN 0 THEN 'Unsupported'
+        WHEN 1 THEN 'ICMP/ICMPv4'
+        WHEN 6 THEN 'TCP'
+        WHEN 17 THEN 'UDP'
+        WHEN 58 THEN 'ICMPv6'
+        ELSE protocol
+    END protocol,
+	'Process Journal/File/Users' AS Data_Source,
+    'Process.06.0' AS Query
+FROM
+    sophos_ip_journal
+WHERE
+    sophosPID = '$$sophosPID$$'
+    AND time >= $$begin$$
+    AND time <= $$end$$
