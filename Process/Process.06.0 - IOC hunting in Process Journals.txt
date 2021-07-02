@@ -19,23 +19,7 @@
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-WITH ioc_table (type, indicator) AS (
-VALUES
-    ('sha256', '$$ioc1$$'),
-	('sha256', '$$ioc2$$'),
-	('sha256', '$$ioc3$$'),
-	('cmd', '$$ioc1$$'),
-	('cmd', '$$ioc2$$'),
-	('cmd', '$$ioc3$$'),
-	('path', '$$ioc1$$'),
-	('path', '$$ioc2$$'),
-	('path', '$$ioc3$$'),
-	('filename', '$$ioc1$$'),
-	('filename', '$$ioc2$$'),
-	('filename', '$$ioc3$$')
-)
-
-, for(x) AS (
+WITH for(x) AS (
    VALUES ( (CAST ($$begin$$ AS INT) ) )
    UNION ALL
    SELECT x+1200 FROM for WHERE x < (CAST ($$begin$$ AS INT) + CAST( ($$days$$ * 86400) AS INT))
@@ -59,15 +43,12 @@ SELECT DISTINCT
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Changed,
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Modified,
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Accessed,
- ioc.Type AS Type,
- ioc.Indicator AS Indicator,
  'Process Journal/File/Users' AS Data_Source,
  'Process.06.0' AS Query 
 FROM for
- LEFT JOIN ioc_table ioc ON LOWER(ioc.type) IN('sha256', 'filename', 'path', 'cmd')
  LEFT JOIN sophos_process_journal spj ON spj.time >= for.x and spj.time <= for.x+1200  
  
-WHERE (LOWER(spj.sha256) LIKE LOWER(ioc.Indicator)) 
-OR (LOWER(spj.processName) LIKE LOWER(ioc.Indicator)) 
-OR (LOWER(spj.pathname) LIKE LOWER(ioc.Indicator)) 
-OR (LOWER(spj.cmdline) LIKE LOWER(ioc.Indicator))
+WHERE (spj.sha256 LIKE '$$ioc1$$' OR spj.sha256 LIKE '$$ioc2$$' OR spj.sha256 LIKE '$$ioc3$$) 
+OR (spj.processName LIKE '$$ioc1$$' OR spj.processName LIKE '$$ioc2$$' OR spj.processName LIKE '$$ioc3$$) 
+OR (spj.pathname LIKE '$$ioc1$$' OR spj.pathname LIKE '$$ioc2$$' OR spj.pathname LIKE '$$ioc3$$) 
+OR (spj.cmdline LIKE '$$ioc1$$' OR spj.cmdline LIKE '$$ioc2$$' OR spj.cmdline LIKE '$$ioc3$$) 
