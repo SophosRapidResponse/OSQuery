@@ -2,7 +2,7 @@
 | DESCRIPTION                                                                    |
 | Create a process tree of running processes on a machine.                       |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: Sophos & @AltShiftPrtScn                                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
