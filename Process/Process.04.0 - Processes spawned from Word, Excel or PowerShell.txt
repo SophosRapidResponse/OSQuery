@@ -8,7 +8,7 @@
 | begin(date) = datetime of when to start hunting                                |
 | end(date) = datetime of when to stop hunting                                   |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn & Abhijit Gupta                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -26,7 +26,7 @@ SELECT
  'Process Journal/Users' AS Data_Source,
  'Process.04.0' AS Query
 FROM sophos_process_journal spj 
-JOIN users u ON swe.user_id = u.uuid
+JOIN users u ON spj.sid = u.uuid
 WHERE (Parent_Process_Name = 'WINWORD.EXE' OR Parent_Process_Name = 'EXCEL.EXE' OR Parent_Process_Name = 'powershell.exe' OR Parent_Process_Name = 'pwsh.exe')
 AND (Process_Name != 'WINWORD.EXE' AND Process_Name != 'EXCEL.EXE')
 AND spj.time >= CAST($$begin$$ AS INT) 
