@@ -43,7 +43,7 @@ SELECT
     END AS Process_Branch,
     spp.sophosPID AS Sophos_PID,
     pt.cmdLine AS CMDLine,
-    spp.sha256 AS SHA256,
+    spp.sha256 AS SHA256
 FROM proc_tree pt
 LEFT JOIN sophos_process_properties spp
     ON spp.pid = pt.pid
