@@ -14,7 +14,7 @@
 | If you only want to use one variable put something that wont be found in the   |
 | others e.g. zzzzzzzz                                                           |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -48,7 +48,7 @@ SELECT DISTINCT
 FROM for
  LEFT JOIN sophos_process_journal spj ON spj.time >= for.x and spj.time <= for.x+1200  
  
-WHERE (spj.sha256 LIKE '$$ioc1$$' OR spj.sha256 LIKE '$$ioc2$$' OR spj.sha256 LIKE '$$ioc3$$) 
-OR (spj.processName LIKE '$$ioc1$$' OR spj.processName LIKE '$$ioc2$$' OR spj.processName LIKE '$$ioc3$$) 
-OR (spj.pathname LIKE '$$ioc1$$' OR spj.pathname LIKE '$$ioc2$$' OR spj.pathname LIKE '$$ioc3$$) 
-OR (spj.cmdline LIKE '$$ioc1$$' OR spj.cmdline LIKE '$$ioc2$$' OR spj.cmdline LIKE '$$ioc3$$) 
+WHERE (spj.sha256 LIKE '$$ioc1$$' OR spj.sha256 LIKE '$$ioc2$$' OR spj.sha256 LIKE '$$ioc3$$') 
+OR (spj.processName LIKE '$$ioc1$$' OR spj.processName LIKE '$$ioc2$$' OR spj.processName LIKE '$$ioc3$$') 
+OR (spj.pathname LIKE '$$ioc1$$' OR spj.pathname LIKE '$$ioc2$$' OR spj.pathname LIKE '$$ioc3$$') 
+OR (spj.cmdline LIKE '$$ioc1$$' OR spj.cmdline LIKE '$$ioc2$$' OR spj.cmdline LIKE '$$ioc3$$') 
