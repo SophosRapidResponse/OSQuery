@@ -1,3 +1,0 @@
-SELECT * 
-FROM sophos_process_journal WHERE cmdLine IN ('%rclone%', '%filezilla%', '%xcopy%', '%7zip%', '%.7z%', '%.7zm%', '%cyberduck%', '%mega%', '%sendspace%', '%ftp%', '%putty%', '%plink%', '%netcat%', '%Winscp%', '%winrar%', '%winzip%', '%gzip%', '%tinyzip%') 
-AND time > strftime('%s','2021-01-01 00:00:00') AND time < strftime('%s','2021-02-16 13:00:00');

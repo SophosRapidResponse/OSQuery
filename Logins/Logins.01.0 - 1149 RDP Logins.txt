@@ -1,0 +1,38 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Collect all 1149 RDP login events from Terminal Services Remote Connection     |
+| manager. This query includes blank columns so data from this can be easily     |
+| combined with the other queries in this section with match the same format.    |
+|                                                                                |
+| VARIABLES                                                                      |
+| username(username) = username to search for                                    |
+| source_ip(IP address) = source IP user is logging in from                      |
+|                                                                                |
+| TIP                                                                            |
+| Use wildcards for each variable if you want to bring all users back.           |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime, 
+eventid AS EventID, 
+CASE WHEN eventid = 1149 THEN eventid || ' - User authentication succeeded' END AS Description, 
+'TS Remote' AS Source, 
+JSON_EXTRACT(data, '$.UserData.Param1') AS Username, 
+JSON_EXTRACT(data, '$.UserData.Param2') AS Source_Machine_Network, 
+JSON_EXTRACT(data, '$.UserData.Param3') AS Source_IP, 
+'-' AS Process_Name, 
+'-' AS Logon_Type, 
+'-' AS User_SID, 
+'-' AS SessionID, 
+'-' AS Session_ID,
+'TS Remote Connection EVTX' AS Data_Source,
+'Logins.01.0' AS Query 
+FROM sophos_windows_events 
+WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational' 
+AND eventid = 1149 
+AND JSON_EXTRACT(data, '$.UserData.Param1') LIKE '$$username$$' 
+AND JSON_EXTRACT(data, '$.UserData.Param3') LIKE '$$source_ip$$'

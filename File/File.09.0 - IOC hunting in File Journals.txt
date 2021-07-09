@@ -1,0 +1,74 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Check for file changes, data from 'sophos_file_journal'. Large amounts of data |
+| available so limit your 'ioc' variable to specifc paths if possible.           |
+| Sugested use of 'event' variable is '0,1,2,3' for file created, renamed,       |
+| modified and deleted events.                                                   |
+|                                                                                |
+| VARIABLES                                                                      |
+| begin(date) = datetime of when to start hunting                                |
+| end(date) = datetime of when to stop hunting                                   |
+| path(filepath) = file path to hunt for                                         |
+| event(string) = Comma Seperated File Journal Event Types e.g. 0,1,2,3          |
+|           0 = Created                                                          |
+|           1 = Renamed                                                          |
+|           2 = Deleted                                                          |
+|           3 = Modified                                                         |
+|           4 = HardLinkCreated                                                  |
+|           5 = TimestampsModified                                               |
+|           6 = PermissionsModified                                              |
+|           7 = OwnershipModified                                                |
+|           8 = Accessed                                                         |
+|           9 = BinaryFileMapped                                                 |
+|                                                                                |
+| TIP                                                                            |
+| The file journal records a LOT of data, keep the events limited (avoid 8) and  |
+| keep the timeframe short.                                                      |
+|                                                                                |
+| Version: 1.1                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT DISTINCT
+ CASE sfj.eventType
+	WHEN 0 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creationTime,'unixepoch'))
+	WHEN 1 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
+	WHEN 2 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(time,'unixepoch'))
+	WHEN 3 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastWriteTime,'unixepoch'))
+	WHEN 4 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
+	WHEN 5 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
+	WHEN 6 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
+	WHEN 7 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
+	WHEN 8 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastAccessTime,'unixepoch'))
+	WHEN 9 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
+ ELSE '' END AS Datetime,
+ CASE sfj.eventType
+    WHEN 0 THEN 'Created'
+    WHEN 1 THEN 'Renamed'
+    WHEN 2 THEN 'Deleted'
+    WHEN 3 THEN 'Modified'
+    WHEN 4 THEN 'HardLinkCreated'
+    WHEN 5 THEN 'TimestampsModified'
+    WHEN 6 THEN 'PermissionsModified'
+    WHEN 7 THEN 'OwnershipModified'
+    WHEN 8 THEN 'Accessed'
+    WHEN 9 THEN 'BinaryFileMapped'
+ ELSE '-' END AS Description,
+ sfj.pathname AS Path, 
+ sfj.sophosPID AS Sophos_PID, 
+ CAST ( (Select spj.processName from sophos_process_journal spj where spj.sophospid = sfj.sophosPID) AS text) Process_Name,
+ CAST ( (Select spj.sid from sophos_process_journal spj where spj.sophospid = sfj.sophosPID) AS text) SID,
+ sfj.sha256 AS Sha256,
+ sfj.fileSize AS File_Size, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creationTime,'unixepoch')) AS First_Created_On_Disk, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch')) AS Last_Changed, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastWriteTime,'unixepoch')) AS Last_Modified, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastAccessTime,'unixepoch')) AS Last_Accessed,
+ 'File Journal' AS Data_Source,
+ 'File.09.0' AS Query
+FROM sophos_file_journal sfj 
+WHERE sfj.time >= CAST($$begin$$ AS INT) 
+AND sfj.time <= CAST($$end$$ AS INT)
+AND sfj.pathname LIKE '$$path$$'
+AND sfj.eventType IN ($$event$$) ORDER BY Datetime ASC

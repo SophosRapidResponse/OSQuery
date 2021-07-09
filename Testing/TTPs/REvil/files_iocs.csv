@@ -1,0 +1,4 @@
+IOC_type,Indicator,Description,Category,Technique
+file_path_name,C:\Users\Public\%,'sus files',Discovery,T123
+file_path_name,C:\Perflogs\%,'sus files',Discovery,T123
+file_path_name,C:\Users\%\Downloads\%,'sus files',Discovery,T123

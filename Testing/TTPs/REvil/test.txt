@@ -1,0 +1,53 @@
+/*****************************************************************************************\
+| First we have to get the file from GIT then cut it into lines                           |
+| We then convert each line into its component parts as a table                           |
+| Each line has an identified IOC Type, Indicator and Notes so we will use some string    |
+| functions to seperate each element into our IOC_List                                    |
+\*****************************************************************************************/
+WITH IOC_LIST (IOC_Type, Indicator, Category) AS (
+ WITH IOC_FILE(Line, str) AS (
+  SELECT 'ip,127.0.0.1,TEST DATA', (SELECT result from curl where url = '$$url$$') ||char(10)
+  UNION ALL
+  SELECT substr(str, 0, instr(str, char(10) )), substr(str, instr(str, char(10) )+1) FROM IOC_FILE WHERE str!=''
+ )
+SELECT
+ replace(Line, ltrim(Line, replace(Line, ',', '')), '') 'Indicator Type', /* IOC type */
+ replace(replace(substr(Line, instr(Line, ',')+1), ltrim(substr(Line, instr(Line, ',')+1), replace(substr(Line, instr(Line, ',')+1), ',', '')), ''),'*','%')  Indicator,       /* Actual IOC Data */ /* Convert wildcard * to % */
+ replace(Line, rtrim(Line, replace(Line, ',', '')), '') 'Category' /* Mitre Category */
+FROM IOC_FILE WHERE Line != '' AND Line != 'IOC_type,Indicator,Category' AND Line NOT LIKE 'Description%' AND Line NOT LIKE '%TEST DATA%' AND Line NOT LIKE '%ioc_type%'
+)
+
+--SELECT IOC_Type, CAST(LOWER('%'||Indicator||'%') AS TEXT), note FROM IOC_LIST -- Uncomment this line out to check if we are importing the IOC data correctly 
+
+/************************************************************************\
+| OK that should give us a table of IOCs to go hunt for                  |
+| Enable the line below to just dump the table to confirm all is working |
+| SELECT * from IOC_LIST;                                                |    
+\************************************************************************/
+
+/**********************************************************************\
+| The admin may want to search a large amount of data in the tables so |
+| split time into 20 min chunks given the number hours specified       |
+\**********************************************************************/
+
+, for(x) AS (
+   VALUES ( (CAST ($$begin$$ AS INT) ) )
+   UNION ALL
+   SELECT x+1200 FROM for WHERE x < (CAST ($$begin$$ AS INT) + CAST( ($$hours$$ * 3600) AS INT))
+)
+
+
+SELECT DISTINCT
+ioc.Category,
+file.path,
+file.filename, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.btime,'unixepoch')) AS First_Created_On_Disk, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.ctime,'unixepoch')) AS Last_Changed, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.mtime,'unixepoch')) AS Last_Modified, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.atime,'unixepoch')) AS Last_Accessed, 
+file.Size, 
+ioc.IOC_Type,
+ioc.Indicator
+ 
+FROM IOC_LIST ioc 
+ LEFT JOIN file ON LOWER(ioc.IOC_Type) IN('pathname', 'file_path', 'file_path_name', 'filename') AND file.path LIKE ioc.indicator

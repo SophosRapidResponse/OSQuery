@@ -1,0 +1,33 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Look at the two 'Recent' locations for a user to see that shortcut (.lnk)      |
+| files exist, this gives you an idea of what the user was looking at.           |
+|                                                                                |
+|                                                                                |
+| VARIABLE                                                                       |
+| username(username) - username                                                  |
+|                                                                                |
+| TIP                                                                            |
+| If you want to bring back everything use % for username                        |
+|                                                                                |
+| LIMITATION                                                                     |
+| This query was written for OSQuery version 4.6.0 which was available at the    |
+| time, in 4.9.0 (Sep 2021) we will have the 'shortcut_files' table which        |
+| provides better data, the query will be updated for this.                      |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT
+path AS Path,
+filename AS Filename,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(btime,'unixepoch')) AS First_Created_On_Disk, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(ctime,'unixepoch')) AS Last_Changed, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS Last_Modified, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(atime,'unixepoch')) AS Last_Accessed,
+'File' AS Data_Source,
+'File.07.0' AS Query
+FROM file WHERE path LIKE 'C:\Users\$$username$$\AppData\Roaming\Microsoft\%\Recent\%'
+AND filename != '.'

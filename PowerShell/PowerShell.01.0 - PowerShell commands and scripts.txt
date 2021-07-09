@@ -1,0 +1,69 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Collect PowerShell events from the 'Windows PowerShell' event log and the      |
+| 'sophos_powershell_events' log which gives you access to a cleaner version of  |
+| 'Microsoft-Windows-PowerShell/Operational'.                                    |
+|                                                                                |
+| TIP                                                                            |
+| Results marked as 'Sus' or 'Bad' are a good place to start but they wont be    |
+| everything worth investigating. The 'Bad' ones are snippets of Base64 strings  |
+| often seen when Cobalt Strike is involved.                                     |
+|                                                                                |
+| IMPORTANT                                                                      |
+| This query can bring back large script blocks, if you are exporting these to   |
+| CSV and opening in Excel then be warned that individual cells in Excel can     |
+| hold a maximum of 32,767 characters, any more than this will get cut off, if   |
+| you open the file in NotePad for example though, the whole script will be      |
+| there. So if you spot a long script that ends abruptly open it in NotePad to   |
+| double check.                                                                  |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime,
+CASE 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%JAB%' THEN 'Bad - JAB'
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%SQB%' THEN 'Bad - SQB' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%H4s%' THEN 'Bad - H4s' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%invoke%' THEN 'Sus - invoke' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%-enc%' THEN 'Sus - -enc' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%IEX%' THEN 'Sus - IEX' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%downloadstring%' THEN 'Sus - downloadstring' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%COMSPEC%' THEN 'Sus - COMSPEC' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%Admin$%' THEN 'Sus - Admin$' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%PsEx%' THEN 'Sus - PsEx' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%BTO%' THEN 'Sus - BTO' 
+END AS Sus,
+'-' AS Script_Blocks,
+REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') AS Script,
+'-' AS Path,
+'Windows PowerShell EVTX' AS Data_Source,
+'PowerShell.01.0' AS Query
+FROM sophos_windows_events WHERE source = 'Windows PowerShell' AND eventid = 400
+
+UNION ALL
+
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime, 
+CASE
+   WHEN script_text LIKE '%JAB%' THEN 'Bad - JAB'
+   WHEN script_text LIKE '%SQB%' THEN 'Bad - SQB' 
+   WHEN script_text LIKE '%H4s%' THEN 'Bad - H4s' 
+   WHEN script_text LIKE '%invoke%' THEN 'Sus - invoke' 
+   WHEN script_text LIKE '%-enc%' THEN 'Sus - -enc' 
+   WHEN script_text LIKE '%IEX%' THEN 'Sus - IEX' 
+   WHEN script_text LIKE '%downloadstring%' THEN 'Sus - downloadstring' 
+   WHEN script_text LIKE '%COMSPEC%' THEN 'Sus - COMSPEC' 
+   WHEN script_text LIKE '%Admin$%' THEN 'Sus - Admin$' 
+   WHEN script_text LIKE '%PsEx%' THEN 'Sus - PsEx' 
+   WHEN script_text LIKE '%BTO%' THEN 'Sus - BTO'
+END AS Sus,
+script_block_count AS Script_Blocks,
+script_text AS Script,
+script_path AS Path,
+'PowerShell Events' AS Data_Source,
+'PowerShell.01.0' AS Query
+FROM sophos_powershell_events WHERE time > 0

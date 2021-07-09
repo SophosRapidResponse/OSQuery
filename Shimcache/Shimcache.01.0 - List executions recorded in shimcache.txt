@@ -1,0 +1,16 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Get list of applications executed from Windows Shimcache.                      |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT DISTINCT
+path,
+CASE WHEN modified_time = 0 
+THEN '-' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(modified_time,'unixepoch')) END AS Modified_Time,
+'Shimcache' AS Data_Source,
+'Shimcache.01.0' AS Query
+FROM shimcache

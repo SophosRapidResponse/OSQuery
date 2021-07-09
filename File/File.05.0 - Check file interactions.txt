@@ -1,0 +1,80 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| REQUIRES SOPHOS JOURNALS                                                       |
+|                                                                                |
+| DESCRIPTION                                                                    |
+| Uses file and process journals to look at what interactions a file had.        |
+|                                                                                |
+| VARIABLES                                                                      |
+| sha256(sha256) = sha256 of the file you are interested in                      |
+| begin(date) = datetime of when to start hunting                                |
+| end(date) = datetime of when to stop hunting                                   |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Sophos / @AltShiftPrtScn                                               |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+WITH shaInterractions (time, action, processName, filePath, sophosPID, sid) AS (
+    /* Check file modifications for the correct sha */
+    SELECT
+        sfj.time,
+        CASE sfj.eventType
+            WHEN 1 THEN 'File Renamed'
+            WHEN 8 THEN 'File Accessed'
+            ELSE 'Unknown Event Type'
+        END action,
+        spj.processName processName,
+        sfj.pathname filePath,
+        sfj.sophosPID sophosPID,
+        spj.sid sid
+    FROM sophos_file_journal sfj
+    LEFT JOIN sophos_process_journal spj USING (sophosPID)
+    WHERE
+        (
+            sfj.subject = 'FileOtherChanges'
+            OR sfj.subject = 'FileBinaryReads'
+            OR sfj.subject = 'FileOtherReads'
+            OR sfj.subject = 'FileBinaryChanges'
+        )
+        AND sfj.sha256 = '$$sha256$$'
+        AND sfj.eventtype IN (1,8)
+        AND sfj.time >= $$begin$$
+        AND sfj.time <= $$end$$
+
+    UNION ALL
+
+    /* Check processes for the correct sha */
+    SELECT
+        spj.time,
+        'Process Start' action,
+        spj.processName processName,
+        spj.pathname filePath,
+        spj.sophosPID sophosPID,
+        spj.sid sid
+    FROM sophos_process_journal spj
+    WHERE
+        eventtype = 0
+        AND spj.time >= $$begin$$
+        AND spj.time <= $$end$$
+        AND sha256 = '$$sha256$$'
+)
+
+/* Cleanup results and add extra information */
+SELECT
+    strftime('%Y-%m-%dT%H:%M:%SZ', datetime(si.time,'unixepoch')) dateTime,
+    users.username,
+    si.processName,
+    CAST((
+        SELECT spj.pathname
+        FROM sophos_process_journal spj
+        WHERE spj.sophosPID = si.sophosPID
+    ) AS TEXT) processPath,
+    si.action action,
+    si.filePath filePath,
+    CAST(si.sophosPID AS TEXT) sophosPID,
+    CASE (SELECT 1 FROM hash h WHERE h.path = si.filePath AND h.sha256 = '$$sha256$$')
+        WHEN 1 THEN 'True'
+        ELSE 'False'
+    END onDisk
+FROM shaInterractions si
+LEFT JOIN users on users.uuid LIKE si.sid

@@ -1,0 +1,191 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Check for network connections, data from 'sophos_network_journal',             |
+| 'sophos_ip_journal', 'sophos_http_journal' and 'sophos_dns_journal'. Joins on  |
+| 'sophos_process_journal', 'user' and 'file'.                                   |
+|                                                                                |
+| VARIABLES                                                                      |
+| begin(date) = datetime of when to start hunting                                |
+| days(string) = how many days to search through                                 |
+| ioc1(string) = IOC to hunt (IP, URL, Destination Port)                         |
+| ioc2(string) = IOC to hunt (IP, URL, Destination Port)                         |
+| ioc3(string) = IOC to hunt (IP, URL, Destination Port)                         |
+|                                                                                |
+| TIP                                                                            |
+| If you only want to use one variable put something that wont be found in the   |
+| others e.g. zzzzzzzz                                                           |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn                                                        |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+WITH for(x) AS (
+   VALUES ( (CAST ($$begin$$ AS INT) ) )
+   UNION ALL
+   SELECT x+1200 FROM for WHERE x < (CAST ($$begin$$ AS INT) + CAST( ($$days$$ * 86400) AS INT))
+)
+
+/***********************************************************************************\
+|                                sophos_network_journal                             |
+\***********************************************************************************/
+SELECT 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(snj.StartTime,'unixepoch')) AS Datetime,
+ spj.pathname AS Path,
+ spj.cmdline AS CMD_line,
+ snj.sophosPID AS Sophos_PID, 
+ CAST (spj.processname AS TEXT) Process_Name,
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(snj.processStartTime,'unixepoch')) AS Process_Start_Time, 
+ CASE WHEN spj.endTime = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
+ CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
+ spj.sid AS SID,
+ spj.parentSophosPid AS Sophos_Parent_PID, 
+ CAST ( (Select spj2.pathname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Path,
+ '' AS Destination_Device,
+ snj.destination AS Destination_IP_URL,
+ snj.destinationPort AS Destinatin_Port,
+ '' AS Source_Device,
+ snj.source AS Source_IP_URL,
+ snj.sourcePort AS Source_Port,
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(snj.StartTime,'unixepoch')) AS Connection_Start,
+ snj.dataSent AS Bytes_Sent,
+ snj.dataRecv AS Bytes_Received,
+ spj.sha256 AS Sha256,
+ spj.fileSize AS File_Size, 
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.pathname) AS text) First_Created_On_Disk,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Changed,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Modified,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Accessed,
+ 'Network Journal/Process Journal/File/Users' AS Data_Source,
+ 'Network.01.0' AS Query 
+ 
+FROM for
+ LEFT JOIN sophos_network_journal snj ON snj.time >= for.x and snj.time <= for.x+1200  
+ JOIN sophos_process_journal spj ON snj.sophosPID = spj.sophosPID
+ 
+WHERE (snj.destination LIKE '$$ioc1$$' OR snj.destination LIKE '$$ioc2$$' OR snj.destination LIKE '$$ioc3$$') 
+OR (snj.destinationPort LIKE '$$ioc1$$' OR snj.destinationPort LIKE '$$ioc2$$' OR snj.destinationPort LIKE '$$ioc3$$') 
+
+UNION ALL
+/***********************************************************************************\
+|                                sophos_dns_journal                                 |
+\***********************************************************************************/
+SELECT 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sdj.processStartTime,'unixepoch')) AS Datetime,
+ spj.pathname AS Path,
+ spj.cmdline AS CMD_line,
+ sdj.sophosPID AS Sophos_PID, 
+ CAST (spj.processname AS TEXT) Process_Name,
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Process_Start_Time, 
+ CASE WHEN spj.endTime = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
+ CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
+ spj.sid AS SID,
+ spj.parentSophosPid AS Sophos_Parent_PID, 
+ '' AS Parent_Path,
+ '' AS Destination_Device,
+ sdj.name AS Destination_IP_URL,
+ '' AS Destinatin_Port,
+ '' AS Source_Device,
+ '' AS Source_IP_URL,
+ '' AS Source_Port,
+ '' AS Connection_Start,
+ '' AS Bytes_Sent,
+ '' AS Bytes_Received,
+ spj.sha256 AS Sha256,
+ spj.fileSize AS File_Size, 
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.pathname) AS text) First_Created_On_Disk,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Changed,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Modified,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Accessed,
+ 'DNS Journal/Process Journal/File/Users' AS Data_Source,
+ 'Network.01.0' AS Query
+
+FROM for
+ LEFT JOIN sophos_dns_journal sdj ON sdj.time >= for.x and sdj.time <= for.x+1200  
+ JOIN sophos_process_journal spj ON sdj.sophosPID = spj.sophosPID
+ 
+WHERE (sdj.name LIKE '$$ioc1$$' OR sdj.name LIKE '$$ioc2$$' OR sdj.name LIKE '$$ioc3$$')
+
+
+UNION ALL
+/***********************************************************************************\
+|                                sophos_http_journal                                |
+\***********************************************************************************/
+SELECT 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(shj.processStartTime,'unixepoch')) AS Datetime,
+ spj.pathname AS Path,
+ spj.cmdline AS CMD_line,
+ shj.sophosPID AS Sophos_PID, 
+ CAST (spj.processname AS TEXT) Process_Name,
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Process_Start_Time, 
+ CASE WHEN spj.endTime = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
+ CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
+ spj.sid AS SID,
+ spj.parentSophosPid AS Sophos_Parent_PID, 
+ '' AS Parent_Path,
+ '' AS Destination_Device,
+ shj.url AS Destination_IP_URL,
+ shj.destinationPort AS Destinatin_Port,
+ '' AS Source_Device,
+ '' AS Source_IP_URL,
+ shj.sourcePort AS Source_Port,
+ '' AS Connection_Start,
+ '' AS Bytes_Sent,
+ '' AS Bytes_Received,
+ spj.sha256 AS Sha256,
+ spj.fileSize AS File_Size, 
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.pathname) AS text) First_Created_On_Disk,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Changed,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Modified,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Accessed,
+ 'HTTP Journal/Process Journal/File/Users' AS Data_Source,
+ 'Network.01.0' AS Query
+
+FROM for
+ LEFT JOIN sophos_http_journal shj ON shj.time >= for.x and shj.time <= for.x+1200  
+ JOIN sophos_process_journal spj ON shj.sophosPID = spj.sophosPID
+ 
+WHERE (shj.url LIKE '$$ioc1$$' OR shj.url LIKE '$$ioc2$$' OR shj.url LIKE '$$ioc3$$')
+OR (shj.destinationPort LIKE '$$ioc1$$' OR shj.destinationPort LIKE '$$ioc2$$' OR shj.destinationPort LIKE '$$ioc3$$')
+
+
+UNION ALL
+/***********************************************************************************\
+|                                sophos_ip_journal                                  |
+\***********************************************************************************/
+SELECT 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sij.processStartTime,'unixepoch')) AS Datetime,
+ spj.pathname AS Path,
+ spj.cmdline AS CMD_line,
+ sij.sophosPID AS Sophos_PID, 
+ CAST (spj.processname AS TEXT) Process_Name,
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sij.processStartTime,'unixepoch')) AS Process_Start_Time, 
+ CASE WHEN spj.endTime = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
+ CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
+ spj.sid AS SID,
+ spj.parentSophosPid AS Sophos_Parent_PID, 
+ CAST ( (Select spj2.pathname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Path,
+ '' AS Destination_Device,
+ sij.destination AS Destination_IP_URL,
+ sij.destinationPort AS Destinatin_Port,
+ '' AS Source_Device,
+ sij.source AS Source_IP_URL,
+ sij.sourcePort AS Source_Port,
+ '' AS Connection_Start,
+ '' AS Bytes_Sent,
+ '' AS Bytes_Received,
+ spj.sha256 AS Sha256,
+ spj.fileSize AS File_Size, 
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.pathname) AS text) First_Created_On_Disk,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Changed,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Modified,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Accessed,
+ 'IP Journal/Process Journal/File/Users' AS Data_Source,
+ 'Network.01.0' AS Query
+ 
+FROM for
+ LEFT JOIN sophos_ip_journal sij ON sij.time >= for.x and sij.time <= for.x+1200  
+ JOIN sophos_process_journal spj ON sij.sophosPID = spj.sophosPID
+ 
+WHERE (sij.destination LIKE '$$ioc1$$' OR sij.destination LIKE '$$ioc2$$' OR sij.destination LIKE '$$ioc3$$') 
+OR (sij.destinationPort LIKE '$$ioc1$$' OR sij.destinationPort LIKE '$$ioc2$$' OR sij.destinationPort LIKE '$$ioc3$$') 

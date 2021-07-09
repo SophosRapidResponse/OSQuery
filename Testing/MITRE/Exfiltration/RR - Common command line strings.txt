@@ -1,0 +1,21 @@
+SELECT * 
+FROM sophos_process_journal WHERE cmdLine LIKE '%rclone%'
+OR cmdline LIKE '%filezilla%'
+OR cmdline LIKE '%xcopy%'
+OR cmdline LIKE '%7zip%'
+OR cmdline LIKE '%.7z%'
+OR cmdline LIKE '%.7zm%'
+OR cmdline LIKE '%cyberduck%'
+OR cmdline LIKE '%mega%'
+OR cmdline LIKE '%sendspace%'
+OR cmdline LIKE '%ftp%'
+OR cmdline LIKE '%putty%'
+OR cmdline LIKE '%plink%'
+OR cmdline LIKE '%netcat%'
+OR cmdline LIKE '%Winscp%'
+OR cmdline LIKE '%winrar%'
+OR cmdline LIKE '%winzip%'
+OR cmdline LIKE '%gzip%'
+OR cmdline LIKE '%tinyzip%'
+AND time >= CAST($$begin$$ AS INT) 
+AND time <= CAST($$end$$ AS INT)
