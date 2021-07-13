@@ -42,7 +42,7 @@ SELECT
    CAST ( (Select u.username from users u where JSON_EXTRACT(data, '$.EventData.MemberSid') = u.uuid) AS text) Username_Changed,
    JSON_EXTRACT(data, '$.EventData.MemberSid') AS 'User_SID_Changed',
    JSON_EXTRACT(data, '$.EventData.TargetUserName') AS 'Group_Or_User_Name_Changed',
-   JSON_EXTRACT(data, '$.EventData.TargetSid') AS 'Group_SID_or_User_SID_Changed'
+   JSON_EXTRACT(data, '$.EventData.TargetSid') AS 'Group_SID_or_User_SID_Changed',
    'Security EVTX' AS Data_Source,
    'User.02.0' AS Query
 FROM sophos_windows_events
