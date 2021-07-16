@@ -23,7 +23,8 @@ Format: category.ID.variant
 Want a query we don't have? let me know https://twitter.com/AltShiftPrtScn
 
 
-The MIT License (MIT)
+
+== The MIT License (MIT) ==
 
 Copyright (c) 2021 https://twitter.com/AltShiftPrtScn
 
