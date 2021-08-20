@@ -1,0 +1,16 @@
+/* ------------------ Sophos.com/RapidResponse ------------------
+This query will search for suspicious files included in directories usually abused by Threat actors. 
+----------------------------------------------------------------- */
+
+
+Select f.path, f.filename,  
+strftime('%Y-%m-%d %H:%M:%S',datetime(f.btime,'unixepoch')) AS First_Created_On_Disk,  
+strftime('%Y-%m-%d %H:%M:%S',datetime(f.ctime,'unixepoch')) AS Last_Changed,  
+strftime('%Y-%m-%d %H:%M:%S',datetime(f.mtime,'unixepoch')) AS Last_Modified,   
+strftime('%Y-%m-%d %H:%M:%S',datetime(f.atime,'unixepoch')) AS Last_Accessed,   
+f.size, f.product_version, h.sha256, pro.cmdline, pro.pid, pro.start_time  
+from file f JOIN hash h  
+ON f.path = h.path   
+LEFT JOIN processes pro  
+ON f.path = pro.path 
+where (f.path like 'C:\Perflogs\%' or f.path like 'C:\Users\Public\%' or f.path like 'C:\Windows\Temp\%' or f.path like 'C:\ProgramData\%')  and (f.filename like '%.bat' or f.filename like '%.ps1' or f.filename like '%.vbs' or f.filename like '%.exe' or f.filename like '%.dll' or f.filename like '%.sys'); 
