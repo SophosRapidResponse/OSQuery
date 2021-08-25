@@ -14,7 +14,7 @@
 | TIP                                                                            |
 | Use wildcards for username/source_ip if you want to bring all users back.      |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: Sophos / @AltShiftPrtScn                                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -26,16 +26,17 @@ SELECT
     CAST(json_extract(data, '$.targetUserName') AS TEXT) Username,
     CAST(json_extract(data, '$.ipAddress') AS TEXT) Remote_Address,
     CAST(CASE json_extract(data, '$.logonType')
-        WHEN 2 THEN 'Logon Tpye 2 - Interactive'
-        WHEN 3 THEN 'Logon Tpye 3 - Network'
-        WHEN 4 THEN 'Logon Tpye 4 - Batch'
-        WHEN 5 THEN 'Logon Tpye 5 - Service'
-        WHEN 7 THEN 'Logon Tpye 7 - Unlock'
-        WHEN 8 THEN 'Logon Tpye 8 - NetworkCleartext'
-        WHEN 9 THEN 'Logon Tpye 9 - NewCredentials'
-        WHEN 10 THEN 'Logon Tpye 10 - RemoteInteractive'
-        WHEN 11 THEN 'Logon Tpye 11 - CachedInteractive'
-        WHEN 12 THEN 'Logon Tpye 12 - Cached Remote Interactive'
+        WHEN 2 THEN 'Logon Type 2 - Interactive'
+        WHEN 3 THEN 'Logon Type 3 - Network'
+        WHEN 4 THEN 'Logon Type 4 - Batch'
+        WHEN 5 THEN 'Logon Type 5 - Service'
+        WHEN 6 THEN 'Logon Type 6 - Proxy'
+        WHEN 7 THEN 'Logon Type 7 - Unlock'
+        WHEN 8 THEN 'Logon Type 8 - NetworkCleartext'
+        WHEN 9 THEN 'Logon Type 9 - NewCredentials'
+        WHEN 10 THEN 'Logon Type 10 - RemoteInteractive'
+        WHEN 11 THEN 'Logon Type 11 - CachedInteractive'
+        WHEN 12 THEN 'Logon Type 12 - Cached Remote Interactive'
         ELSE 'UNKNOWN TYPE: ' || json_extract(data,'$.EventData.LogonType')
     END AS TEXT) Logon_Type,
 	eventType AS Event_ID,
