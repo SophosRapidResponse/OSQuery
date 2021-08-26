@@ -33,7 +33,7 @@ install_source AS Install_Source,
 publisher AS Publisher,
 uninstall_string AS Uninstall_String,
 'Programs' AS Data_Source,
-'Device.04.0' AS Query  
+'T1219 - Installed Remote Access Software' AS Query  
 FROM programs
 WHERE name LIKE 'ScreenConnect Client%'
 OR name LIKE 'TeamViewer%'
