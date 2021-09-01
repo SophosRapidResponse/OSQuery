@@ -1,0 +1,33 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Reports back on any patched or unpatched MS Exchange servers and whether they  |
+| are vulnerable to ProxyShell exploits                                          |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Sophos MTR                                                             |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT DISTINCT
+  'Check Exchange Version to confirm Patch. Manually verify build number from MS documentation./' Note,
+  CASE product_version 
+    WHEN '15.2.922.13' THEN 'Exchange 2019 CU10 Jul21 patched against ProxyShell'
+    WHEN '15.2.922.7' THEN 'Exchange 2019 CU10 patched against ProxyShell. Recommend also updating with recent July Patch.'
+    WHEN '15.2.858.15' THEN 'Exchange 2019 CU9 Jul21 patched against ProxyShell'
+    WHEN '15.2.858.12' THEN 'Exchange 2019 CU9 May21 patched against ProxyShell. Recommend also updating with recent July Patch.'
+    WHEN '15.1.2308.14' THEN 'Exchange 2016 CU21 Jul21 patched against ProxyShell'
+    WHEN '15.1.2308.8' THEN 'Exchange 2016 CU21 patched against ProxyShell. Recommend also updating with recent July Patch.'
+    WHEN '15.1.2242.12' THEN 'Exchange 2016 CU21 Jul21 patched against ProxyShell.'
+    WHEN '15.1.2242.10' THEN 'Exchange 2016 CU20 May21  patched against ProxyShell. Recommend also updating with recent July Patch.'
+    WHEN '15.1.2176.14' THEN 'Exchange 2016 CU19 May21  patched against ProxyShell. Recommend also updating with recent July Patch.'
+    WHEN '15.0.1497.23' THEN 'Exchange 2013 CU23 Jul21 patched against ProxyShell.'
+    WHEN '15.0.1497.18' THEN 'Exchange 2013 CU23 May21 patched against ProxyShell. Recommend also updating with recent July Patch.'
+    ELSE 'NOT PATCHED'
+  END Result,
+  'Product_Version: ' || Product_version Evidence
+FROM file 
+WHERE path = 
+  ((
+    SELECT data FROM registry 
+    WHERE key = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup' AND path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup\MsiInstallPath' 
+  )||'bin\Microsoft.Exchange.RpcClientAccess.Service.exe')
