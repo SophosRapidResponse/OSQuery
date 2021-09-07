@@ -23,7 +23,7 @@
 | shorturl.at/dnrCS - ProxyShell vulnerabilities in Microsoft Exchange           |
 |                                                                                |
 | Version: 1.0                                                                   |
-| Author: @AltShiftPrtScn & Karl the Hack Ackerman                               |
+| Author: @AltShiftPrtScn & Sophos MTR                                           |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
