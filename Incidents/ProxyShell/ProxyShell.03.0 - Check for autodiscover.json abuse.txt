@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 |                                                                                |
 | DESCRIPTION                                                                    |
-| Look for autodiscover.json abuse and the presence of webshells                 |
+| Look for autodiscover.json abuse and the presence of web shells                 |
 |                                                                                |
 | NOTE                                                                           |
 | A common artifact seen in these logs for abuse of CVE-2021-34473 is the        |
