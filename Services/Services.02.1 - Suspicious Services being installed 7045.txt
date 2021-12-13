@@ -11,7 +11,7 @@
 | is still human readable and can be decoded with CyberChef here:                |
 | https://tinyurl.com/2db7zxyk                                                   |
 |                                                                                |
-| Version: 1.3                                                                   |
+| Version: 1.4                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -48,8 +48,7 @@ OR Image_Path like '%Psex%'
 OR Image_Path like '%BTOBTO%' 
 OR Image_Path like '%.dll DllRegisterServer%' 
 OR Image_Path like '%.dll, DllRegisterServer%' 
-OR Image_Path like '%.dll StartW' 
-OR Image_Path like '%.dll StartA' 
+OR Image_Path like '%.dll Start%' 
 OR Image_Path like '%.dll AllocConsole%')
 )
 
