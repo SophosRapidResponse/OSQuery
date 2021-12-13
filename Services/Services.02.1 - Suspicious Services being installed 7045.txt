@@ -11,7 +11,7 @@
 | is still human readable and can be decoded with CyberChef here:                |
 | https://tinyurl.com/2db7zxyk                                                   |
 |                                                                                |
-| Version: 1.2                                                                   |
+| Version: 1.3                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -32,7 +32,25 @@ WITH Path_List_info AS ( SELECT
 FROM sophos_windows_events swe
 JOIN users u ON swe.user_id = u.uuid
 WHERE swe.source = 'System' AND swe.eventid = 7045
-AND (Image_Path LIKE '%JAB%' OR Image_Path LIKE '%SQB%' OR Image_Path LIKE '%H4s%' OR Image_Path LIKE '%invoke%' OR Image_Path LIKE '%-enc%' OR Image_Path LIKE '%-e %' OR Image_Path LIKE '%-ec %' OR Image_Path LIKE '%IEX%' OR Image_Path LIKE '%downloadstring%' OR Image_Path like '%COMSPEC%' OR Image_Path like '%Admin$%' OR Image_Path like '%Psex%' OR Image_Path like '%BTOBTO%' OR Image_Path like '%.dll DllRegisterServer%' OR Image_Path like '%.dll, DllRegisterServer%' OR Image_Path like '%.dll StartW' OR Image_Path like '%.dll AllocConsole%')
+AND (
+Image_Path LIKE '%JAB%' 
+OR Image_Path LIKE '%SQB%' 
+OR Image_Path LIKE '%H4s%' 
+OR Image_Path LIKE '%invoke%' 
+OR Image_Path LIKE '%-enc%' 
+OR Image_Path LIKE '%-e %' 
+OR Image_Path LIKE '%-ec %' 
+OR Image_Path LIKE '%IEX%' 
+OR Image_Path LIKE '%downloadstring%' 
+OR Image_Path like '%COMSPEC%' 
+OR Image_Path like '%Admin$%' 
+OR Image_Path like '%Psex%' 
+OR Image_Path like '%BTOBTO%' 
+OR Image_Path like '%.dll DllRegisterServer%' 
+OR Image_Path like '%.dll, DllRegisterServer%' 
+OR Image_Path like '%.dll StartW' 
+OR Image_Path like '%.dll StartA' 
+OR Image_Path like '%.dll AllocConsole%')
 )
 
 SELECT 
