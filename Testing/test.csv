@@ -2,3 +2,5 @@ IOC_type,Indicator,Note,Tactic,Technique
 image_path,%JAB%,Cobalt,bad,reallybad
 image_path,%Psex%,PsExec,bad,reallybad
 image_path,%.dll AllocConsole%,Termite,bad,reallybad
+image_path,%sophos%,Sophos,good,reallygood
+image_path,%hmpa%,Hitman,good,reallygood
