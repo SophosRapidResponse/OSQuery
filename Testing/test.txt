@@ -1,0 +1,17 @@
+%JAB% 
+%SQB% 
+%H4s% 
+%invoke% 
+%-enc% 
+%-e % 
+%-ec % 
+%IEX% 
+%downloadstring% 
+%COMSPEC% 
+%Admin$% 
+%Psex% 
+%BTOBTO% 
+%.dll DllRegisterServer% 
+%.dll, DllRegisterServer% 
+%.dll Start% 
+%.dll AllocConsole%
