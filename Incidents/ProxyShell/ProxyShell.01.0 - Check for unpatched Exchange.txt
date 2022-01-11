@@ -1,0 +1,51 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Reports back on any patched or unpatched MS Exchange servers and whether they  |
+| are vulnerable to ProxyShell exploits                                          |
+|                                                                                |
+| MORE INFO                                                                      |
+| shorturl.at/dnrCS - ProxyShell vulnerabilities in Microsoft Exchange           |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Sophos MTR                                                             |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT DISTINCT
+  'Check Exchange Version to confirm Patch. Manually verify build number from MS documentation./' Note,
+  CASE product_version
+	WHEN '15.2.986.14' THEN 'Exchange 2019 CU11 Nov21SU patched against ProxyShell'
+	WHEN '15.2.986.9' THEN 'Exchange 2019 CU11 Oct21SU patched against ProxyShell - recommend apply Nov21SU'
+	WHEN '15.2.986.5' THEN 'Exchange 2019 CU11 patched against ProxyShell - recommend apply Oct21SU and Nov21SU'
+	WHEN '15.2.922.19' THEN 'Exchange 2019 CU10 Nov21SU patched against ProxyShell and fully patched against all known vulns'
+	WHEN '15.2.922.14' THEN 'Exchange 2019 CU10 Oct21SU patched against ProxyShell - recommend apply Nov21SU'
+    WHEN '15.2.922.13' THEN 'Exchange 2019 CU10 Jul21SU patched against ProxyShell - recommend apply Oct21SU and Nov21SU'
+    WHEN '15.2.922.7' THEN 'Exchange 2019 CU10 patched against ProxyShell - recommend apply Jul21SU, Oct21SU, Nov21SU'
+    WHEN '15.2.858.15' THEN 'Exchange 2019 CU9 Jul21SU patched against ProxyShell'
+    WHEN '15.2.858.12' THEN 'Exchange 2019 CU9 May21SU patched against ProxyShell - recommend apply Jul21SU'
+	WHEN '15.2.792.15' THEN 'Exchange 2019 CU8 May21SU patched against ProxyShell - recommend upgrade to current CU'
+	
+	WHEN '15.1.2375.17' THEN 'Exchange 2016 CU22 Nov21SU patched against ProxyShell'
+	WHEN '15.1.2375.12' THEN 'Exchange 2016 CU22 Oct21SU patched against ProxyShell - recommend apply Nov21SU'
+	WHEN '15.1.2375.7' THEN 'Exchange 2016 CU22 patched against ProxyShell - recommend apply Oct21SU, Nov21SU'
+	WHEN '15.1.2308.20' THEN 'Exchange Server 2016 CU21 Nov21SU patched against ProxyShell'
+	WHEN '15.1.2308.15' THEN 'Exchange Server 2016 CU21 Oct21SU patched against ProxyShell - recommend apply Nov21SU'
+    WHEN '15.1.2308.14' THEN 'Exchange 2016 CU21 Jul21SU patched against ProxyShell - recommend apply Oct21SU, Nov21SU'
+    WHEN '15.1.2308.8' THEN 'Exchange 2016 CU21 patched against ProxyShell - recommend apply Jul21SU, Oct21SU, Nov21SU'
+    WHEN '15.1.2242.12' THEN 'Exchange 2016 CU20 Jul21SU patched against ProxyShell'
+    WHEN '15.1.2242.10' THEN 'Exchange 2016 CU20 May21SU patched against ProxyShell - recommend apply Jul21SU'
+    WHEN '15.1.2176.14' THEN 'Exchange 2016 CU19 May21SU patched against ProxyShell - recommend upgrade to CU20 or CU21'
+	
+	WHEN '15.0.1497.26' THEN 'Exchange 2013 CU23 Nov21SU patched against ProxyShell'
+	WHEN '15.0.1497.24' THEN 'Exchange 2013 CU23 Oct21SU patched against ProxyShell - recommend apply Nov21SU'
+    WHEN '15.0.1497.23' THEN 'Exchange 2013 CU23 Jul21SU patched against ProxyShell - recommend apply Oct21SU, Nov21SU'
+    WHEN '15.0.1497.18' THEN 'Exchange 2013 CU23 May21SU patched against ProxyShell - recommend apply Jul21SU, Oct21SU, Nov21SU'
+    ELSE 'NOT PATCHED'
+  END Result,
+  'Product_Version: ' || Product_version Evidence
+FROM file 
+WHERE path = 
+  ((
+    SELECT data FROM registry 
+    WHERE key = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup' AND path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup\MsiInstallPath' 
+  )||'bin\Microsoft.Exchange.RpcClientAccess.Service.exe')
