@@ -12,17 +12,17 @@
 | TIP                                                                            |
 | Use wildcards for each variable if you want to bring all users back.           |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT
-username AS Username,
-directory AS Directory,
-description AS Description,
 uuid AS 'UUID_SID',
+username AS Username,
 type AS Type,
+description AS Description,
+directory AS Directory,
 'Users' AS Data_Source,
 'User.01.0' AS Query
 FROM users
