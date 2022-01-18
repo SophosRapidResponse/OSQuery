@@ -8,16 +8,25 @@
 | MORE INFO                                                                      |
 | shorturl.at/dnrCS - ProxyShell vulnerabilities in Microsoft Exchange           |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn & Karl the Hack Ackerman                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 WITH Event_Data(Event_id, time, Data) AS (
-   SELECT eventid, time,  JSON_EXTRACT(swe.data, '$.EventData.Data') AS Data
-   FROM sophos_windows_events swe
-   WHERE time > strftime('%s', 'now', '-180 days') AND source = 'MSExchange Management' AND data LIKE '%New-MailboxExportRequest%'
-   )
+SELECT eventid, time, JSON_EXTRACT(swe.data, '$.EventData.Data') AS Data
+FROM sophos_windows_events swe
+WHERE time > strftime('%s', 'now', '-180 days')
+AND source = 'MSExchange Management'
+AND (
+data LIKE '%New-MailboxExportRequest%' OR
+data LIKE '%Set-OabVirtualDirectory%' OR
+data LIKE '%New-ExchangeCertificate%' OR
+data LIKE '%Add-RoleGroupMember%' OR
+data LIKE 'Add-MailboxPermission%' OR
+data LIKE '%HiddenFromAddressListsEnabled%' OR
+data LIKE '%New-ManagementRoleAssignment%')
+)
 
 SELECT
    REPLACE(datetime(time, 'unixepoch'),' ','T')||'Z' Date_Time,
