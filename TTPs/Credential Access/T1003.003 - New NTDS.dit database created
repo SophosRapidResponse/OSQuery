@@ -1,0 +1,18 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+|                                                                                |
+| DESCRIPTION                                                                    |
+| Searches the Application Event Log for the creation of new databases where     |
+| the database contains the name ntds.dit                                        |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: @AltShiftPrtScn & Robert Weiland                                       |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime, 
+provider_name AS Provider_name, 
+data AS Data,
+'Application Events' AS Data_Source,
+'New NTDS.dit database created' AS Query  
+FROM sophos_windows_events WHERE source = 'Application' and eventid = 325 and Provider_Name like '%ESENT%' and data like '%ntds.dit%'
