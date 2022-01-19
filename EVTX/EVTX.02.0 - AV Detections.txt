@@ -1,0 +1,43 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| The query searches for AntiVirus detections in Windows Event Logs.             |
+| It currently collects events from Sophos, Windows Defender, Symantec, and 	 |
+| Carbon Black. 								 |
+|                                                                                |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Sophos RR                                                    	         |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',swe.datetime) AS Datetime,
+swe.source AS Source,
+swe.provider_name AS Provider_Name,
+swe.eventid AS Event_ID,
+swe.user_id AS SID,
+data AS Data,
+'EVTX Logs' AS Data_Source,
+'EVTX.02.0' AS Query,
+
+CASE
+WHEN swe.eventid='1006' THEN 'The anti-malware engine found malware or other potentially unwanted software.'
+WHEN swe.eventid='1007' THEN 'The anti-malware platform performed an action to protect your system from malware or other potentially unwanted software.'
+WHEN swe.eventid='1008' THEN 'The antimalware platform attempted to perform an action to protect your system from malware or other potentially unwanted software, but the action failed.'
+WHEN swe.eventid='1009' THEN 'The antimalware platform restored an item from quarantine.'
+WHEN swe.eventid='1116' THEN 'The antimalware platform detected malware or other potentially unwanted software.'
+WHEN swe.eventid='1117' THEN 'The antimalware platform performed an action to protect your system from malware or other potentially unwanted software.'
+WHEN swe.eventid='1118' THEN 'The antimalware platform attempted to perform an action to protect your system from malware or other potentially unwanted software, but the action failed.'
+WHEN swe.eventid='33' THEN 'Threat detected by Carbon Black'
+WHEN swe.eventid='5' THEN 'Symantec Antivirus scan detected a virus.'
+WHEN swe.eventid='47' THEN 'Symantec Antivirus took action against a detected threat.'
+WHEN swe.eventid='51' THEN 'Symantec Antivirus finished handling a threat.'
+ELSE 'Description not provided'
+END as Description
+
+FROM sophos_windows_events swe
+WHERE
+swe.source = 'Microsoft-Windows-Windows Defender/Operational' AND swe.eventid in ('1006', '1007', '1008', '1009', '1010', '1011' , '1116' , '1117' , '1118')
+OR swe.source = 'Application' AND provider_name LIKE '%Sophos%' AND swe.eventid = '42'
+OR swe.source = 'Application' AND provider_name LIKE '%Symantec%' AND swe.eventid in ('5','47','51')
+OR swe.source = 'Application' AND provider_name LIKE '%CbDefense%' AND swe.eventid in ('17','33','49');
