@@ -1,0 +1,93 @@
+/*****************************************************************************************\
+| This query will collect details of files on disk, specifically in the user directories: |
+| \Users\%\%                                                                              |
+| \Users\%\Desktop\%                                                                      |
+| \Users\%\Downloads\%                                                                    |
+| \Users\%\Documents\%                                                                    |
+| \Users\%\Music\%                                                                        |
+| \Users\%\Videos\%                                                                       |
+| \Users\%\Pictures\%                                                                     |
+|                                                                                         |
+| It searches the filename field.                                                         |
+| Additional data from hash, authenticode, sophos file properties.                        |
+|                                                                                         |
+| Supports use of wildcards.                                                              |
+|                                                                                         |
+| Example:                                                                                |
+| malware.exe                                                                             |
+| %malware%                                                                               |
+| malware.%                                                                               |
+|                                                                                         |
+| Version: 1.0                                                                            |
+| Author: @AltShiftPrtScn                                                                 |
+| github.com/SophosRapidResponse                                                          |
+\*****************************************************************************************/
+
+SELECT
+f.filename AS Name,
+f.path AS Path,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) AS 'First_Created_On_Disk(btime)', 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) AS 'Last_Status_Change(ctime)', 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) AS 'Last_Modified(mtime)', 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) AS 'Last_Accessed(atime)',
+h.md5 AS MD5,
+h.sha1 AS SHA1,
+h.sha256 AS SHA256,
+a.original_program_name AS Cert_Original_Program_Name,
+a.serial_number AS Cert_Serial_Number,
+a.issuer_name AS Cert_Issuer_name,
+a.subject_name AS Cert_Subject_Name,
+a.result AS Cert_Result,
+f.size AS Size_Bytes,
+f.attributes AS File_Attributes,
+f.file_version AS File_Version,
+CASE
+WHEN sfp.ml_score = -1 THEN '-1 No score'
+WHEN sfp.ml_score >= 0 THEN CONCAT(sfp.ml_score, '% likely malware')
+END AS ML_Score,
+CASE
+WHEN sfp.ml_score = -1 THEN '-1 No score'
+WHEN sfp.ml_score <= 9 THEN CONCAT('0', sfp.ml_score, '% likely malware')
+WHEN sfp.ml_score >= 10 THEN CONCAT(sfp.ml_score, '% likely malware')
+END AS ML_Score,
+CASE
+WHEN sfp.pua_score = -1 THEN '-1 No score'
+WHEN sfp.pua_score <= 9 THEN CONCAT('0', sfp.pua_score, '% likely PUA')
+WHEN sfp.pua_score >= 10 THEN CONCAT(sfp.pua_score, '% likely PUA')
+END AS PUA_Score,
+CASE
+WHEN sfp.local_rep = -1 THEN '-1 No score'
+WHEN sfp.local_rep <= 9 THEN CONCAT('0', sfp.local_rep, ' Malware')
+WHEN sfp.local_rep <= 19 THEN CONCAT(sfp.local_rep, ' Malware')
+WHEN sfp.local_rep <= 29 THEN CONCAT(sfp.local_rep, ' PUA')
+WHEN sfp.local_rep <= 69 THEN CONCAT(sfp.local_rep, ' Unknown')
+WHEN sfp.local_rep >= 70 THEN CONCAT(sfp.local_rep, ' Trusted')
+END AS Local_Reputation,
+CASE
+WHEN sfp.global_rep = -1 THEN '-1 No score'
+WHEN sfp.global_rep <= 9 THEN CONCAT('0', sfp.global_rep, ' Malware')
+WHEN sfp.global_rep <= 19 THEN CONCAT(sfp.global_rep, ' Malware')
+WHEN sfp.global_rep <= 29 THEN CONCAT(sfp.global_rep, ' PUA')
+WHEN sfp.global_rep <= 69 THEN CONCAT(sfp.global_rep, ' Unknown')
+WHEN sfp.global_rep >= 70 THEN CONCAT(sfp.global_rep, ' Trusted')
+END AS Global_Reputation,
+'|' AS 'Meta_data',
+CAST ( (Select customer_id from sophos_endpoint_info) AS text) Customer_ID,
+CAST ( (Select endpoint_id from sophos_endpoint_info) AS text) Endpoint_ID,
+CAST ( (Select datetime from time) AS text) Request_Timestamp,
+'Files_On_Disk2' AS Data_Source,
+'Filename' AS IOC_Type,
+'$$IOC$$' AS Search_String
+FROM logical_drives JOIN file f ON f.filename LIKE '$$IOC$$'
+AND (f.path LIKE device_ID ||'\Users\%\%' 
+OR f.path LIKE device_ID ||'\Users\%\Music\%'
+OR f.path LIKE device_ID ||'\Users\%\Desktop\%'
+OR f.path LIKE device_ID ||'\Users\%\Downloads\%'
+OR f.path LIKE device_ID ||'\Users\%\Videos\%'
+OR f.path LIKE device_ID ||'\Users\%\Pictures\%'
+OR f.path LIKE device_ID ||'\Users\%\Documents\%'
+)
+AND f.type != 'directory'
+JOIN hash h ON f.path = h.path
+JOIN authenticode a ON f.path = a.path
+JOIN sophos_file_properties sfp ON f.path = sfp.path

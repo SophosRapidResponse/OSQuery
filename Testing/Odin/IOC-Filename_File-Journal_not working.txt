@@ -17,28 +17,36 @@
 \*****************************************************************************************/
 
 SELECT
-p.name AS Name,
-p.path AS Path,
-p.cmdline AS CMDLine,
-p.pid AS PID,
-p.parent AS Parent_PID,
-CASE 
-WHEN p.on_disk = 1 THEN 'Yes'
-WHEN p.on_disk = 0 THEN 'No'
-WHEN p.on_disk = -1 THEN 'Unknown'
+f.filename AS Primary_Details,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creationTime,'unixepoch')) AS 'First_Created_On_Disk(btime)', 
+sfj.path AS Tertiary_Details,
+'' AS Name,
+sfj.path AS Path,
+'' AS CMDLine,
+'' AS PID,
+'' AS Parent_PID,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creationTime,'unixepoch')) AS 'First_Created_On_Disk(btime)', 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch')) AS 'Last_Status_Change(ctime)', 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.last_write_time,'unixepoch')) AS 'Last_Modified(mtime)', 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.last_access_time,'unixepoch')) AS 'Last_Accessed(atime)',
+CASE
+WHEN h.md5 = '' THEN 'No'
+ELSE 'Yes'
 END AS On_Disk,
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(p.start_time,'unixepoch')) AS 'Start_Time',
-'Running_Processes' AS Data_Source,
+'' AS 'Start_Time',
+'File Journal' AS Data_Source,
 h.md5 AS MD5,
 h.sha1 AS SHA1,
-h.sha256 AS SHA256,
+CASE
+WHEN sfj.sha256 = '' THEN h.sha256
+ELSE sfj.sha256 END AS SHA256,
 a.original_program_name AS Cert_Original_Program_Name,
 a.serial_number AS Cert_Serial_Number,
 a.issuer_name AS Cert_Issuer_name,
 a.subject_name AS Cert_Subject_Name,
 a.result AS Cert_Result,
-f.size AS Size_Bytes,
-f.attributes AS File_Attributes,
+sfj.file_size AS Size_Bytes,
+sfj.file_attributes AS File_Attributes,
 f.file_version AS File_Version,
 CASE
 WHEN sfp.ml_score = -1 THEN '-1 No score'
@@ -69,9 +77,9 @@ CAST ( (Select datetime from time) AS text) Request_Timestamp,
 '$$Analyst$$' AS Analyst,
 'Filename' AS IOC_Type,
 '$$IOC$$' AS Search_String
-FROM processes p
-JOIN hash h ON p.path = h.path
-JOIN authenticode a ON p.path = a.path
-JOIN file f ON p.path = f.path
-JOIN sophos_file_properties sfp ON p.path = sfp.path
-WHERE (p.name LIKE '$$IOC$$' OR p.path LIKE '$$IOC$$' OR p.cmdline LIKE '$$IOC$$')
+FROM sophos_file_journal sfj 
+JOIN hash h ON sfj.path = h.path
+JOIN authenticode a ON sfj.path = a.path
+JOIN file f ON sfj.path = f.path
+JOIN sophos_file_properties sfp ON sfj.path = sfp.path
+WHERE sfj.path LIKE '%$$IOC$$' AND event_type IN (0,1,2,3)
