@@ -28,10 +28,13 @@ WHEN p.on_disk = 0 THEN 'No'
 WHEN p.on_disk = -1 THEN 'Unknown'
 END AS On_Disk,
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(p.start_time,'unixepoch')) AS 'Start_Time',
-'Running_Processes' AS Data_Source,
 h.md5 AS MD5,
-h.sha1 AS SHA1,
-h.sha256 AS SHA256,
+CASE
+WHEN p.on_disk != 1 THEN sfp.sha1
+ELSE h.sha1 END AS SHA1,
+CASE
+WHEN p.on_disk != 1 THEN sfp.sha256
+ELSE h.sha256 END AS SHA256,
 a.original_program_name AS Cert_Original_Program_Name,
 a.serial_number AS Cert_Serial_Number,
 a.issuer_name AS Cert_Issuer_name,
@@ -66,7 +69,7 @@ END AS Global_Reputation,
 CAST ( (Select customer_id from sophos_endpoint_info) AS text) Customer_ID,
 CAST ( (Select endpoint_id from sophos_endpoint_info) AS text) Endpoint_ID,
 CAST ( (Select datetime from time) AS text) Request_Timestamp,
-'$$Analyst$$' AS Analyst,
+'Running_Processes' AS Data_Source,
 'Filename' AS IOC_Type,
 '$$IOC$$' AS Search_String
 FROM processes p
@@ -74,4 +77,4 @@ JOIN hash h ON p.path = h.path
 JOIN authenticode a ON p.path = a.path
 JOIN file f ON p.path = f.path
 JOIN sophos_file_properties sfp ON p.path = sfp.path
-WHERE (p.name LIKE '$$IOC$$' OR p.path LIKE '$$IOC$$' OR p.cmdline LIKE '$$IOC$$')
+WHERE (p.name LIKE '%$$IOC$$%' OR p.path LIKE '%$$IOC$$%' OR p.cmdline LIKE '%$$IOC$$%')

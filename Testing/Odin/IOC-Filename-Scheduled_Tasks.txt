@@ -1,0 +1,32 @@
+/*****************************************************************************************\
+| This query will collect Sceduled Task information.                                      |
+|                                                                                         |
+| Supports use of wildcards.                                                              |
+|                                                                                         |
+| Example:                                                                                |
+| %WindowsUpdateService%                                                                  |
+|                                                                                         |
+| Version: 1.0                                                                            |
+| Author: @AltShiftPrtScn                                                                 |
+| github.com/SophosRapidResponse                                                          |
+\*****************************************************************************************/
+
+SELECT
+st.name AS Name,
+st.action AS Action,
+st.path AS Path,
+st.state AS State,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(st.last_run_time,'unixepoch')) AS 'Last_Run_Time',
+st.last_run_message AS Last_Run_Message,
+CASE
+WHEN st.next_run_time < 0 THEN 'Not scheduled to run again'
+ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(st.next_run_time,'unixepoch')) END AS 'Next_Run_Time',
+'|' AS 'Meta_data',
+CAST ( (Select customer_id from sophos_endpoint_info) AS text) Customer_ID,
+CAST ( (Select endpoint_id from sophos_endpoint_info) AS text) Endpoint_ID,
+CAST ( (Select datetime from time) AS text) Request_Timestamp,
+'Scheduled_Tasks' AS Data_Source,
+'Filename' AS IOC_Type,
+'$$IOC$$' AS Search_String
+FROM scheduled_tasks st
+WHERE st.path LIKE '%$$IOC$$%' OR st.action LIKE '%$$IOC$$%' OR st.name LIKE '%$$IOC$$%'

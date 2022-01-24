@@ -1,0 +1,35 @@
+/*****************************************************************************************\
+| This query will collect details on files recorded in the shimcache.                     |
+|                                                                                         |
+| Supports use of wildcards.                                                              |
+|                                                                                         |
+| Example:                                                                                |
+| svchost.exe                                                                             |
+| svchost%                                                                                |
+| %svchost%                                                                               |
+|                                                                                         |
+| Version: 1.0                                                                            |
+| Author: @AltShiftPrtScn                                                                 |
+| github.com/SophosRapidResponse                                                          |
+\*****************************************************************************************/
+
+SELECT
+REPLACE(path,regex_match(path,'(.+\\)',0),'') AS Name,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(s.modified_time,'unixepoch')) AS 'Start_Time',
+s.path AS Path,
+CASE 
+WHEN s.execution_flag = 1 THEN 'Executed'
+WHEN s.execution_flag = 0 THEN 'Not executed'
+WHEN s.execution_flag = -1 THEN 'Execution unknown'
+END AS Executed,
+s.entry AS Entry_Order,
+'|' AS 'Meta_data',
+CAST ( (Select customer_id from sophos_endpoint_info) AS text) Customer_ID,
+CAST ( (Select endpoint_id from sophos_endpoint_info) AS text) Endpoint_ID,
+CAST ( (Select datetime from time) AS text) Request_Timestamp,
+'Shimcache' AS Data_Source,
+'Filename' AS IOC_Type,
+'$$IOC$$' AS Search_String
+FROM shimcache s
+WHERE s.path LIKE '%$$IOC$$%'
+

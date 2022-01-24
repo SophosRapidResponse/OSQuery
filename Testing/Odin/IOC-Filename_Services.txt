@@ -1,0 +1,32 @@
+/*****************************************************************************************\
+| This query will collect details on currently installed services. Matching on name,      |
+| display_name, path and module_path.                                                     |
+|                                                                                         |
+| Example:                                                                                |
+| WindowsUpdateService                                                                    |
+| svchost.exe                                                                             |
+|                                                                                         |
+| Version: 1.0                                                                            |
+| Author: @AltShiftPrtScn                                                                 |
+| github.com/SophosRapidResponse                                                          |
+\*****************************************************************************************/
+
+SELECT
+s.name AS Name,
+s.display_name AS Display_Name,
+s.status AS Status,
+s.pid AS PID,
+s.path AS Path,
+s.module_path AS Module_Path,
+s.description AS Description,
+s.user_account AS User_Account,
+s.start_type AS Start_Type,
+'|' AS 'Meta_data',
+CAST ( (Select customer_id from sophos_endpoint_info) AS text) Customer_ID,
+CAST ( (Select endpoint_id from sophos_endpoint_info) AS text) Endpoint_ID,
+CAST ( (Select datetime from time) AS text) Request_Timestamp,
+'Services' AS Data_Source,
+'Filename' AS IOC_Type,
+'$$IOC$$' AS Search_String
+FROM services s 
+WHERE s.name LIKE '%$$IOC$$%' OR s.display_name LIKE '%$$IOC$$%' OR s.path LIKE '%$$IOC$$%' OR s.module_path LIKE '%$$IOC$$%'

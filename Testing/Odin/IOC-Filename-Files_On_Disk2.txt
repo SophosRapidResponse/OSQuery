@@ -78,7 +78,7 @@ CAST ( (Select datetime from time) AS text) Request_Timestamp,
 'Files_On_Disk2' AS Data_Source,
 'Filename' AS IOC_Type,
 '$$IOC$$' AS Search_String
-FROM logical_drives JOIN file f ON f.filename LIKE '$$IOC$$'
+FROM logical_drives JOIN file f ON f.filename LIKE '%$$IOC$$%'
 AND (f.path LIKE device_ID ||'\Users\%\%' 
 OR f.path LIKE device_ID ||'\Users\%\Music\%'
 OR f.path LIKE device_ID ||'\Users\%\Desktop\%'

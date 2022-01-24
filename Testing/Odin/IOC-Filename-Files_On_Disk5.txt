@@ -84,7 +84,7 @@ CAST ( (Select datetime from time) AS text) Request_Timestamp,
 'Files_On_Disk5' AS Data_Source,
 'Filename' AS IOC_Type,
 '$$IOC$$' AS Search_String
-FROM logical_drives JOIN file f ON f.filename LIKE '$$IOC$$'
+FROM logical_drives JOIN file f ON f.filename LIKE '%$$IOC$$%'
 AND (f.path LIKE device_ID ||'\Windows\Microsoft.NET\Framework64\%\Temporary ASP.NET Files\root\%\%\%'
 OR f.path LIKE device_ID ||'\Program Files\Microsoft\Exchange Server\%\FrontEnd\HttpProxy\owa\auth\%'
 OR f.path LIKE device_ID ||'\inetpub\wwwroot\aspnet_client\%'
