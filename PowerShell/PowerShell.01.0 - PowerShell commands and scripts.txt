@@ -17,7 +17,7 @@
 | there. So if you spot a long script that ends abruptly open it in NotePad to   |
 | double check.                                                                  |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -36,6 +36,8 @@ CASE
    WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%Admin$%' THEN 'Sus - Admin$' 
    WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%PsEx%' THEN 'Sus - PsEx' 
    WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%BTO%' THEN 'Sus - BTO' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%Set-MpPreference%' THEN 'Sus - Set-MpPreference' 
+   WHEN REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') LIKE '%DisableRealtimeMonitoring%' THEN 'Sus - DisableRealtimeMonitoring' 
 END AS Sus,
 '-' AS Script_Blocks,
 REPLACE(REGEX_MATCH(data, "HostApplication=(.*)EngineVersion=", 1), '\n\t', '') AS Script,
