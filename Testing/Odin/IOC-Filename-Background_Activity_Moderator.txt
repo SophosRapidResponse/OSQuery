@@ -1,0 +1,36 @@
+/*****************************************************************************************\
+| DESCRIPTION                                                                             |
+| The query look at Backgroud Activities Moderator (BAM) which tracks application         |
+| execution. Provides full path of executable that was run and last execution             |
+| date/time.                                                                              |
+|                                                                                         |
+| Example:                                                                                |
+| svchost.exe                                                                             |
+| administrator                                                                           |
+| perflogs                                                                                |
+|                                                                                         |
+| Version: 1.0                                                                            |
+| Author: @AltShiftPrtScn                                                                 |
+| github.com/SophosRapidResponse                                                          |
+\*****************************************************************************************/
+
+SELECT 
+REGEX_MATCH(bam.path, "[^\\]*$", 0) AS Name,
+bam.path As Path, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(bam.last_execution_time,'unixepoch')) AS Last_Execution_Time, 
+u.username As Username,
+bam.sid As SID,
+h.md5 As MD5,
+h.sha1 As SHA1,
+h.sha256 As SHA256,
+'|' AS 'Meta_data',
+CAST ( (Select customer_id from sophos_endpoint_info) AS text) Customer_ID,
+CAST ( (Select endpoint_id from sophos_endpoint_info) AS text) Endpoint_ID,
+CAST ( (Select datetime from time) AS text) Request_Timestamp,
+'Background_Activity_Moderator' AS Data_Source,
+'Filename' AS IOC_Type,
+'$$IOC$$' AS Search_String
+FROM background_activities_moderator bam
+JOIN users u ON bam.sid = u.uuid
+JOIN hash h ON REPLACE(bam.path,regex_match(bam.path,'(\\Device\\HarddiskVolume.\\)',0),'C:\') = h.path
+WHERE Name LIKE '%$$IOC$$%' OR REPLACE(bam.path,regex_match(bam.path,'(\\Device\\HarddiskVolume.\\)',0),'C:\') LIKE '%$$IOC$$%'
