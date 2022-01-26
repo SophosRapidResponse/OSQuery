@@ -8,7 +8,7 @@
 | MORE INFO                                                                      |
 | shorturl.at/dnrCS - ProxyShell vulnerabilities in Microsoft Exchange           |
 |                                                                                |
-| Version: 1.1                                                                   |
+| Version: 1.2                                                                   |
 | Author: @AltShiftPrtScn & Karl the Hack Ackerman                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -33,7 +33,9 @@ SELECT
    event_id,
    REPLACE(SPLIT(Data,',',0), ',', '') AS Mailbox,
    SPLIT(Data,'\"',1) AS Email,
-   REPLACE(REPLACE(REPLACE(SPLIT(Data,'\"',5), '(Subject -eq ', ''), ')', ''), CHAR(39), '') AS Subject,
+   CASE
+   WHEN REPLACE(SPLIT(Data,',',0), ',', '') = 'New-ExchangeCertificate' THEN Data
+   ELSE REPLACE(REPLACE(REPLACE(SPLIT(Data,'\"',5), '(Subject -eq ', ''), ')', ''), CHAR(39), '') END AS Subject,
    substr(SPLIT(SPLIT(Data,',',1),'-',5),9) WebShell,
    SPLIT(Data,',',2) AS User,
    SPLIT(Data,',',3) AS SID,
