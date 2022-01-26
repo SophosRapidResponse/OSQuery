@@ -1,0 +1,23 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Reports back on the patch level of Exchange servers. The version should then   |
+| be compared to the list here: shorturl.at/fqDT2                                |
+| We recommend you ensure Exchange is always on the latest version.              |
+|                                                                                |
+| MORE INFO                                                                      |
+| shorturl.at/dnrCS - ProxyShell vulnerabilities in Microsoft Exchange           |
+|                                                                                |
+| Version: 1.1                                                                   |
+| Author: Sophos MTR                                                             |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT DISTINCT
+  'Check Exchange Version to confirm Patch. Manually verify build number from MS documentation here: shorturl.at/fqDT2' Note,
+  product_version
+FROM file 
+WHERE path = 
+  ((
+    SELECT data FROM registry 
+    WHERE key = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup' AND path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ExchangeServer\v15\Setup\MsiInstallPath' 
+  )||'bin\Microsoft.Exchange.RpcClientAccess.Service.exe')
