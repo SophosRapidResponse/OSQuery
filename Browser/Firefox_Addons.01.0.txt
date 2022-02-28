@@ -3,10 +3,10 @@
 |The query look at Firefox Addons. Provides a list of extensions, addons and     |
 |webapps installed on the host, as well as information about the username        |
 |associated with the activity.                                                   |
-|              								                                     |
+|              								                                                          |
 |                                                                                |
-| VARIABLES:									                                 |
-|- Name								                                             |
+| VARIABLES:									                                                            |
+|- Name								                                                                  |
 |                                                                                |
 |                                                                                |
 | TIP                                                                            |
