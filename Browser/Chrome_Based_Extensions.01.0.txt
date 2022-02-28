@@ -3,10 +3,10 @@
 | The query look at Chrome-based browser extensions (chrome, chromium, opera,    |
 | yandex, brave, edge, and edge_beta. Provides a list of extensions installed on |
 | the host and when it was installed and the user associated with the activity.  |
-|              								                                     |
+|              								                                                          |
 |                                                                                |
-| VARIABLES:									                                 |
-|- Name								                                             |
+| VARIABLES:									                                                            |
+|- Name								                                                                  |
 |                                                                                |
 |                                                                                |
 | TIP                                                                            |
