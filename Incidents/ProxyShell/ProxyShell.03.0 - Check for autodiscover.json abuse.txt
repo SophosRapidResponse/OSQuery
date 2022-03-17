@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 |                                                                                |
 | DESCRIPTION                                                                    |
-| Look for autodiscover.json abuse and the presence of web shells                 |
+| Look for autodiscover.json abuse and the presence of web shells                |
 |                                                                                |
 | NOTE                                                                           |
 | A common artifact seen in these logs for abuse of CVE-2021-34473 is the        |
@@ -31,5 +31,5 @@ SELECT grep.*
 FROM file
 CROSS JOIN grep ON (grep.path = file.path)
 WHERE
-file.path LIKE 'C:\inetpub\logs\LogFiles\W3SVC%\u_ex2108%'
+file.path LIKE 'C:\inetpub\logs\LogFiles\W3SVC%\u_ex%'
 AND grep.pattern = 'autodiscover.json'
