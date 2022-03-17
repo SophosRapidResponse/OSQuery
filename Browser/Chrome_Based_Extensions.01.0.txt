@@ -1,0 +1,34 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| The query look at Chrome-based browser extensions (chrome, chromium, opera,    |
+| yandex, brave, edge, and edge_beta. Provides a list of extensions installed on |
+| the host and when it was installed and the user associated with the activity.  |
+|              								                                                          |
+|                                                                                |
+| VARIABLES:									                                                            |
+|- Name								                                                                  |
+|                                                                                |
+|                                                                                |
+| TIP                                                                            |
+| If you want to bring back everything use %                                     |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Elida Leite                                                            |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+
+
+SELECT 
+STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(chrome_extensions.install_timestamp, 'unixepoch')) AS Installation_Time,
+users.username, 
+chrome_extensions.name As Extension_Name,
+chrome_extensions.description As Description,
+chrome_extensions.browser_type As Browser_Type,
+chrome_extensions.identifier As Identifier,
+chrome_extensions.path As Path,
+chrome_extensions.from_webstore As Webstore,
+ 'Chrome Extension/Users' AS Data_Source,
+ 'BrowserExtension.01.0' AS Query 
+FROM users JOIN chrome_extensions USING (uid)
+WHERE chrome_extensions.name LIKE '%$$Name$$%'

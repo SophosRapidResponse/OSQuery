@@ -1,0 +1,36 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+|The query look at Firefox Addons. Provides a list of extensions, addons and     |
+|webapps installed on the host, as well as information about the username        |
+|associated with the activity.                                                   |
+|              								                                                          |
+|                                                                                |
+| VARIABLES:									                                                            |
+|- Name								                                                                  |
+|                                                                                |
+|                                                                                |
+| TIP                                                                            |
+| If you want to bring back everything use %                                     |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Elida Leite                                                            |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+
+
+SELECT 
+firefox_addons.name As Addon_Name,
+users.username As User,
+firefox_addons.identifier As Identifier,
+firefox_addons.type As Type,
+firefox_addons.description As Description,
+firefox_addons.source_url As Source_URL,
+firefox_addons.visible As Addon_visible,
+firefox_addons.active As Addon_Active,
+firefox_addons.disabled As Addon_Disabled,
+firefox_addons.path As path,
+ 'Firefox Addons/Users' AS Data_Source,
+ 'FirefoxAddons.01.0' AS Query 
+FROM users JOIN firefox_addons USING (uid)
+WHERE firefox_addons.name LIKE '%$$Name$$%'
