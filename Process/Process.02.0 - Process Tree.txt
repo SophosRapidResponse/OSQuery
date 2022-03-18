@@ -41,7 +41,7 @@ SELECT
     WHEN pt.level = 0 THEN pt.procName
     ELSE printf('%.' || pt.level ||'c', '>') || ' ' || pt.procName
     END AS Process_Branch,
-    spp.sophosPID AS Sophos_PID,
+    spp.sophos_pid AS Sophos_PID,
     pt.cmdLine AS CMDLine,
     spp.sha256 AS SHA256
 FROM proc_tree pt
