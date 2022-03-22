@@ -14,15 +14,15 @@
 \********************************************************************************/
 
 SELECT
- spj.pathname AS Path, 
- spj.cmdline AS CMD_line,
- spj.sophosPID AS Sophos_PID, 
- spj.processName AS Process_Name,
+ spj.path AS Path, 
+ spj.cmd_line AS CMD_line,
+ spj.sophos_pid	 AS Sophos_PID, 
+ spj.process_name AS Process_Name,
  spj.sid AS SID,
  u.username AS Username,
- spj.parentSophosPid AS Sophos_Parent_PID, 
- CAST ( (Select spj2.pathname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Path,
- CAST ( (Select spj2.processname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Process_Name,
+ spj.parent_sophos_pid AS Sophos_Parent_PID, 
+ CAST ( (Select spj2.path from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) Parent_Path,
+ CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) Parent_Process_Name,
  'Process Journal/Users' AS Data_Source,
  'Process.04.0' AS Query
 FROM sophos_process_journal spj 
