@@ -1,0 +1,69 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Get list of applications executed from Windows Prefetch.                       |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: The Rapid Response Team                                                |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+
+SELECT
+    path, 
+    filename, 
+    hash,
+    STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(last_run_time, 'unixepoch')) AS last_run_time,
+    other_run_times,
+    (
+        SELECT
+            GROUP_CONCAT(STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(value, 'unixepoch')), CHAR(10))
+        FROM JSON_EACH('[' || other_run_times || ']')
+    ) AS other_run_times_readable,
+    run_count,
+    size,
+    volume_serial,
+    volume_creation,
+    accessed_files_count,
+    accessed_directories_count,
+    accessed_files_count,
+    accessed_files,
+   (
+        WITH RECURSIVE split(word, str) AS (
+            SELECT
+                '',
+                accessed_files || ','
+            UNION ALL
+            SELECT
+                SUBSTR(str, 0, INSTR(str, ',')),
+                SUBSTR(str, INSTR(str, ',') + 1)
+            FROM split
+            WHERE str != ''
+        )
+        SELECT
+            GROUP_CONCAT(word, CHAR(10))
+        FROM split
+        WHERE word != ''
+    ) AS accessed_files_list,
+    accessed_directories,
+     (
+        WITH RECURSIVE split(word, str) AS (
+            SELECT
+                '',
+                accessed_directories || ','
+            UNION ALL
+            SELECT
+                SUBSTR(str, 0, INSTR(str, ',')),
+                SUBSTR(str, INSTR(str, ',') + 1)
+            FROM split
+            WHERE str != ''
+        )
+        SELECT
+            GROUP_CONCAT(word, CHAR(10))
+        FROM split
+        WHERE word != ''
+    ) AS accessed_directories_list,
+    'Prefetch' AS Data_Source,
+    'Prefetch.01.0' AS Query
+FROM
+   prefetch   
+ORDER BY last_run_time DESC;
