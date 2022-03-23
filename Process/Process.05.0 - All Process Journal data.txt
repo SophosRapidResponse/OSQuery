@@ -11,7 +11,7 @@
 | You can do multiple days, but you are asking for a lot of data so if it fails  |
 | do one day at a time.                                                          |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -33,7 +33,7 @@ SELECT DISTINCT
  CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
  spj.sid AS SID,
  spj.sha256 AS Sha256,
- spj.fileSize AS File_Size, 
+ spj.file_size AS File_Size, 
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.path) AS text) First_Created_On_Disk,
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Changed,
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Modified,
