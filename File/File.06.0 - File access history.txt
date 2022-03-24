@@ -9,15 +9,15 @@
 | begin(date) = datetime of when to start hunting                                |
 | end(date) = datetime of when to stop hunting                                   |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: Sophos / @AltShiftPrtScn                                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT    
-    strftime('%Y-%m-%dT%H:%M:%SZ', datetime(sfj.time,'unixepoch')) dateTime,
-    spj.processName,
-    CASE sfj.eventType
+    strftime('%Y-%m-%dT%H:%M:%SZ', datetime(sfj.time,'unixepoch')) date_time,
+    spj.process_name,
+    CASE sfj.event_type
         WHEN 0 THEN 'Created'
         WHEN 1 THEN 'Renamed'
         WHEN 2 THEN 'Deleted'
@@ -28,25 +28,24 @@ SELECT
         WHEN 7 THEN 'Ownership Modified'
         WHEN 8 THEN 'Accessed'
         WHEN 9 THEN 'Binary File Mapped'
-    END eventType,
-    replace(sfj.pathname, rtrim(sfj.pathname, replace(sfj.pathname, '\', '')), '') fileName,
-    spj.pathname processPath,
-    sfj.pathname filePath,
-    sfj.sophosPID,
+    END event_type,
+    replace(sfj.path, rtrim(sfj.path, replace(sfj.path, '\', '')), '') file_name,
+    spj.path process_path,
+    sfj.path file_path,
+    sfj.sophos_pid,
     spj.sha256,
-    spp.mlScore,
-    spp.puaScore,
-    spp.localRep,
-    spp.globalRep,
-	'File Journal/Process Journal/Process_Properties' AS Data_Source,
-	'File.06.0' AS Query
+    spp.ml_score,
+    spp.pua_score,
+    spp.local_rep,
+    spp.global_rep,
+	'File Journal/Process Journal/Process_Properties' AS data_source,
+	'File.06.0' AS query
 FROM sophos_file_journal sfj
 LEFT JOIN sophos_process_journal spj 
-    ON spj.sophosPID = sfj.sophosPID
-    AND spj.time = replace(sfj.sophosPID, rtrim(sfj.sophosPID, replace(sfj.sophosPID  , ':', '')), '')/10000000-11644473600
+    ON spj.sophos_pid = sfj.sophos_pid
 LEFT JOIN sophos_process_properties spp 
-    ON spp.sophosPID = spj.sophosPID
-WHERE sfj.pathname LIKE '$$path$$'
+    ON spp.sophos_pid = spj.sophos_pid
+WHERE sfj.path LIKE '$$path$$'
 AND sfj.time > $$begin$$
 AND sfj.time < $$end$$
 ORDER BY sfj.time DESC

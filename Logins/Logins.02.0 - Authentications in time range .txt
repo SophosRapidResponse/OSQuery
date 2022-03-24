@@ -14,17 +14,17 @@
 | TIP                                                                            |
 | Use wildcards for username/source_ip if you want to bring all users back.      |
 |                                                                                |
-| Version: 1.1                                                                   |
+| Version: 1.2                                                                   |
 | Author: Sophos / @AltShiftPrtScn                                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT 
-    strftime('%Y-%m-%dT%H:%M:%SZ', datetime(time,'unixepoch')) AS DateTime,
-    CAST(json_extract(data, '$.authenticationPackageName') AS TEXT) Auth_Package_Name,
-    CAST(json_extract(data, '$.targetDomainName') AS TEXT) Domain,
-    CAST(json_extract(data, '$.targetUserName') AS TEXT) Username,
-    CAST(json_extract(data, '$.ipAddress') AS TEXT) Remote_Address,
+    strftime('%Y-%m-%dT%H:%M:%SZ', datetime(time,'unixepoch')) AS date_time,
+    CAST(json_extract(data, '$.authenticationPackageName') AS TEXT) auth_package_name,
+    CAST(json_extract(data, '$.targetDomainName') AS TEXT) domain,
+    CAST(json_extract(data, '$.targetUserName') AS TEXT) username,
+    CAST(json_extract(data, '$.ipAddress') AS TEXT) remote_address,
     CAST(CASE json_extract(data, '$.logonType')
         WHEN 2 THEN 'Logon Type 2 - Interactive'
         WHEN 3 THEN 'Logon Type 3 - Network'
@@ -38,9 +38,9 @@ SELECT
         WHEN 11 THEN 'Logon Type 11 - CachedInteractive'
         WHEN 12 THEN 'Logon Type 12 - Cached Remote Interactive'
         ELSE 'UNKNOWN TYPE: ' || json_extract(data,'$.EventData.LogonType')
-    END AS TEXT) Logon_Type,
-	eventType AS Event_ID,
-    CAST(CASE eventType
+    END AS TEXT) logon_type,
+	event_type AS event_id,
+    CAST(CASE event_type
         WHEN 4624 THEN 'Authenticated'
         ELSE CASE json_extract(data, '$.subStatus')
             WHEN '0xc000005e' THEN 'There are currently no logon servers available to service the logon request'
@@ -56,11 +56,11 @@ SELECT
             WHEN '0xc0000413' THEN 'Logon Failure: The machine you are logging onto is protected by an authentication firewall. The specified account is not allowed to authenticate to the machine'
             ELSE 'UNKNOWN: ' || json_extract(data, '$.subStatus')
         END
-    END AS TEXT) Result,
-	'Winsec Journal' AS Data_Source,
-	'Logins.02.0' AS Query
+    END AS TEXT) result,
+	'Winsec Journal' AS data_source,
+	'Logins.02.0' AS query
 FROM sophos_winsec_journal
-    WHERE eventType IN (4624, 4625)
+    WHERE event_type IN (4624, 4625)
     AND IFNULL(json_extract(data, '$.ipAddress'), '') LIKE '$$source_ip$$'
     AND IFNULL(json_extract(data, '$.targetUserName'), '') LIKE '$$username$$'
     AND time >= $$begin$$

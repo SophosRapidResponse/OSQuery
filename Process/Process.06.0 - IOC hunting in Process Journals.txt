@@ -14,7 +14,7 @@
 | If you only want to use one variable put something that wont be found in the   |
 | others e.g. zzzzzzzz                                                           |
 |                                                                                |
-| Version: 1.1                                                                   |
+| Version: 1.2                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -38,7 +38,7 @@ SELECT DISTINCT
  spj.parent_sophos_pid AS Sophos_Parent_PID, 
  CAST ( (Select spj2.path from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) Parent_Path,
  spj.sha256 AS Sha256,
- spj.fileSize AS File_Size, 
+ spj.file_size AS File_Size, 
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.path) AS text) First_Created_On_Disk,
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Changed,
  CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Modified,

@@ -10,22 +10,22 @@
 | TIP                                                                            |
 | If you want to bring back everything use % for each variable                   |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT 
-    spp.sophospid, 
+    spp.sophos_pid, 
     u.username,
-    spp.pathname, 
+    spp.path, 
     etc_p.alias AS protocol,
     lp.address,
     lp.port,
-    spp.localrep,
-    spp.globalrep,
-    spp.puaScore,
-    spp.mlscore,
+    spp.local_rep,
+    spp.global_rep,
+    spp.pua_score,
+    spp.ml_score,
     spp.sha256,
     'Listening Ports' AS Data_Source,
     'Process.03.0' AS Query
@@ -38,4 +38,4 @@ LEFT JOIN users u
     ON u.uid = p.uid
 LEFT JOIN etc_protocols etc_p
     ON lp.protocol = etc_p.number
-WHERE u.username LIKE '$$username$$' AND spp.pathname LIKE '$$path$$' AND lp.port LIKE '$$port$$'
+WHERE u.username LIKE '$$username$$' AND spp.path LIKE '$$path$$' AND lp.port LIKE '$$port$$'
