@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Identify accounts that belongs to special groups, have valid shells            |
+| Identify accounts that belongs to special groups and have valid shells         |
 |                                                                                |
 |                                                                                |
 |                                                                                |
