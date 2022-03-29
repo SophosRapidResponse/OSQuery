@@ -26,4 +26,3 @@ WHERE
     groups.groupname IN ('sudo','root','shadow','disk','wheel') 
     AND username != 'root'
     AND users.shell NOT LIKE '%/sbin/nologin'
-    AND shadow.password_status = 'active'
