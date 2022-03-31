@@ -1,0 +1,26 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| The query get registry keys associated with Plink/PuTTY sessions. | It also    |
+| gets PortProxy configuration created with netsh                                |
+|                                                                                |
+| Path:                                                                          |
+| HKEY_CURRENT_USER\SoftWare\SimonTatham\PuTTY\                                  |
+| HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PortProxy\v4tov4          |
+|                                                                                |
+| IMPORTANT                                                                      |
+| Query can bring false positives (legitimate SSH), but can also disclose        |
+| unexpected tunneling activity.                                                 |
+|                                                                                |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: The Rapid Response Team                                                |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT 
+path,
+name, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS last_modified_time
+FROM registry
+WHERE key LIKE 'HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\%' 
+OR key LIKE 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PortProxy\v4tov4\%'
