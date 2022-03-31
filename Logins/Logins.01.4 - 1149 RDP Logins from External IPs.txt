@@ -24,7 +24,7 @@ SELECT
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') GLOB '172.2[0-9].*' THEN 'Internal_IP'
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') GLOB '172.3[0-1].*' THEN 'Internal_IP'
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '10.%' THEN 'Internal_IP'
-    WHEN JSON_EXTRACT(data, '$.UserData.Param3') = '127.0.0.1' THEN 'Internal_IP'
+    WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '127.%' THEN 'Internal_IP'
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '%::%' THEN 'unknown'
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '' THEN 'unknown'
     ELSE 'External_IP' END AS External,
