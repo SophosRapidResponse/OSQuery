@@ -21,25 +21,25 @@
 
 SELECT 
 CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS TEXT) Datetime,  
-spj.sophosPID AS SophosPID, 
-spj.pathname AS Path, 
-spj.cmdline AS CMDLine, 
+spj.sophos_pid AS SophosPID, 
+spj.path AS Path, 
+spj.cmd_line AS CMDLine, 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) AS 'First_Created_On_Disk(btime)', 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) AS 'Last_Changed(ctime)', 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) AS 'Last_Modified(mtime)', 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) AS 'Last_Accessed(atime)', 
-spj.parentSophosPid AS Parent_SophosPID, 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Process_Start_Time, 
-CASE WHEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) = 0 
-THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
-spj.fileSize AS Size, 
+spj.parent_sophos_pid AS Parent_SophosPID, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS Process_Start_Time, 
+CASE WHEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) = 0 
+THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) END AS Process_End_Time, 
+spj.file_size AS Size, 
 spj.sid AS SID, 
 u.username AS Username, 
 spj.sha256 AS SHA256, 
 'Process Journal/Users/File' AS Data_Source,
 'Process.07.0' AS Query 
 FROM sophos_process_journal spj 
-JOIN file f ON spj.pathname = f.path 
+JOIN file f ON spj.path = f.path 
 JOIN users u ON spj.sid = u.uuid 
 WHERE spj.time >= CAST($$begin$$ AS INT) 
 AND spj.time <= CAST($$end$$ AS INT)  

@@ -14,7 +14,7 @@
 | If you only want to use one variable put something that wont be found in the   |
 | others e.g. zzzzzzzz                                                           |
 |                                                                                |
-| Version: 1.1                                                                   |
+| Version: 1.2                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -26,29 +26,29 @@ WITH for(x) AS (
 )
 
 SELECT DISTINCT
- strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Datetime,
- spj.pathname AS Path, 
- spj.cmdline AS CMD_line,
- spj.sophosPID AS Sophos_PID, 
- CAST (spj.processname AS TEXT) Process_Name,
- strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.processStartTime,'unixepoch')) AS Process_Start_Time, 
- CASE WHEN spj.endTime = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.endTime,'unixepoch')) END AS Process_End_Time, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS Datetime,
+ spj.path AS Path, 
+ spj.cmd_line AS CMD_line,
+ spj.sophos_pid AS Sophos_PID, 
+ CAST (spj.process_name AS TEXT) Process_Name,
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS Process_Start_Time, 
+ CASE WHEN spj.end_time = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) END AS Process_End_Time, 
  CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) Username,
  spj.sid AS SID,
- spj.parentSophosPid AS Sophos_Parent_PID, 
- CAST ( (Select spj2.pathname from sophos_process_journal spj2 where spj2.sophospid = spj.parentSophosPid) AS text) Parent_Path,
+ spj.parent_sophos_pid AS Sophos_Parent_PID, 
+ CAST ( (Select spj2.path from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) Parent_Path,
  spj.sha256 AS Sha256,
- spj.fileSize AS File_Size, 
- CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.pathname) AS text) First_Created_On_Disk,
- CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Changed,
- CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Modified,
- CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.pathname) AS text) Last_Accessed,
+ spj.file_size AS File_Size, 
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.path) AS text) First_Created_On_Disk,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Changed,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Modified,
+ CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Accessed,
  'Process Journal/File/Users' AS Data_Source,
  'Process.06.0' AS Query 
 FROM for
  LEFT JOIN sophos_process_journal spj ON spj.time >= for.x and spj.time <= for.x+1200  
  
 WHERE (spj.sha256 LIKE '$$ioc1$$' OR spj.sha256 LIKE '$$ioc2$$' OR spj.sha256 LIKE '$$ioc3$$') 
-OR (spj.processName LIKE '$$ioc1$$' OR spj.processName LIKE '$$ioc2$$' OR spj.processName LIKE '$$ioc3$$') 
-OR (spj.pathname LIKE '$$ioc1$$' OR spj.pathname LIKE '$$ioc2$$' OR spj.pathname LIKE '$$ioc3$$') 
-OR (spj.cmdline LIKE '$$ioc1$$' OR spj.cmdline LIKE '$$ioc2$$' OR spj.cmdline LIKE '$$ioc3$$') 
+OR (spj.process_name LIKE '$$ioc1$$' OR spj.process_name LIKE '$$ioc2$$' OR spj.process_name LIKE '$$ioc3$$') 
+OR (spj.path LIKE '$$ioc1$$' OR spj.path LIKE '$$ioc2$$' OR spj.path LIKE '$$ioc3$$') 
+OR (spj.cmd_line LIKE '$$ioc1$$' OR spj.cmd_line LIKE '$$ioc2$$' OR spj.cmd_line LIKE '$$ioc3$$') 

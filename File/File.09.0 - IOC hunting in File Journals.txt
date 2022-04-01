@@ -25,25 +25,25 @@
 | The file journal records a LOT of data, keep the events limited (avoid 8) and  |
 | keep the timeframe short.                                                      |
 |                                                                                |
-| Version: 1.1                                                                   |
+| Version: 1.2                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT DISTINCT
- CASE sfj.eventType
-	WHEN 0 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creationTime,'unixepoch'))
-	WHEN 1 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
+ CASE sfj.event_type
+	WHEN 0 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creation_time,'unixepoch'))
+	WHEN 1 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch'))
 	WHEN 2 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(time,'unixepoch'))
-	WHEN 3 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastWriteTime,'unixepoch'))
-	WHEN 4 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
-	WHEN 5 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
-	WHEN 6 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
-	WHEN 7 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
-	WHEN 8 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastAccessTime,'unixepoch'))
-	WHEN 9 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch'))
- ELSE '' END AS Datetime,
- CASE sfj.eventType
+	WHEN 3 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.last_write_time,'unixepoch'))
+	WHEN 4 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch'))
+	WHEN 5 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch'))
+	WHEN 6 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch'))
+	WHEN 7 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch'))
+	WHEN 8 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.last_access_time,'unixepoch'))
+	WHEN 9 THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch'))
+ ELSE '' END AS date_time,
+ CASE sfj.event_type
     WHEN 0 THEN 'Created'
     WHEN 1 THEN 'Renamed'
     WHEN 2 THEN 'Deleted'
@@ -54,21 +54,21 @@ SELECT DISTINCT
     WHEN 7 THEN 'OwnershipModified'
     WHEN 8 THEN 'Accessed'
     WHEN 9 THEN 'BinaryFileMapped'
- ELSE '-' END AS Description,
- sfj.pathname AS Path, 
- sfj.sophosPID AS Sophos_PID, 
- CAST ( (Select spj.processName from sophos_process_journal spj where spj.sophospid = sfj.sophosPID) AS text) Process_Name,
- CAST ( (Select spj.sid from sophos_process_journal spj where spj.sophospid = sfj.sophosPID) AS text) SID,
- sfj.sha256 AS Sha256,
- sfj.fileSize AS File_Size, 
- strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creationTime,'unixepoch')) AS First_Created_On_Disk, 
- strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.changeTime,'unixepoch')) AS Last_Changed, 
- strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastWriteTime,'unixepoch')) AS Last_Modified, 
- strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.lastAccessTime,'unixepoch')) AS Last_Accessed,
- 'File Journal' AS Data_Source,
- 'File.09.0' AS Query
+ ELSE '-' END AS description,
+ sfj.path AS path, 
+ sfj.sophos_pid AS sophos_pid, 
+ CAST ( (Select spj.process_name from sophos_process_journal spj where spj.sophos_pid = sfj.sophos_pid) AS text) process_name,
+ CAST ( (Select spj.sid from sophos_process_journal spj where spj.sophos_pid = sfj.sophos_pid) AS text) sid,
+ sfj.sha256 AS sha256,
+ sfj.file_size AS file_size, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.creation_time,'unixepoch')) AS first_created_on_disk, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.change_time,'unixepoch')) AS last_changed, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.last_write_time,'unixepoch')) AS last_modified, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(sfj.last_access_time,'unixepoch')) AS last_accessed,
+ 'File Journal' AS data_source,
+ 'File.09.0' AS query
 FROM sophos_file_journal sfj 
 WHERE sfj.time >= CAST($$begin$$ AS INT) 
 AND sfj.time <= CAST($$end$$ AS INT)
-AND sfj.pathname LIKE '$$path$$'
-AND sfj.eventType IN ($$event$$) ORDER BY Datetime ASC
+AND sfj.path LIKE '$$path$$'
+AND sfj.event_type IN ($$event$$) ORDER BY date_time ASC
