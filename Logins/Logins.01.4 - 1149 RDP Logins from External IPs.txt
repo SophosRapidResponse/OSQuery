@@ -2,11 +2,8 @@
 | DESCRIPTION                                                                    |
 | The query collects all 1149 RDP login events from Terminal Services Remote     |
 | Connection Manager and filters by external connections only. The query might   |
-| output  "unknown" when source_ip is empty  and IPv6 addresses.                 |
+| output  "unknown" when source_ip is empty.                                     |
 |                                                                                |
-|                                                                                |
-|                                                                                |
-| Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -26,6 +23,9 @@ SELECT
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '10.%' THEN 'Internal_IP'
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '127.%' THEN 'Internal_IP'
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '%::%' THEN 'unknown'
+    WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE 'fd%' THEN 'Internal IP'
+    WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE 'fc%' THEN 'Internal IP'
+    WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE 'fe80%' THEN 'Internal IP'
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') LIKE '' THEN 'unknown'
     ELSE 'External_IP' END AS External,
     'TS Remote Connection EVTX' AS Data_Source,
