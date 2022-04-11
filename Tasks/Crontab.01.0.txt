@@ -1,9 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Get values from system and user job scheduling with cron                       |
-| Fuzz path:                                                                     |
-|   - /var/spool/cron/crontabs/                                                  |
-|   - /etc/crontab                                                               |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
