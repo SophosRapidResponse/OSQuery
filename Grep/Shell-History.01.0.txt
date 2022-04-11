@@ -1,9 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Line-delimited table of per-user bash history                                  |
-| Fuzz path:                                                                     |
-|   - /home                                                                      |
-|   - /Users                                                                     |
 |                                                                                |
 | VARIABLE                                                                       |
 |   - IOC: you can search for shell history associated with an username OR a     |
