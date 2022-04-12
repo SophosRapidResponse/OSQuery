@@ -1,11 +1,12 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | The query search for malicious use of bitsadmin.exe by looking at the command  |
-| line parameter associated with a BITS job.                                     |
+| line parameter associated with a BITS job. The query also detects powershell   |
+| cmdlet used to start a bits job                                                |
 |                                                                                |
 | VARIABLES                                                                      |
-| begin(date) = datetime of when to start hunting                                |
-| end(date) = datetime of when to end theunting                                  |
+| begin(date) = datetime of when to start the hunt                               |
+| end(date) = datetime of when to end the hunt                                   |
 |                                                                                |
 |                                                                                |
 | Author: The Rapid Response Team                                                |
@@ -35,7 +36,7 @@ SELECT
  'Medium' As Potential_FP_chance,
  'Detected a commandline associated with the creation/transfer of a BITS job' As Description,
  'Process Journal/File/Users' AS Data_Source,
- 'Process.05.0' AS Query 
+ 'T1197 - BITS Jobs' AS Query 
 FROM sophos_process_journal spj 
 WHERE (process_name = 'bitsadmin.exe' OR process_name = 'powershell.exe')
 AND (cmd_line like '%Transfer%' 
