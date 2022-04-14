@@ -20,7 +20,9 @@
 SELECT 
 path,
 name, 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS last_modified_time
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS last_modified_time,
+'Registry' AS Data_Source,
+'T1572 - Protocol Tunneling' AS Query
 FROM registry
 WHERE key LIKE 'HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\%' 
 OR key LIKE 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PortProxy\v4tov4\%'
