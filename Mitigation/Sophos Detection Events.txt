@@ -1,0 +1,47 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| The query get all detection events from Sophos journals. Due to high amount of |
+| data, the query is not collecting data from VDL threat source.                 |
+|                                                                                |
+| TIP                                                                            |
+| If needed to look at the VDL detections events please remove the first         |
+| condition after WHERE statement.                                               |
+|                                                                                |
+| VARIABLES                                                                      |
+| - $$start_time$$ (date)                                                        |
+| - $$end_time$$ (date)                                                          |
+|                                                                                |
+| Author: The Rapid Response Team                                                |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(time,'unixepoch')) AS datetime,
+primary_item_name As item_detected,
+detection_name As threat_name,
+threat_source As threat_detection,
+detection_thumbprint As thumbprint_sha256,
+CASE
+WHEN JSON_EXTRACT(primary_item, '$.action') = 0 THEN 'Not Blocked'
+WHEN JSON_EXTRACT(primary_item, '$.action') = 1 THEN 'Blocked'
+WHEN JSON_EXTRACT(primary_item, '$.blocked') = 1 THEN 'Blocked'
+WHEN JSON_EXTRACT(primary_item, '$.blocked') = 0 THEN 'Not Blocked'
+WHEN JSON_EXTRACT(primary_item, '$.cleanUp') = 0  THEN 'Not Cleaned'
+WHEN JSON_EXTRACT(primary_item, '$.cleanUp') = 1 THEN 'Cleaned'
+ELSE '-' END as status,
+primary_item_type As type,
+sid As sid_user_logged,
+CASE WHEN sid = '' THEN '-' ELSE CAST ( (Select u.username from users u where sid = u.uuid) AS text ) END AS username,
+primary_item_spid As sophos_PID,
+CAST ( (Select cmd_line from sophos_process_journal spj where spj.sophos_pid = primary_item_spid) AS text) cmd_line, 
+CASE
+WHEN threat_source = 'HMPA' THEN regex_match(raw, '(Process Trace).*(?=Thumbprint)', 0)
+ELSE '-' END As Process_Trace,
+'Detection Journal/Users' AS Data_Source,
+'Detection.01.0' AS Query
+FROM sophos_detections_journal
+WHERE threat_source != 'VDL'
+AND time > '$$start_time$$'
+AND time < '$$end_time$$'
+
+
