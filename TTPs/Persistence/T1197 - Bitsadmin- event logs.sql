@@ -1,10 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query search for suspicious use of bitsadmin jobs by looking at the        |
-| Windows event log: Microsoft-Windows-BITS-Client/Operational log.evtx          |
-| Due to the high amount of events, the query focus on the event ID 59 which     |
-| information on the URL the BitsAdmin job connected to                          |
-|                                                                                |
+| The query search for suspicious use of bitsadmin jobs by looking at the Windows|   
+| event log: BITS-Client/Operational. Due to the high amount of events, the query|
+| focus on the event ID 59 which provides information about the URL that the     |
+| BitsAdmin job is connected to.                                                 |
 |                                                                                |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
