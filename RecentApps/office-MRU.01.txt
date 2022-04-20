@@ -17,11 +17,11 @@ SELECT
 mru.path as filename,
 strftime('%Y-%m-%dT%H:%M:%SZ', datetime(mru.last_opened_time,'unixepoch')) AS last_opened_time,
 CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = mru.path) AS text) First_Created_On_Disk,
+h.sha256,
 CAST ( (Select u.username from users u where sid = u.uuid) AS text) Username,
 mru.sid,
 mru.application,
 mru.version,
-h.sha256,
 'Office_MRU/User/Hash' AS Data_Source,
 'Office_MRU.01.0' AS Query 
 from office_mru mru 
