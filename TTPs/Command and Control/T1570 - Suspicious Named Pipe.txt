@@ -52,7 +52,7 @@ SELECT
     p.max_instances As pipe_max_instances,
     p.flags As pipe_flags,
     'Pipes/Processes' AS Data_Source,
-    'Suspicious Pipes.02.0' AS Query
+    'Suspicious Pipes' AS Query
 FROM pipes p
 JOIN suspicious_pipes sp ON p.name LIKE regex_match(p.name,sp.pipe_name,0)||'%'
 LEFT JOIN processes proc ON proc.pid = p.pid;
