@@ -8,7 +8,7 @@
 | begin(date) = datetime of when to start the hunt                               |
 | end(date) = datetime of when to end the hunt                                   |
 |                                                                                |
-|                                                                                |
+| Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
