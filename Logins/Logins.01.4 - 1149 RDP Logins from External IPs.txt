@@ -4,6 +4,7 @@
 | Connection Manager and filters by external connections only. The query might   |
 | output  "unknown" when source_ip is empty.                                     |
 |                                                                                |
+| Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
