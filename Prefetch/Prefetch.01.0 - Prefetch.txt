@@ -9,29 +9,29 @@
 
 
 SELECT
-    path, 
-    filename, 
-    hash,
-    STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(last_run_time, 'unixepoch')) AS last_run_time,
-    other_run_times,
+    Path, 
+    Filename, 
+    Hash,
+    STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(last_run_time, 'unixepoch')) AS Last_Run_Time,
+    Other_Run_Times,
     (
         SELECT
             GROUP_CONCAT(STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(value, 'unixepoch')), CHAR(10))
         FROM JSON_EACH('[' || other_run_times || ']')
-    ) AS other_run_times_readable,
-    run_count,
-    size,
-    volume_serial,
-    volume_creation,
-    accessed_files_count,
-    accessed_directories_count,
-    accessed_files_count,
-    accessed_files,
+    ) AS Other_Run_Times_Readable,
+    Run_Count,
+    Size,
+    Volume_Serial,
+    Volume_Creation,
+    Accessed_Files_Count,
+    Accessed_Directories_Count,
+    Accessed_Files_Count,
+    Accessed_Files,
    (
         WITH RECURSIVE split(word, str) AS (
             SELECT
                 '',
-                accessed_files || ','
+                Accessed_Files || ','
             UNION ALL
             SELECT
                 SUBSTR(str, 0, INSTR(str, ',')),
@@ -43,13 +43,13 @@ SELECT
             GROUP_CONCAT(word, CHAR(10))
         FROM split
         WHERE word != ''
-    ) AS accessed_files_list,
-    accessed_directories,
+    ) AS Accessed_Files_List,
+    Accessed_Directories,
      (
         WITH RECURSIVE split(word, str) AS (
             SELECT
                 '',
-                accessed_directories || ','
+                Accessed_Directories || ','
             UNION ALL
             SELECT
                 SUBSTR(str, 0, INSTR(str, ',')),
@@ -61,9 +61,9 @@ SELECT
             GROUP_CONCAT(word, CHAR(10))
         FROM split
         WHERE word != ''
-    ) AS accessed_directories_list,
+    ) AS Accessed_Directories_List,
     'Prefetch' AS Data_Source,
     'Prefetch.01.0' AS Query
 FROM
    prefetch   
-ORDER BY last_run_time DESC;
+ORDER BY Last_Run_Time DESC;
