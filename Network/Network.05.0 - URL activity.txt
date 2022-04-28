@@ -14,6 +14,7 @@
 | - $$end_time$$ (date) = datetime of when to start hunting                      |
 | - $$url$$ (string) = IP, URL, domain, file extension (.exe, .js, .ps1)         |
 |                                                                                |
+| Version: 1.0                                                                   |                                                                         
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/

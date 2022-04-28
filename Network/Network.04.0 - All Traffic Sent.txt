@@ -7,9 +7,10 @@
 | exfil.                                                                         |
 |                                                                                |
 | VARIABLES                                                                      |
-| begin(date) = datetime of when to start hunting                                |
-| end(date) = datetime of when to end hunting                                    |
+| - $$start_time$$ (date)                                                        |
+| - $$end_time$$ (date)                                                          |
 |                                                                                |
+| Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/

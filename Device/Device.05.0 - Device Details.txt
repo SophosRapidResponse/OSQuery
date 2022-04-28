@@ -10,16 +10,14 @@
 \********************************************************************************/
 
 SELECT 
-name,
-version,
-build,
-platform,
-codename,
-arch,
-codename,
-arch,
-strftime('%Y-%m-%dT%H:%M:%SZ', datetime(install_date,'unixepoch')) AS install_date,
-patch,
+Name,
+Version,
+Build,
+Platform,
+Codename,
+Arch,
+strftime('%Y-%m-%dT%H:%M:%SZ', datetime(install_date,'unixepoch')) AS Install_Date,
+Patch,
 'os_version' AS Data_Source,
 'device.05.0' AS Query 
 from os_version 
