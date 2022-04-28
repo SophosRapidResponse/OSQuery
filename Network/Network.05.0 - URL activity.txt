@@ -70,14 +70,14 @@ SELECT
     url_events.sophos_pid AS sophos_pid,
     process_journal.parent_sophos_pid As sophos_parent_pid,
     CAST ( (Select spj2.path from sophos_process_journal spj2 where spj2.sophos_pid = process_journal.parent_sophos_pid) AS text) parent_path, 
-    CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophospid = process_journal.parent_sophos_pid) AS text) parent_process,
-    CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophospid = process_journal.parent_sophos_pid) AS text) parent_cmd_line,
+    CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophos_pid = process_journal.parent_sophos_pid) AS text) parent_process,
+    CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = process_journal.parent_sophos_pid) AS text) parent_cmd_line,
     url_events.journal_subject AS journal_subject,
     'Sophos URL/HTTP/DNS/Process journals' AS Data_Source,
     'Network.05.0 - URL activity' AS Query
 FROM url_events AS url_events
 LEFT JOIN sophos_process_journal AS process_journal
-    ON url_events.sophos_pid = process_journal.sophosPID
+    ON url_events.sophos_pid = process_journal.sophos_pid
 GROUP BY
     url_events.sophos_pid,
     url_events.url,
