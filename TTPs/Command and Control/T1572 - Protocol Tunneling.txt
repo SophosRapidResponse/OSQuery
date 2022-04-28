@@ -18,9 +18,9 @@
 \********************************************************************************/
 
 SELECT 
-path,
-name, 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS last_modified_time,
+Path,
+Name, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS Last_Modified_Time,
 'Registry' AS Data_Source,
 'T1572 - Protocol Tunnelling' AS Query
 FROM registry
