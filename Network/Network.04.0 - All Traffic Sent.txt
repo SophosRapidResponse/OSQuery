@@ -19,8 +19,8 @@ WITH
   total_data_sent_external (Day,total_data_sent_external_bytes,total_data_sent_external_MB) AS (
   SELECT
     strftime('%m-%d-%Y',datetime(time,'unixepoch')) AS Day,
-    (SUM(dataSent)) AS total_data_sent_external_bytes,
-    (SUM(datasent)/(1024*1024)) || ' MB' AS total_data_sent_external_MB
+    (SUM(data_sent)) AS total_data_sent_external_bytes,
+    (SUM(data_sent)/(1024*1024)) || ' MB' AS total_data_sent_external_MB
     
 FROM 
     sophos_network_journal
@@ -39,8 +39,8 @@ GROUP BY Day
 total_data_sent (Day,total_data_sent_bytes,total_data_sent_MB) AS(  
 SELECT
     strftime('%m-%d-%Y',datetime(time,'unixepoch')) AS Day,
-    (SUM(dataSent)) AS total_data_sent_bytes,
-    (SUM(dataSent)/(1024*1024) )|| ' MB' AS total_data_sent_MB
+    (SUM(data_sent)) AS total_data_sent_bytes,
+    (SUM(data_sent)/(1024*1024) )|| ' MB' AS total_data_sent_MB
 FROM 
     sophos_network_journal
 WHERE
