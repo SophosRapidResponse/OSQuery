@@ -1,0 +1,39 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| This query uses the GREP table to search for requests to /fileupload/toolsAny  |
+| in the HTTP_ACCESS log file as a possible indication of malicious behaviour    |
+| related to the uploading of web shells on the WSO2 product's webserver.        |
+|                                                                                |
+| VARIABLES                                                                      |
+| - $$directory$$ (string): complete path to WSO2 http_access directory          |
+|                                                                                |
+| REFERENCE                                                                      |
+| https://www.rapid7.com/blog/post/2022/04/22/opportunistic-exploitation-of-wso2-|
+| cve-2022-29464/                                                                |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: Lee Kikpatrick                                                         |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+
+-- GET a list of files
+WITH File_List AS (SELECT path,filename FROM file WHERE path LIKE '$$directory$$%')
+
+-- Grep the list of files
+SELECT
+f.path as Path,
+f.filename as Filename,
+(SELECT 
+	CAST(GROUP_CONCAT(DISTINCT(regex_match(g.line,'^[^-]*',0))||CHAR(10)) AS text)
+	FROM grep g 
+	WHERE g.pattern IN ('/fileupload/toolsAny') AND g.path = f.path 
+	) As IP,
+(SELECT 
+	CAST(GROUP_CONCAT(g.line,CHAR(10)) AS TEXT) 
+	FROM grep g 
+	WHERE g.pattern IN ('/fileupload/toolsAny') AND g.path = f.path 
+	) As Line
+FROM File_List f
+WHERE f.filename LIKE '%.log'
+AND Line != ''
