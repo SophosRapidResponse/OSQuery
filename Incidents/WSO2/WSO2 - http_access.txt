@@ -25,6 +25,11 @@ SELECT
 f.path as Path,
 f.filename as Filename,
 (SELECT 
+	CAST(GROUP_CONCAT(DISTINCT(regex_match(g.line,'^[^-]*',0))||CHAR(10)) AS text)
+	FROM grep g 
+	WHERE g.pattern IN ('/fileupload/toolsAny') AND g.path = f.path 
+	) As IP,
+(SELECT 
 	CAST(GROUP_CONCAT(g.line,CHAR(10)) AS TEXT) 
 	FROM grep g 
 	WHERE g.pattern IN ('/fileupload/toolsAny') AND g.path = f.path 
