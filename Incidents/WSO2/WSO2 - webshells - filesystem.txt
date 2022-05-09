@@ -1,11 +1,11 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query detects all .JSP files that are under \authenticationendpoint folder |
+| The query detects possible webshell files (.JSP, .WAR) under \webapps folder.  |
 |                                                                                |
 | IMPORTANT                                                                      |
-| This folder also stores legitimate .JSP files. Please correlate the results    |
-| with the date the files were written to disk, file hashes or any other 	 |
-| detection on the machine                                                       | 
+| This folder also stores legitimate .JSP, .WAR files. Please correlate the      |
+| results with the date the files were written to disk, file hashes or any other |
+| detection on the machine                                                       |
 |                                                                                |
 | REFERENCE:                                                                     |
 | -  https://www.rapid7.com/blog/post/2022/04/22/opportunistic-exploitation-of-  |
@@ -30,8 +30,7 @@ f.attributes AS Attributes,
 FROM file f
 JOIN hash h ON f.path = h.path
 WHERE
-(
-f.path LIKE 'C:\Ellucian\%\repository\deployment\server\webapps\authenticationendpoint\%.jsp'
-OR f.path LIKE 'C:\Ellucian\%\%\repository\deployment\server\webapps\authenticationendpoint\%.jsp'
-OR f.path LIKE 'C:\Program Files\WSO2\%\%\repository\deployment\server\webapps\authenticationendpoint\%.jsp'
-)
+(f.path LIKE 'C:\Ellucian\%\repository\deployment\server\webapps\%\%' 
+OR f.path LIKE 'C:\Ellucian\%\%\repository\deployment\server\webapps\%\%'
+OR f.path LIKE 'C:\Program Files\WSO2\%\%\repository\deployment\server\webapps\%\%')
+AND (filename LIKE '%.jsp' OR filename LIKE '%.war')
