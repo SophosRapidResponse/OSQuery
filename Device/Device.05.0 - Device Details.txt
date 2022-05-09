@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Detailed information about the hostname, operating system name and version     |
-| for each device.                                                               |
+| Detailed information about the hostname, operating system name, version, and   |
+| timezone for each device.                                                      |
 |                                                                                |
 |                                                                                |
 | Version: 1.0                                                                   |
@@ -10,14 +10,16 @@
 \********************************************************************************/
 
 SELECT 
-Name,
-Version,
-Build,
-Platform,
-Codename,
-Arch,
+name As Name,
+version As Version,
+build As Build,
+platform As Platform,
+codename As Codename,
+arch As Arch,
 strftime('%Y-%m-%dT%H:%M:%SZ', datetime(install_date,'unixepoch')) AS Install_Date,
-Patch,
+time.local_timezone As Local_timezone,
+datetime(time.local_time, 'unixepoch') As Local_time,
+patch As Patch,
 'os_version' AS Data_Source,
 'device.05.0' AS Query 
-from os_version 
+from os_version LEFT JOIN time
