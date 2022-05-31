@@ -1,0 +1,30 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| The query look for evidence of MS Office applications starting Windows command |
+| and scripting code.                                                            |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: The Rapid Response Team                                                |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+SELECT 
+    strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS datetime,
+    spj.cmd_line AS cmd_line,
+    CAST (spj.process_name AS TEXT) process_name,
+    spj.sophos_pid AS sophos_PID,
+    spj.path AS path, 
+    strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS process_start_time, 
+    CASE WHEN spj.end_time = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) END AS process_end_time, 
+    CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) username,
+    spj.sid AS sid,
+    spj.parent_sophos_pid AS sophos_parent_PID,
+    CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophospid = spj.parent_sophos_pid) AS text) parent_process,
+    CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophospid = spj.parent_sophos_pid) AS text) parent_cmd_line,
+    'Low' As Potential_FP_chance,
+    'Process Journal/Users' AS Data_Source,
+    'MS Office App Spawning unusual Processes' AS Query 
+FROM sophos_process_journal spj 
+WHERE parent_process IN('winword.exe','excel.exe','powerpnt.exe', 'outlook.exe') 
+    AND process_name IN('cmd.exe','powershell.exe', 'wscript.exe', 'cscript.exe', 'sh.exe', 'bash.exe', 'scrcons.exe','schtasks.exe', 'regsvr32.exe', 'wmic.exe', 'mshta.exe', 'rundll32.exe', 'msdt.exe')
+    AND spj.time > STRFTIME('%s','NOW','-15 DAYS')
