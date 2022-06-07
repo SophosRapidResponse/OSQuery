@@ -19,8 +19,8 @@ SELECT
     CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) username,
     spj.sid AS sid,
     spj.parent_sophos_pid AS sophos_parent_PID,
-    CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophospid = spj.parent_sophos_pid) AS text) parent_process,
-    CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophospid = spj.parent_sophos_pid) AS text) parent_cmd_line,
+    CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_process,
+    CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
     'Low' As Potential_FP_chance,
     'Process Journal/Users' AS Data_Source,
     'MS Office App Spawning unusual Processes' AS Query 
