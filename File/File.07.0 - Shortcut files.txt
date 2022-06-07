@@ -1,41 +1,30 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Shortcut files are created when an user open local/remote data files in Windows|
-| The query looks for shortcut LNK files in the following locations:             |
-| -%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Recent                        |
-| -%USERPROFILE%\AppData\Roaming\Microsoft\Office\Recent                         |
-|                                                                                |
-| The above path are the primary locations of LNK files. The can also be found in|
-| other locations.                                                               |
+| Look at the two 'Recent' locations for a user to see that shortcut (.lnk)      |
+| files exist, this gives you an idea of what the user was looking at.           |
 |                                                                                |
 | VARIABLE                                                                       |
-| - $$username$$ (string): If want to search for all files accessed by an user   |
-| - $$IOC$$ (string): If want to search for a specific file eg. .exe, malware    |
+| - username (string)                                                            |
+| - IOC (string): If want to search for a specific file .eg (.exe) or (malware)  ||                                                                                |
+| IMPORTANT                                                                      |
+| The table "shortcut_files" was deprecated on the osquery version 5.2.3 due to  |
+| possible security issues. Therefore, we are reverting back the old query using |
+| the file table.                                                                |
 |                                                                                |
-| TIP                                                                            |
-| If you want to bring back everything use % for $$username$$ and $$IOC$$        |
-|                                                                                |
-| Author: The Rapid Response Team                                                |
+| Version: 1.1                                                                   |
+| Author: @AltShiftPrtScn | Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT
-REPLACE(path,regex_match(path,'(.+\\)',0),'') AS name,
-path AS path,
-target_path AS target_path,
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(target_created,'unixepoch')) AS target_file_created_time, 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(target_modified,'unixepoch')) AS target_file_modified_time, 
-target_size As file_size,
-relative_path As relative_path,
-local_path As local_path,
-working_path As working_path,
-command_args AS command_args,
-hostname As hostname,
-share_name,
-mft_entry,
-device_type As device_type,
-description,
-'shortcut_Files' AS data_source,
-'Shortcut' AS query
-FROM shortcut_files 
-WHERE (Path LIKE 'C:\Users\$$username$$\AppData\Roaming\Microsoft\%\Recent\%' AND Name LIKE '%$$IOC$$%')
+path AS Path,
+filename AS Filename,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(btime,'unixepoch')) AS First_Created_On_Disk, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(ctime,'unixepoch')) AS Last_Changed, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS Last_Modified, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(atime,'unixepoch')) AS Last_Accessed,
+'File' AS Data_Source,
+'File.07.0 - Shortcut_file' AS Query
+FROM file 
+WHERE path LIKE 'C:\Users\$$username$$\AppData\Roaming\Microsoft\%\Recent\%'
+AND (filename != '.' AND filename LIKE '%$$IOC$$%')
