@@ -14,23 +14,32 @@
 \*************************************************************************************************/
 
 SELECT 
-u.username, 
-extensions.name, 
-extensions.identifier, 
-extensions.version, 
-extensions.permissions, 
-extensions.optional_permissions, 
-(SELECT 
-chrome_extension_content_scripts.script FROM users 
-JOIN chrome_extension_content_scripts USING (uid) 
-) As script,
-extensions.browser_type, 
-extensions.path,
-datetime(install_timestamp,'unixepoch') As Install_date,
- 'Medium' As Potential_FP_chance,
- 'Users/chrome_extensions/chrome_extension_content_scripts' AS Data_Source,
- 'T1176 - High Risk Chrome Extensions' AS Query 
+    u.username, 
+    extensions.name, 
+    extensions.identifier, 
+    extensions.version, 
+    extensions.permissions, 
+    extensions.optional_permissions, 
+    (SELECT 
+    chrome_extension_content_scripts.script FROM users 
+    JOIN chrome_extension_content_scripts USING (uid) 
+    ) As script,
+    extensions.browser_type, 
+    extensions.path,
+    datetime(install_timestamp,'unixepoch') As Install_date,
+    'Medium' As Potential_FP_chance,
+    'Users/chrome_extensions/chrome_extension_content_scripts' AS Data_Source,
+    'T1176 - High Risk Chrome Extensions' AS Query 
 FROM users u 
 JOIN chrome_extensions extensions USING (uid) 
-WHERE extensions.permissions IS NOT ''
-AND (extensions.permissions LIKE '%' OR extensions.permissions LIKE '%tabs%' OR extensions.permissions LIKE '*%://*/*%')
+WHERE extensions.permissions IS NOT NULL
+AND (extensions.permissions LIKE 'clipboard%' 
+    OR extensions.permissions LIKE '%tabs%' 
+    OR extensions.permissions LIKE '*%://*/*%'
+    OR extensions.permissions LIKE 'debugger'
+    OR extensions.permissions LIKE 'desktopCapture'
+    OR extensions.permissions LIKE 'history'
+    OR extensions.permissions LIKE 'pageCapture'
+    OR extensions.permissions LIKE 'proxy'
+    OR extensions.permissions LIKE 'tabCapture'
+    OR extensions.permissions LIKE 'webNavigation')
