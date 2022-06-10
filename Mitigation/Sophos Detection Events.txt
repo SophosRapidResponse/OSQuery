@@ -1,12 +1,12 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query get all detection events from Sophos journals.                       |
-| It uses a variable called (filename) can be used to search for a particular    |
-| string such as (filename, file path, domain, IP).                              |
+| The query gets all detection events from Sophos journals.                      |
+| It uses a variable called (filename) that can be used to search for a string   |
+| such as (filename, file path, domain, IP).                                     |
 | EXAMPLE:                                                                       |
 | - malware.exe                                                                  |
 | - C:\Users\%                                                                   |
-| - % (wildcard will get everything)                                             |
+| - % (wildcard gets everything)                                                 |
 |                                                                                |
 | VARIABLES                                                                      |
 | - filename (string)                                                            |
