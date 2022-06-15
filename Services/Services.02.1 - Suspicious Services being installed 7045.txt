@@ -46,8 +46,7 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%.dll Start%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%.dll AllocConsole%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%WinRing0x64.sys%' THEN 'High'
-    WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AnyDesk%' THEN 'Medium'
-	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%WinRing_%' THEN 'Medium'
+  WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AnyDesk%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%ProcessHacker%' THEN 'High'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%TeamViewer%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AmmyyAdmin%' THEN 'Medium'
@@ -55,6 +54,8 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%LogMeIn%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') = 'AteraAgent' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%Splashtop%' THEN 'Medium'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%KrbSCM%' THEN 'High'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%krbrelay%' THEN 'High'
 	ELSE ''
 	END AS 'Potential_FP_Chance',
 	CASE
@@ -78,7 +79,6 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%.dll AllocConsole%' THEN 'Services with this in the image path do have a higher FP rate, but have also been seen used in Conti ransomware attacks'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%WinRing0x64.sys%' THEN 'XMRIG coinminer driver installation on the system' 
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AnyDesk%' THEN 'Remote tool AnyDesk on the system' 
-	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%WinRing_%' THEN 'Possible remote tool Atera on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%ProcessHacker%' THEN 'ProcessHacker tool on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%TeamViewer%' THEN 'TeamViewer tool on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AmmyyAdmin%' THEN 'AmmyyAdmin tool on the system'
@@ -86,6 +86,8 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%LogMeIn%' THEN 'LogMeIn tool on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') = 'AteraAgent' THEN 'Atera tool on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%Splashtop%' THEN 'Splashtop tool on the system'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%KrbSCM%' THEN 'Default service name created by KrbRelayUp'
+  WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%krbrelay%' THEN 'Service associated with KrbRelayUp attack'
 	ELSE ''
 	END AS 'Description',
    'System.evtx' AS Data_Source,
@@ -112,8 +114,8 @@ OR Image_Path like '%DllRegisterServer%'
 OR Image_Path like '%.dll, DllRegisterServer%' 
 OR Image_Path like '%.dll, Start%' 
 OR Image_Path like '%.dll AllocConsole%'
+OR Image_Path LIKE '%WinRing0x64.sys%'
 OR Service_Name LIKE '%AnyDesk%'
-OR Service_Name LIKE '%WinRing_%'
 OR Service_Name LIKE '%ProcessHacker%'
 OR Service_Name = 'BTOBTO'
 OR Service_Name LIKE '%TeamViewer%'
@@ -122,6 +124,8 @@ OR Service_Name LIKE '%vnc%'
 OR Service_Name LIKE '%LogMeIn%'
 OR Service_Name = 'AteraAgent'
 OR Service_Name LIKE '%Splashtop%'
+OR Service_Name LIKE '%KrbSCM%'
+OR Image_Path LIKE '%krbrelay%'
 )
 )
 
