@@ -5,7 +5,7 @@
 |                                                                                |
 | VARIABLES                                                                      |
 | - $$directory$$ (string): complete path to WSO2 http_access directory          |
-| - $$pattern$$ (string)                                                        |
+| - $$pattern$$ (string)                                                         |
 |                                                                                |
 | TIP                                                                            |
 | For $$pattern$$ you can use the following strings:                             |
@@ -18,7 +18,7 @@
 | cve-2022-29464/                                                                |
 |                                                                                |
 | Version: 1.0                                                                   |
-| Author: Lee Kikpatrick                                                         |
+| Author: The Rapid Response Team |Lee Kikpatrick                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
