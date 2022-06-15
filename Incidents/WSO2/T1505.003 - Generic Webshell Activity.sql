@@ -6,14 +6,14 @@
 | VARIABLES                                                                      |
 | - $$start_time$$ (date)                                                        |
 | - $$end_time$$ (date)                                                          |
-|                                                                                | 
+|                                                                                |
+| Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT 
- strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS datetime,
- spj.path AS path, 
+ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS Datetime,
  spj.cmd_line AS cmd_line,
  spj.sophos_pid AS sophos_PID, 
  CAST (spj.process_name AS TEXT) process_name,
@@ -21,15 +21,9 @@ SELECT
  CASE WHEN spj.end_time = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) END AS process_end_time, 
  CAST ( (Select u.username from users u where spj.sid = u.uuid) AS text) username,
  spj.sid AS sid,
- spj.sha256 AS sha256,
- spj.file_size AS file_size, 
- CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) from file f where f.path = spj.path) AS text) First_Created_On_Disk,
- CAST ( (Select strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) from file f where f.path = spj.path) AS text) Last_Modified,
  spj.parent_sophos_pid AS sophos_parent_PID, 
- CAST ( (Select spj2.path from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_path, 
- CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophospid = spj.parent_sophos_pid) AS text) parent_process,
- CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophospid = spj.parent_sophos_pid) AS text) parent_cmd_line,
- 'Low' As Potential_FP_chance,
+ CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_process,
+ CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
  'Possible WebShell Activity' As Details,
  'Process Journal/File/Users' AS Data_Source,
  'T1505.003 - WebShell Detection/Commandline' AS Query 

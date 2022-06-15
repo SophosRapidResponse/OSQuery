@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query detects possible webshell files (.JSP, .WAR) under \webapps folder.  |
+| The query detects possible webshell files (.JSP, .WAR) in \webapps folder.     |
 |                                                                                |
 | IMPORTANT                                                                      |
 | This folder also stores legitimate .JSP, .WAR files. Please correlate the      |
