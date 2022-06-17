@@ -13,6 +13,7 @@
 | - start_time (date)                                                            |
 | - end_time (date)                                                              |
 |                                                                                |
+| Version: 1.0                                                                   |
 | Author: The Rapid Response Team | Elida Leite                                  |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -43,7 +44,7 @@ SELECT
     'Sophos Detection' AS Query
 FROM sophos_detections_journal
 WHERE item_detected LIKE '%$$filename$$%'
-    AND time > '$$start_time$$'
-    AND time < '$$end_time$$'
+    AND time >= $$start_time$$
+    AND time <= $$end_time$$
 
 
