@@ -25,10 +25,8 @@ SELECT
     spj.parent_sophos_pid AS sophos_parent_PID, 
     CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_process,
     CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
-    'Medium' As Potential_FP_chance,
-    'Detected a commandline associated with the creation/transfer of a BITS job' As Description,
     'Process Journal/Users' AS Data_Source,
-    'T1197 - BITS Jobs' AS Query 
+    'T1197 - BITS Jobs commandline' AS Query 
 FROM sophos_process_journal spj 
 WHERE (process_name = 'bitsadmin.exe' OR process_name = 'powershell.exe')
 AND (cmd_line like '%Transfer%' 
