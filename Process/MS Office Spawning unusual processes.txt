@@ -3,6 +3,10 @@
 | The query look for evidence of MS Office applications starting Windows command |
 | and scripting code.                                                            |
 |                                                                                |
+| VARIABLE:                                                                      |
+| - start_time: (date)                                                           |
+| - end_time: (date)                                                             |
+|                                                                                |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -21,10 +25,10 @@ SELECT
     spj.parent_sophos_pid AS sophos_parent_PID,
     CAST ( (Select spj2.process_name from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_process,
     CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
-    'Low' As Potential_FP_chance,
     'Process Journal/Users' AS Data_Source,
-    'MS Office App Spawning unusual Processes' AS Query 
+    'T1566.001 - MS Office Spawning unusual Processes' AS Query 
 FROM sophos_process_journal spj 
 WHERE parent_process IN('winword.exe','excel.exe','powerpnt.exe', 'outlook.exe') 
     AND process_name IN('cmd.exe','powershell.exe', 'wscript.exe', 'cscript.exe', 'sh.exe', 'bash.exe', 'scrcons.exe','schtasks.exe', 'regsvr32.exe', 'wmic.exe', 'mshta.exe', 'rundll32.exe', 'msdt.exe')
-    AND spj.time > STRFTIME('%s','NOW','-15 DAYS')
+    AND spj.time >= $$start_time$$
+    AND spj.time <= $$end_time$$
