@@ -35,7 +35,7 @@ SELECT
     saj.owner As sid,
     saj.content_length,
     'AMSI/Process/Activity Journals' AS Data_Source,
-    'AMSI Events' AS Query
+    'T1027 - Windows AMSI Events' AS Query
 FROM sophos_amsi_journal AS saj
 LEFT JOIN
     sophos_process_journal AS spj ON spj.sophos_pid = saj.sophos_pid
