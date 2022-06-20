@@ -3,7 +3,7 @@
 | List all items that load on startup.                                           |
 |                                                                                |
 | Version: 1.1                                                                   |
-| Author: The Rapid Response Team | Elida Leite                                  |
+| Author: @AltShiftPrtScn & Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
