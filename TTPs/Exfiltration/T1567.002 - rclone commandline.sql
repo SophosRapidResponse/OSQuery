@@ -34,7 +34,7 @@ SELECT
  'low' As Potential_FP_chance,
  'Possible Rclone execution' As Description,
  'Process Journal/File/Users' AS Data_Source,
- 'T1567 - rclone commandline' AS Query 
+ 'T1567.002 - rclone commandline' AS Query 
 FROM sophos_process_journal spj 
 WHERE parent_process IN ('cmd.exe', 'powershell.exe','wt.exe')
 AND LOWER(process_name) NOT IN ('robocopy.exe', 'ipconfig.exe', 'xcopy.exe', 'net.exe', 'java.exe')
