@@ -92,7 +92,6 @@ SELECT
 FROM file as f 
 WHERE ((f.directory LIKE 'C:\Users\%\%' OR f.directory IN ('C:\Windows\','C:\ProgramData\','C:\')) AND f.filename like '%$$filename$$%')
 
-
 UNION
 
 SELECT
