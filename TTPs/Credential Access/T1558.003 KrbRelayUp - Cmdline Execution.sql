@@ -3,7 +3,11 @@
 | The query detects KrbRelayUP tool being used. This is used to perform privilege|
 | escalation in Windows domain environments where LDAP is not enforced.          |
 |                                                                                |
-| Reference:                                                                     |
+| VARIABLE:                                                                      |
+| - start_time: (DATE)                                                           |
+| - end_time: (DATE)                                                             |
+|                                                                                |
+| REFERENCE:                                                                     |
 | https://github.com/Dec0ne/KrbRelayUp                                           |
 |                                                                                |
 | Version: 1.0                                                                   |
@@ -30,6 +34,7 @@ AND cmd_line LIKE '%krbrelayup%'
 OR ((cmd_line like '%relay%' AND cmd_line like '%-Domain%' AND cmd_line like '%-ComputerName%')
     OR (cmd_line LIKE '%spawn%' AND cmd_line like '%-Domain%')
     OR (cmd_line LIKE '%krbscm%' AND cmd_line LIKE '%-sc%' ))
-AND spj.time > STRFTIME('%s','NOW','-15 DAYS')
+AND spj.time >= $$start_time$$
+AND spj.time <= $$end_time$$
 
 
