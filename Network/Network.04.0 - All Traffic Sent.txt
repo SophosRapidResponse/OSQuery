@@ -4,7 +4,7 @@
 | network journal daily. It also provides a sum of all data sent to external IPs.|
 |                                                                                |
 | The query is good to detect spikes in traffic that might be associated with    |
-| exfil.                                                                         |
+| exfil. However, it might generate FP for traffic related to IPv6 addresses     |
 |                                                                                |
 | VARIABLES                                                                      |
 | - $$start_time$$ (date)                                                        |
@@ -31,8 +31,8 @@ WHERE
     AND destination NOT GLOB '172.3[0-1].*'
     AND destination NOT LIKE '10.%'
     AND destination NOT LIKE '127.%')
-    AND time > $$start_time$$
-    AND time < $$end_time$$
+    AND time >= $$start_time$$
+    AND time <= $$end_time$$
 GROUP BY Day
 ),
   
@@ -44,8 +44,8 @@ SELECT
 FROM 
     sophos_network_journal
 WHERE
-   time > $$start_time$$
-   AND time < $$end_time$$
+   time >= $$start_time$$
+   AND time <= $$end_time$$
 GROUP BY Day
 )
 
