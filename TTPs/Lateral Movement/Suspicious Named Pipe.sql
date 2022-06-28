@@ -35,7 +35,8 @@ WITH suspicious_pipes(pipe_name,pattern) AS (VALUES
     ('spoolss_','CobaltStrike_pattern'),
     ('winsock','CobaltStrike_pattern'),
     ('win_svc','CobaltStrike_pattern'),
-    ('^[0-9a-f]{7,10}$','post exploitation before version 4.2 CobaltStrike_pattern')
+    ('^[0-9a-f]{7,10}$','post exploitation before version 4.2 CobaltStrike_pattern'),
+    ('dce_86','CobaltStrike_pattern')
 )
 SELECT
     p.name As pipe_name,
