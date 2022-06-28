@@ -11,7 +11,7 @@
 | is still human readable and can be decoded with CyberChef here:                |
 | https://tinyurl.com/2db7zxyk                                                   |
 |                                                                                |
-| Author: @AltShiftPrtScn                                                        |
+| Author: @AltShiftPrtScn & Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
@@ -46,16 +46,17 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%.dll Start%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%.dll AllocConsole%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%WinRing0x64.sys%' THEN 'High'
-  WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AnyDesk%' THEN 'Medium'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AnyDesk%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%ProcessHacker%' THEN 'High'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%TeamViewer%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%AmmyyAdmin%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%vnc%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%LogMeIn%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') = 'AteraAgent' THEN 'Medium'
-	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%Splashtop%' THEN 'Medium'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%Splashtop%Remote Service%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%KrbSCM%' THEN 'High'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%krbrelay%' THEN 'High'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%echo%\pipe\%' THEN 'High'
 	ELSE ''
 	END AS 'Potential_FP_Chance',
 	CASE
@@ -85,9 +86,10 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%vnc%' THEN 'vnc tool on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%LogMeIn%' THEN 'LogMeIn tool on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') = 'AteraAgent' THEN 'Atera tool on the system'
-	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%Splashtop%' THEN 'Splashtop tool on the system'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%Splashtop%Remote Service%' THEN 'Splashtop tool on the system'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%KrbSCM%' THEN 'Default service name created by KrbRelayUp'
-  WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%krbrelay%' THEN 'Service associated with KrbRelayUp attack'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%krbrelay%' THEN 'Service associated with KrbRelayUp attack'
+	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%echo%\pipe\%' THEN 'GetSystem - used in Cobalt Beacon and Meterpreter'
 	ELSE ''
 	END AS 'Description',
    'System.evtx' AS Data_Source,
@@ -123,14 +125,17 @@ OR Service_Name LIKE '%AmmyyAdmin%'
 OR Service_Name LIKE '%vnc%'
 OR Service_Name LIKE '%LogMeIn%'
 OR Service_Name = 'AteraAgent'
-OR Service_Name LIKE '%Splashtop%'
+OR Service_Name LIKE '%Splashtop%Remote Service%'
 OR Service_Name LIKE '%KrbSCM%'
 OR Image_Path LIKE '%krbrelay%'
+OR Image_Path LIKE '%echo%\pipe\%'
 )
 )
 
-SELECT 
-  DateTime, 
+SELECT
+  STRFTIME('%Y-%m-%dT%H:%M:%SZ', MIN(datetime)) AS first_execution_time,
+  STRFTIME('%Y-%m-%dT%H:%M:%SZ', MAX(datetime)) AS last_execution_time,
+  COUNT(*) AS instance,
   Event_ID, 
   Account_Name, 
   Service_Name, 
@@ -148,3 +153,4 @@ SELECT
   Data_source,
   Query
 FROM Path_List_info
+GROUP BY Service_Name
