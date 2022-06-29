@@ -40,7 +40,7 @@ WHERE process_name IN ('powershell.exe', 'powershell_ise.exe', 'cmd.exe')
 UNION
 
 SELECT 
-   datetime(sfj.creationTime,'unixepoch') As creation_time,
+   datetime(sfj.creation_time,'unixepoch') As creation_time,
    '-' As cmd_line,
    sfj.path As Path,
    regex_match(sfj.path,'[^\\]+$',0) As Filename,
