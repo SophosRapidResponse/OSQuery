@@ -153,4 +153,4 @@ SELECT
   Data_source,
   Query
 FROM Path_List_info
-GROUP BY Service_Name
+GROUP BY Service_Name, username
