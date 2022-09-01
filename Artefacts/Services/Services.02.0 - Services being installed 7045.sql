@@ -9,7 +9,7 @@
 | is still human readable and can be decoded with CyberChef here:                |
 | https://tinyurl.com/2db7zxyk                                                   |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -25,10 +25,13 @@ WITH Path_List_info AS ( SELECT
    u.directory AS Directory,
    JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS Service_Type,
    JSON_EXTRACT(swe.data, '$.EventData.StartType') AS Start_Type,
-   'System.evtx' AS Data_Source,
+   services.module_path AS Module_Path,
+   services.description AS Description,
+   'EVTX' AS Data_Source,
    'Services.02.0' AS Query
 FROM sophos_windows_events swe
 JOIN users u ON swe.user_id = u.uuid
+LEFT JOIN services ON (Service_Name IN (services.name, services.display_name))
 WHERE swe.source = 'System' AND swe.eventid = 7045
 )
 
@@ -43,6 +46,8 @@ SELECT
   Directory, 
   Service_Type, 
   Start_Type, 
+  Module_Path,
+  Description,
   CAST ( (WITH RECURSIVE Counter(x) AS ( VALUES ( ( 1 ) ) UNION ALL SELECT x+1 FROM Counter WHERE x < length(Image_path) )
 	SELECT GROUP_CONCAT(substr(Image_path, x, 1),CHAR(8729) ) FROM counter)
   AS TEXT) Safe_Image_path,
