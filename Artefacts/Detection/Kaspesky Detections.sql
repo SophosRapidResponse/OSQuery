@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | The query searches in the Kaspersky event logs "Kaspersky Endpoint Security"   |
-| the IDs: 302, 303 and 331 that identifies malicious objects/software that can  |
-| be used by TAs during an intrusion                                             |
+| the IDs: 302, 303 and 331 that identify malicious objects/software that can be |
+| used by TAs during an intrusion                                                |
 |                                                                                |
 | REFERENCE:                                                                     |
 | https://support.kaspersky.com/KESWin/11.6.0/en-US/209858.htm                   |
