@@ -1,6 +1,6 @@
 /******************* Sophos.com/RapidResponse *******************\
 | DESCRIPTION                                                    |
-| Get the public IP of the device                                |
+| Get the public IP of the device by querying Sophos journals    |
 |                                                                |
 | Version: 1.0                                                   |
 | Author: The Rapid Response Team                                |
