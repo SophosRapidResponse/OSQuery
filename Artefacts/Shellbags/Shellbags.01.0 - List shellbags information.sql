@@ -15,14 +15,14 @@
 \********************************************************************************/
 
 SELECT 
-sb.path AS Path,
-sb.sid AS SID,
-u.username AS Username, 
-strftime('%Y-%m-%dT%H:%M:%SZ', sb.created_time) AS Created_Time, 
-strftime('%Y-%m-%dT%H:%M:%SZ', sb.modified_time) AS Last_Modified, 
-strftime('%Y-%m-%dT%H:%M:%SZ', sb.accessed_time) AS Last_Accessed, 
-'Shellbags' AS Data_Source,
-'Shellbags.01.0' AS Query
+	sb.path AS Path,
+	sb.sid AS SID,
+	u.username AS Username, 
+	strftime('%Y-%m-%dT%H:%M:%SZ', datetime(sb.created_time,'unixepoch')) AS Created_Time, 
+	strftime('%Y-%m-%dT%H:%M:%SZ', datetime(sb.modified_time,'unixepoch')) AS Last_Modified, 
+	strftime('%Y-%m-%dT%H:%M:%SZ', datetime(sb.accessed_time,'unixepoch')) AS Last_Accessed, 
+	'Shellbags' AS Data_Source,
+	'Shellbags.01.0' AS Query
 FROM shellbags sb
 JOIN users u ON sb.sid = u.uuid
 WHERE sb.sid LIKE '$$sid$$'
