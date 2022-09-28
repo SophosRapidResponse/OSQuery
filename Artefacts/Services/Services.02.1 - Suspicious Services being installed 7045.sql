@@ -133,9 +133,7 @@ OR Image_Path LIKE '%echo%\pipe\%'
 )
 
 SELECT
-  STRFTIME('%Y-%m-%dT%H:%M:%SZ', MIN(datetime)) AS first_execution_time,
-  STRFTIME('%Y-%m-%dT%H:%M:%SZ', MAX(datetime)) AS last_execution_time,
-  COUNT(*) AS instance,
+  Datetime,
   Event_ID, 
   Account_Name, 
   Service_Name, 
@@ -153,4 +151,4 @@ SELECT
   Data_source,
   Query
 FROM Path_List_info
-GROUP BY Service_Name, username
+ORDER BY Datetime DESC
