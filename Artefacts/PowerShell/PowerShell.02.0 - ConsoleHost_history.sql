@@ -1,25 +1,24 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Finds all the ConsoleHost_history.txt files and then Greps the content,        |
-| matching on ' ' (a space) which should return most rows but may miss some.     |
+| Gets all data from the ConsoleHost_history.txt files                           |
 |                                                                                |
 | NOTE                                                                           |
 | The Last_Modified value is for the txt file itself, it doesn't tell you when   |
-| the commands were executed, just the last time the file changed. So for        |
-| example if your attack was a week ago and the last modified date was months    |
-| ago, then it is unlikely that any of the commands are relevant.                |
+| the commands were executed, just the last time the file changed. Look at the   |
+| other powershell events to get more details about the commands executed        |
 |                                                                                |
-| Version: 1.0                                                                   |
-| Author: @AltShiftPrtScn                                                        |
+| Version: 1.1                                                                   |
+| Author: @AltShiftPrtScn | Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-SELECT
-( SELECT path FROM file WHERE path LIKE 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt' ) AS File_Path,
-( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) FROM file WHERE path LIKE 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt' ) AS Last_Modified,
- line,
- 'Grep/ConsoleHost_history' AS Data_Source,
- 'PowerShell.02.0' AS Query
-FROM grep
-WHERE pattern = ' '
-AND path = File_Path
+
+SELECT 
+   strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) AS Modified_time,
+   f.path,
+   (SELECT CAST(GROUP_CONCAT(line,CHAR(10)) AS TEXT) FROM grep WHERE pattern IN (CHAR(0),CHAR(10),CHAR(32)) AND path = f.path) AS Console_History,
+ 'Grep/File' AS Data_Source,
+ 'PowerShell_ConsoleHistory' AS Query
+FROM file f
+WHERE f.path LIKE 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt'
+   AND Console_History != ''
