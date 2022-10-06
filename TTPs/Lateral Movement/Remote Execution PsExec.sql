@@ -40,7 +40,7 @@ SELECT
     'Remote Execution PsExec'AS Query
 FROM sophos_windows_events, PsExec
 WHERE sophos_windows_events.source = 'Security'
-    AND sophos_windows_events.eventid IN ('4624') 
-    AND Logon_Type IN ('3')
+    AND sophos_windows_events.eventid = '4624' 
+    AND Logon_Type = '3'
     AND (sophos_windows_events.time >= PsExec.TimeDiff AND sophos_windows_events.time <= PsExec.time)
     AND Source_IP != ''
