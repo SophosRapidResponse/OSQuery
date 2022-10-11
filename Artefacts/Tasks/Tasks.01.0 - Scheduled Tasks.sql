@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| List scheduled tasks and their properties.                                     |
+| Lists all tasks in the Windows task scheduler.                                 |
 |                                                                                |
 | VARIABLES                                                                      |
 | name(string) - name of the scheduled task                                      |
@@ -10,20 +10,25 @@
 | This uses an AND operator, so if you only want to use one variable put a % in  |
 | the other one.                                                                 |
 |                                                                                |
-| Version: 1.0                                                                   |
-| Author: @AltShiftPrtScn                                                        |
+| Version: 1.2                                                                   |
+| Author: @AltShiftPrtScn | Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT
-name AS Name,
-action AS Action,
-path AS Path,
-state AS State,
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(last_run_time,'unixepoch')) AS 'Last_Run_Time', 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(Next_run_time,'unixepoch')) AS 'Next_Run_Time', 
-last_run_message AS Last_Run_Message,
-'Scheduled Tasks' AS Data_Source,
-'Tasks.01.0' AS Query
-FROM scheduled_tasks
+	name AS Name,
+	action AS Action,
+	path AS Path,
+	state AS State,
+	(SELECT datetime(f.btime,'unixepoch') from file f 
+	 	WHERE (f.path = 'C:\Windows\System32\Tasks' || st.path) 
+	 	OR (f.path LIKE 'C:\Windows\Tasks' || st.path||'%')
+	 ) AS Creation_time,
+	strftime('%Y-%m-%dT%H:%M:%SZ',datetime(last_run_time,'unixepoch')) AS 'Last_Run_Time',
+	last_run_message AS Last_Run_Message,
+	CASE WHEN next_run_time < 0 THEN 'Not scheduled to run again'
+	ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(next_run_time,'unixepoch')) END AS 'Next_Run_Time',
+	'Scheduled_Tasks' AS Data_Source,
+	'T1053.002 - Windows Tasks Scheduler' AS Query
+FROM scheduled_tasks st
 WHERE name LIKE '$$name$$' AND action LIKE '$$action$$'
