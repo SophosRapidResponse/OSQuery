@@ -7,6 +7,9 @@
 | try to run. You can search for filenames, paths, usernames, sids, services,    |
 | parts of a command line, or scheduled task argument.                           |
 |                                                                                |
+| VARIABLE                                                                       |
+| IOC (string) - filename, process, cmdline, service, username, sid, task        |
+|                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
