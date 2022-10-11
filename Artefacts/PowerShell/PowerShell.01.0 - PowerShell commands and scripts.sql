@@ -92,4 +92,3 @@ SELECT
    'PowerShell Commands and scripts' AS Query
 FROM sophos_powershell_events 
    WHERE time > 0
-ORDER BY Sus DESC
