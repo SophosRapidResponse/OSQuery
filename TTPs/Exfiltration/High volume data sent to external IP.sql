@@ -1,10 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| It gets the total amount of outbound traffic (in GB) to an external IP daily   |
-| The query's `data_GB_threshold` specifies the data transfer threshold in GB    |
-|                                                                                |
-| Due to the amount of data present in network journals consider limiting the    |
-| time window to 10 days max                                                     |
+| Gets the total amount of outbound traffic (in GB) to an external IP daily      |
+| The query's 'data_GB_threshold' variable specifies the data transfer threshold |
+| in GB                                                                          |
 |                                                                                |
 | VARIABLES                                                                      |
 | - start_time (type: DATE)                                                      |
@@ -13,20 +11,19 @@
 |                                                                                |
 | EXAMPLE                                                                        |
 | - data_GB_threshold = 5                                                        |
-|   Returns all the results where the transfer is over 5 GBs                     |
+|   Returns all the results when the transfer is over 5 GBs                      |
 |                                                                                |
-| Version: 1.0                                                                   |
 | Author: The Rapid Response Team  | Elida Leite                                 |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 
 WITH
-  total_data_sent_external (Day,sophos_pid,total_data_sent_external_GB, destination, destination_port) AS (
+  total_data_sent_external AS (
   SELECT
     strftime('%m-%d-%Y',datetime(time,'unixepoch')) AS Day,
     sophos_pid,
-    (SUM(data_sent)/(1024*1024*1024)) AS total_data_sent_external_GB,
+    round(SUM(data_sent)*10e-10,2) AS total_data_sent_external_GB,
     destination,
     destination_port
 FROM 
@@ -51,6 +48,6 @@ SELECT
     destination AS destionation_ip,
     destination_port,
     'Network Journal' AS Data_Source,
-    'High volume data to external IP' AS Query 
+    'High volume data sent to external IP' AS Query 
 FROM total_data_sent_external 
 WHERE total_data_sent_external_GB >= $$data_GB_threshold$$
