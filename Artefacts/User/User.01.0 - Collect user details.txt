@@ -12,7 +12,7 @@
 | TIP                                                                            |
 | Use wildcards for each variable if you want to bring all users back.           |
 |                                                                                |
-| Version: 1.1                                                                   |
+| Version: 1.2                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -20,7 +20,12 @@
 SELECT
 uuid AS 'UUID_SID',
 username AS Username,
-type AS Type,
+CASE
+	WHEN description LIKE 'Built-in account for%' THEN type || ' - T1078.001'
+	WHEN type = 'local' THEN type || ' - T1078.003'
+	WHEN type = 'roaming' THEN type || ' - T1078.002'
+	ELSE type
+END AS Type,
 description AS Description,
 directory AS Directory,
 'Users' AS Data_Source,
