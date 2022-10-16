@@ -7,8 +7,8 @@
 | exfil. However, it might generate FP for traffic related to IPv6 addresses     |
 |                                                                                |
 | VARIABLES                                                                      |
-| - $$start_time$$ (date)                                                        |
-| - $$end_time$$ (date)                                                          |
+| - start_time: (date)                                                           |
+| - end_time: (date)                                                             |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
@@ -16,11 +16,11 @@
 \********************************************************************************/
 
 WITH
-  total_data_sent_external (Day,total_data_sent_external_bytes,total_data_sent_external_MB) AS (
+  total_data_sent_external AS (
   SELECT
     strftime('%m-%d-%Y',datetime(time,'unixepoch')) AS Day,
     (SUM(data_sent)) AS total_data_sent_external_bytes,
-    (SUM(data_sent)/(1024*1024)) || ' MB' AS total_data_sent_external_MB
+    round(SUM(data_sent)*10e-7,2) || ' MB' AS total_data_sent_external_MB
     
 FROM 
     sophos_network_journal
@@ -36,11 +36,11 @@ WHERE
 GROUP BY Day
 ),
   
-total_data_sent (Day,total_data_sent_bytes,total_data_sent_MB) AS(  
+total_data_sent  AS(  
 SELECT
     strftime('%m-%d-%Y',datetime(time,'unixepoch')) AS Day,
     (SUM(data_sent)) AS total_data_sent_bytes,
-    (SUM(data_sent)/(1024*1024) )|| ' MB' AS total_data_sent_MB
+    round(SUM(data_sent)*10e-7,2)|| ' MB' AS total_data_sent_MB
 FROM 
     sophos_network_journal
 WHERE
