@@ -19,7 +19,7 @@
 | EXAMPLE                                                                        |
 | url = %twitter.com%  AND user-agent = %                                        |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: The Rapid Response Team |Elida Leite                                   |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
