@@ -10,7 +10,7 @@
 |                                                                                |
 |  VARIABLES                                                                     |
 | - url (string): Allow searches by a specific URL                               |
-| - user-agent (string): search for a specific user-agent string                 |
+| - user_agent (string): search for a specific user-agent string                 |
 | - start_time                                                                   |
 | - end_time                                                                     |
 |                                                                                |
@@ -19,7 +19,7 @@
 | EXAMPLE                                                                        |
 | url = %twitter.com%  AND user-agent = %                                        |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: The Rapid Response Team |Elida Leite                                   |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
