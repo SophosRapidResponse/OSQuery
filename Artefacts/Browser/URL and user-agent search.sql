@@ -10,7 +10,7 @@
 |                                                                                |
 |  VARIABLES                                                                     |
 | - url (string): Allow searches by a specific URL                               |
-| - user-agent (string): search for a specific user-agent string                 |
+| - user_agent (string): search for a specific user-agent string                 |
 | - start_time                                                                   |
 | - end_time                                                                     |
 |                                                                                |
