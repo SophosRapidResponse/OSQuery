@@ -3,6 +3,7 @@
 | Lists all browser extension, webapps and addons installed on host. The query   |
 | covers: Firefox Browser, Chrome-based browser, Internet Explorer               |
 |                                                                                |
+| Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -35,7 +36,7 @@ FROM users
 LEFT JOIN firefox_addons
     USING (uid)
 WHERE firefox_addons.name IS NOT NULL
-AND (name = '$$ioc$$' OR username = '$$ioc$$')
+
 
 
 UNION 
@@ -67,11 +68,11 @@ FROM users
 LEFT JOIN chrome_extensions
     USING (uid)
 WHERE chrome_extensions.name IS NOT NULL
-AND (name = '$$ioc$$' OR username = '$$ioc$$')
+
 
 UNION 
 
-SELECT
+SELECT DISTINCT
     'Internet Explorer' AS browser,
     ie_extensions.name,
     '-' AS username,
@@ -98,5 +99,5 @@ FROM ie_extensions
 LEFT JOIN sophos_file_properties
     ON ie_extensions.path = sophos_file_properties.path
 WHERE ie_extensions.path != ''
-AND (name = '$$ioc$$' OR username = '$$ioc$$')
+
 
