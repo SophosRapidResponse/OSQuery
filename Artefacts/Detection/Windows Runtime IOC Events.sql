@@ -1,10 +1,19 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets all data from Runtime Indicators of Compromise Journals                   |
+| Lists all Windows runtime detections                                           |
+|                                                                                |
+| The user can search for a specific IOC: pid, process name, filename, IPs, hash,|
+| SID, tasknames, GUID among others or can opt for collecting everything in the  |
+| journals using the wildcard (%)                                                |
 |                                                                                |
 | VARIABLES                                                                      |
 | - start_time (type: DATE)                                                      |
 | - end_time   (type: DATE)                                                      |
+| - ioc (type: STRING)                                                           |
+|                                                                                |
+| EXAMPLES:                                                                      |
+| ioc = %malware.exe%                                                            |
+| ioc = %6796:133107552746352584%                                                |
 |                                                                                |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -28,20 +37,15 @@ SELECT
     WHEN CAST(JSON_EXTRACT(ttp.value, '$.tactic') AS TEXT) = 'TA0010' THEN 'Exfiltration'
     WHEN CAST(JSON_EXTRACT(ttp.value, '$.tactic') AS TEXT) = 'TA0040' THEN 'Impact'
     END AS tactic,
-    CAST(JSON_EXTRACT(ttp.value, '$.technique') AS TEXT) AS technique,
+    CAST(JSON_EXTRACT(ttp.value, '$.technique') AS TEXT) AS technique_id,
     ioc.threat_source,
     CAST(JSON_EXTRACT(event.value, '$.type') AS TEXT) indicator_type,
     ioc.sophos_pid,
-    ioc.path,
     u.username,
     ioc.sid,
-    CAST(JSON_EXTRACT(event.value, '$.imagepath') AS TEXT) image_path,
-    CAST(JSON_EXTRACT(event.value, '$.cmdline') AS TEXT) cmd_line,
-    CAST(JSON_EXTRACT(event.value, '$.regPath') AS TEXT) regPath,
-    CAST(JSON_EXTRACT(event.value, '$.valueName') AS TEXT) regValueName,
-    CAST(JSON_EXTRACT(ttp.value, '$.verbosity') AS INTEGER) verbosity,
     ioc.events AS raw_data,
-    'Mitre - Runtime IOC Events' As Query
+    'Runtime Journals/Users' AS source,
+    'Runtime IOC Events - Windows' As query,
 FROM sophos_runtime_ioc_journal AS ioc
 JOIN JSON_EACH(ioc.mitre_ttps) AS ttp
 JOIN JSON_EACH(ioc.events) AS event
@@ -49,7 +53,6 @@ LEFT JOIN users AS u ON ioc.sid = u.uuid
 WHERE
     ioc.time >= $$start_time$$
     AND ioc.time <= $$end_time$$
-GROUP BY ioc.sophos_pid
+    AND ioc.events LIKE '$$ioc$$'
+GROUP BY ioc.sophos_pid, indicator_type
 ORDER BY date_time DESC
-
-

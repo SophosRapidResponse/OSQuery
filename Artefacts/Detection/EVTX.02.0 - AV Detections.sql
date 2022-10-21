@@ -1,12 +1,11 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Gets AV detections events in Windows Event logs.                               |
-| It currently collects events from Sophos, Windows Defender, Symantec, and 	 |
-| Carbon Black that are stored in (Application, Windows Defender/Operational)    |
-|                                                                                |
-|                                                                                |
-| Version: 1.0                                                                   |
-| Author: Sophos Rapid Response Team                                    	     |
+| Collects events from Sophos, Windows Defender, Symantec, and                   |
+| Carbon Black in Application, Windows Defender/Operational Logs                 |
+|                                                                                |          
+| Version: 1.1                                                                   |
+| Author: Sophos Rapid Response Team                                             |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
