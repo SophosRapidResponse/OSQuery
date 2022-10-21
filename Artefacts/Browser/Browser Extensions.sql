@@ -3,18 +3,25 @@
 | Lists all browser extension, webapps and addons installed on host. The query   |
 | covers: Firefox Browser, Chrome-based browser, Internet Explorer               |
 |                                                                                |
+| VARIABLE                                                                       |
+| - user (type: STRING)                                                          |
+| - extension (type: STRING)                                                     |
+|                                                                                |
+| The variable "user" allows searches for specific usernames.                    |
+| The variable "extension" allow searches for extension name or ID               |
+| The wildcard (%) can be used to get all data                                   |
+|                                                                                |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-
+With browsers AS (
 SELECT DISTINCT
     'Firefox' AS browser,
     firefox_addons.name,
     users.username,
     firefox_addons.identifier,
-    firefox_addons.creator,
     firefox_addons.type,
     firefox_addons.version,
     firefox_addons.description,
@@ -37,8 +44,6 @@ LEFT JOIN firefox_addons
     USING (uid)
 WHERE firefox_addons.name IS NOT NULL
 
-
-
 UNION 
 
 SELECT DISTINCT
@@ -46,7 +51,6 @@ SELECT DISTINCT
     chrome_extensions.name,
     users.username,
     chrome_extensions.identifier,
-    '-' AS creator,
     '-' AS type,
     chrome_extensions.version,
     chrome_extensions.description,
@@ -69,7 +73,6 @@ LEFT JOIN chrome_extensions
     USING (uid)
 WHERE chrome_extensions.name IS NOT NULL
 
-
 UNION 
 
 SELECT DISTINCT
@@ -77,7 +80,6 @@ SELECT DISTINCT
     ie_extensions.name,
     '-' AS username,
     '-' AS identifier,
-    '-' AS creator,
     '-' AS type,
     ie_extensions.version,
     '-' AS description,
@@ -100,4 +102,29 @@ LEFT JOIN sophos_file_properties
     ON ie_extensions.path = sophos_file_properties.path
 WHERE ie_extensions.path != ''
 
+)
 
+SELECT 
+    browser,
+    name, 
+    username,
+    identifier,
+    type,
+    version,
+    description,
+    path,
+    registry_path,
+    update_url,
+    location,
+    source_url,
+    visible,
+    active,
+    disabled,
+    autoupdate, 
+    native,
+    local_rep,
+    global_rep,
+    ml_score,
+    pua_score
+FROM browsers
+WHERE username LIKE '$$user$$' AND (name LIKE '$$extension$$' OR identifier LIKE '$$extension$$')
