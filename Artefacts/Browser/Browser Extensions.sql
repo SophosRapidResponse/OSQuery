@@ -1,3 +1,21 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Lists all browser extension, webapps and addons installed on host. The query   |
+| covers: Firefox Browser, Chrome-based browser, Internet Explorer               |
+|                                                                                |
+| VARIABLE                                                                       |
+| - user (type: STRING)                                                          |
+| - extension (type: STRING)                                                     |
+|                                                                                |
+| The variable "user" allows searches for specific usernames.                    |
+| The variable "extension" allow searches for extension name or ID               |
+| The wildcard (%) can be used to get all data                                   |
+|                                                                                |
+| Version: 1.0                                                                   |
+| Author: The Rapid Response Team                                                |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
 With browsers AS (
 SELECT DISTINCT
     'Firefox' AS browser,
