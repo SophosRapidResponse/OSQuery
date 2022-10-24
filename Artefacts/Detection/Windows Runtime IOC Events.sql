@@ -45,7 +45,7 @@ SELECT
     ioc.sid,
     ioc.events AS raw_data,
     'Runtime Journals/Users' AS source,
-    'Runtime IOC Events - Windows' As query,
+    'Runtime IOC Events - Windows' As query
 FROM sophos_runtime_ioc_journal AS ioc
 JOIN JSON_EACH(ioc.mitre_ttps) AS ttp
 JOIN JSON_EACH(ioc.events) AS event
