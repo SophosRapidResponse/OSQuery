@@ -21,7 +21,9 @@ SELECT
     CASE WHEN element = 1 THEN 'True' ELSE 'False' END AS background_agent,
     development_region,
     category,
-    copyright
+    copyright,
+    'Apps' AS source,
+    'MacOS Installed Applications' AS query
 FROM
   apps
 ORDER BY last_opened_time DESC
