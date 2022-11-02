@@ -30,7 +30,7 @@ SELECT
     WHEN eventid = 1001 THEN regex_match(data,'C:\\.*.+(,.+)$',0)
     END AS path,
     data AS raw,
-    'Application Crashes/Errors' AS query,
+    'Application Crashes' AS query,
     'EVTX' AS data_source
 FROM sophos_windows_events
 WHERE source = 'Application' 
