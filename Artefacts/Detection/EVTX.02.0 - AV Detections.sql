@@ -34,7 +34,7 @@ SELECT
 	WHEN eventid='47' THEN 'Symantec Antivirus took action against a detected threat.'
 	WHEN eventid='51' THEN 'Symantec Antivirus finished handling a threat.'
 	ELSE 'Other' END as description,
-	data AS raw
+	data AS raw,
 	'EVTX' AS Data_Source,
 	'AV Detections' AS Query
 FROM sophos_windows_events 
