@@ -45,9 +45,9 @@ SELECT
     Day,
     sophos_pid,
     total_data_sent_external_GB,
-    destination AS destionation_ip,
+    destination AS destination_ip,
     destination_port,
     'Network Journal' AS Data_Source,
     'High volume data sent to external IP' AS Query 
 FROM total_data_sent_external 
-WHERE total_data_sent_external_GB >= $$data_GB_threshold$$
+WHERE CAST(total_data_sent_external_GB AS TEXT) >= '$$data_GB_threshold$$'
