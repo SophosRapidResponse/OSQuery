@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                     |
-| Lists all the most recent commands executed in the Run Dialog box (Run MRU) for |
-| each user NTUSER which can be used to find evidence of application execution    |
+| Lists all the most recent commands executed in the Run Dialog box (RunMRU) for  |
+| each user (NTUSER), which can be used to find evidence of application execution |
 | lateral movement.                                                               |
 |                                                                                 |
 | The MRUList key holds a list that can contain up to 26 commands indicated with a|
