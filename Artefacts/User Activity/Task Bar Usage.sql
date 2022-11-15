@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Gets data from AppLaunch that tracks GUI applications pinned on the taskbar and|
-| gets data from AppSwitched that tracks the count of application focus          |    
+| data from AppSwitched that tracks the count of application focus               |    
 |                                                                                |
 | Timestamps are not reliable. The data from this query can be used as evidence  |
 | of program execution and/or user interaction with the application              |
