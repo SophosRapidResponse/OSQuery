@@ -19,11 +19,14 @@
 SELECT
     strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS date_time,
     source, 
-    CASE WHEN eventid = 7034 THEN eventid || ' - Service crashed unexpectedly'
-    WHEN eventid = 7035 THEN eventid || ' - Service sent a Start/Stop control'
-    WHEN eventid = 7036 THEN eventid || ' -Service started or stopped'
-    WHEN eventid = 7040 THEN eventid || ' - Start type changed'
-    WHEN eventid = 7045 THEN eventid || ' - A service was installed on the system' END as event_id,
+    eventid,
+    CASE 
+    WHEN eventid = 7034 THEN 'Service crashed unexpectedly'
+    WHEN eventid = 7035 THEN 'Service sent a Start/Stop control'
+    WHEN eventid = 7036 THEN 'Service started or stopped'
+    WHEN eventid = 7040 THEN 'Start type changed'
+    WHEN eventid = 7045 THEN 'A service was installed on the system' 
+    END as details,
     CAST(JSON_EXTRACT(data, '$.EventData.AccountName') AS TEXT) AS account_name,
     CASE WHEN eventid = 7045 THEN CAST(JSON_EXTRACT(data, '$.EventData.ServiceName') AS TEXT)
     WHEN eventid = 7040 THEN CAST(JSON_EXTRACT(data, '$.EventData.param4') AS TEXT)
@@ -37,9 +40,9 @@ SELECT
     WHEN eventid = 7040 THEN 'From: ' || JSON_EXTRACT(data, '$.EventData.param2') || ' to ' || JSON_EXTRACT(data, '$.EventData.param3') 
     WHEN eventid = 7036 THEN JSON_EXTRACT(data, '$.EventData.param2') END AS start_type,
     CASE WHEN eventid = '7034' THEN JSON_EXTRACT(data, '$.EventData.param2') END AS crash_count,
-    'EVTX' AS source,
+    'EVTX' AS data_source,
     'Service Events' AS query
-FROM sophos_windows_events swe
+FROM sophos_windows_events
 LEFT JOIN users u ON user_id = u.uuid
 WHERE source = 'System' 
     AND eventid IN ('7034','7035','7036','7040','7045') 
