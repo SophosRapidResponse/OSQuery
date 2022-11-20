@@ -17,13 +17,13 @@
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-With service_changed_started_stopped AS (
+WITH service_changed_started_stopped AS (
 SELECT
     strftime('%Y-%m-%d',datetime) AS Day,
     STRFTIME('%Y-%m-%dT%H:%M:%f', MIN(datetime)) AS date_time,
     STRFTIME('%Y-%m-%dT%H:%M:%f', MAX(datetime)) AS last_occurance,
     count (*) AS instance,
-    source,
+    'System' AS source,
     eventid,
     CASE 
     WHEN eventid = 7040 THEN 'Start type changed' 
@@ -55,7 +55,7 @@ SELECT
     strftime('%Y-%m-%dT%H:%M:%f',datetime) AS date_time,
     '-' AS last_occurance,
     JSON_EXTRACT(data, '$.EventData.param2') AS instance,
-    source, 
+    'System' AS source, 
     eventid,
     'Service crashed unexpectedly' AS details,
     '-' AS service_account,
@@ -79,16 +79,16 @@ SELECT
     strftime('%Y-%m-%dT%H:%M:%f',datetime) AS date_time,
     '-' AS last_occurance,
     '-' AS instance,
-    source, 
+    'System' AS source, 
     eventid,
     'A service was installed in the system' AS details,
     CAST(JSON_EXTRACT(data, '$.EventData.AccountName') AS TEXT) AS service_account,
     CAST(JSON_EXTRACT(data, '$.EventData.ServiceName') AS TEXT) AS service_name,
-    JSON_EXTRACT(data, '$.EventData.ImagePath') AS image_path,
+    CAST(REPLACE(JSON_EXTRACT(data, '$.EventData.ImagePath'),'"','') AS TEXT) AS image_path,
     CAST(JSON_EXTRACT(data, '$.EventData.ServiceType') AS TEXT) AS service_type,
     JSON_EXTRACT(data, '$.EventData.StartType') AS start_type,
     user_id AS sid,
-    u.username AS user,
+    u.username AS user
 FROM sophos_windows_events
 LEFT JOIN users u ON sophos_windows_events.user_id = u.uuid
 WHERE source = 'System' 
@@ -103,7 +103,7 @@ SELECT
     strftime('%Y-%m-%dT%H:%M:%f',datetime) AS date_time,
     '-' AS last_occurance,
     '-' AS instance,
-    source, 
+    'Security' AS source, 
     eventid,
     'A service was installed in the system' AS details,
     JSON_EXTRACT(data, '$.EventData.ServiceAccount')  AS service_account,
@@ -134,9 +134,7 @@ WHERE source = 'Security'
     AND time <= $$end_time$$
 )
 
-SELECT
-*
-FROM service_changed_started_stopped
+SELECT * FROM service_changed_started_stopped
 
 UNION ALL
 
