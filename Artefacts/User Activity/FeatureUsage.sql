@@ -1,13 +1,15 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | The FeatureUsage artifact can be used as evidence of software execution        |
-| interactivaly by an account and/or user interaction with the application       |
+| interactivaly by an account. It also record user interaction with an app       |
 |                                                                                |
 | Gets data from subkey:                                                         |
-| - AppLaunch that tracks the number of times an application pinned to taskbar   |
-| was executed.                                                                  |
-| - AppSwitched that tracks the number of times an application switched focus    |
-| (minimized/maximazed)                                                          |    
+| - AppLaunch: tracks the number of times an application pinned to taskbar was   |
+| executed.                                                                      |
+| - AppSwitched: tracks the number of times an application switched focus        |
+| (minimized/maximazed)                                                          |
+| - ShowJumpView: track application that was right clicked only                  |    
+| - TrayButtonClicked: track user clicking on built-in task bar                  |
 |                                                                                |
 | Timestamps are not reliable.                                                   |
 |                                                                                |
