@@ -133,7 +133,7 @@ SELECT
     CASE WHEN path LIKE '%\AppLaunch\%' THEN data END AS run_count,
     CASE WHEN path LIKE '%\AppSwitched\%' THEN data END AS focus_count,
     CASE WHEN path LIKE '%\ShowJumpView\%' THEN data END AS righclick_count,
-    CASE WHEN path LIKE '%\TrayButtonClicked\%' THEN data END AS StartButton_count,
+    CASE WHEN path LIKE '%\TrayButtonClicked\%' THEN data END AS Builtin_count,
     u.username,
     regex_match(path,'(S-[0-9]+(-[0-9]+)+)', '') AS sid,
     'registry/user' AS source,
