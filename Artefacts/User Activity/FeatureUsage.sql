@@ -11,6 +11,11 @@
 | - ShowJumpView: track application that was right clicked only                  |    
 | - TrayButtonClicked: track user clicking on built-in task bar                  |
 |                                                                                |
+| VARIABLE                                                                       |
+| - user        (type: STRING)                                                   |
+| - user_sid    (type: STRING)                                                   |
+| To get everything the analyst can use wildcard (%) in both variables           |
+|                                                                                |
 | Timestamps are not reliable.                                                   |
 |                                                                                |
 | Version: 1.0                                                                   |
@@ -147,5 +152,5 @@ WHERE (path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explore
    OR path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched\%' 
    OR path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\ShowJumpView\%'
    OR path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\TrayButtonClicked\%')
-   AND u.username LIKE '$$username$$' 
+   AND u.username LIKE '$$user$$' 
    AND sid LIKE '$$user_sid$$'
