@@ -1,10 +1,15 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets data from AppLaunch that tracks GUI applications pinned on the taskbar and|
-| data from AppSwitched that tracks the count of application focus               |    
+| The FeatureUsage artifact can be used as evidence of software execution        |
+| interactivaly by an account and/or user interaction with the application       |
 |                                                                                |
-| Timestamps are not reliable. The data from this query can be used as evidence  |
-| of program execution and/or user interaction with the application              |
+| Gets data from subkey:                                                         |
+| - AppLaunch that tracks the number of times an application pinned to taskbar   |
+| was executed.                                                                  |
+| - AppSwitched that tracks the number of times an application switched focus    |
+| (minimized/maximazed)                                                          |    
+|                                                                                |
+| Timestamps are not reliable.                                                   |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: The rapid Response Team                                                |
@@ -12,7 +17,7 @@
 \********************************************************************************/
 
 
-WITH path_map (code, path) AS ( VALUES
+WITH path_map (code, paths) AS ( VALUES
    ('{6D809377-6AF0-444B-8957-A3773F02200E}', 'C:\Program Files'),
    ('{008CA0B1-55B4-4C56-B8A8-4DE4B299D3BE}', 'C:\Users\[user-name]\AccountPictures'),
    ('{DE61D971-5EBC-4F02-A3A9-6C82895E5C04}', 'Control Panel\All Control Panel Items\Get Programs'),
@@ -117,13 +122,18 @@ WITH path_map (code, path) AS ( VALUES
 SELECT 
     datetime(mtime,'unixepoch') AS modified_time,
     CASE 
-    WHEN path LIKE '%\AppLaunch\%' THEN 'Pinned apps from taskbar'
-    WHEN path LIKE '%\AppSwitched\%' THEN 'AppSwitched Focus' END AS data_from,
+    WHEN path LIKE '%\AppLaunch\%' THEN 'Pinned app from taskbar executed'
+    WHEN path LIKE '%\AppSwitched\%' THEN 'App switched focus' 
+    WHEN path LIKE '%\ShowJumpView\%' THEN 'App right clicked' 
+    WHEN path LIKE '%\TrayButtonClicked\%' THEN 'built-in taskbar buttons clicked'
+    END AS data_from,
     key, 
     name, 
-    REPLACE(name, path_map.code, path_map.Path) path_on_disk,
+    REPLACE(name, path_map.code, path_map.paths) path_on_disk,
     CASE WHEN path LIKE '%\AppLaunch\%' THEN data END AS run_count,
     CASE WHEN path LIKE '%\AppSwitched\%' THEN data END AS focus_count,
+    CASE WHEN path LIKE '%\ShowJumpView\%' THEN data END AS righclick_count,
+    CASE WHEN path LIKE '%\TrayButtonClicked\%' THEN data END AS StartButton_count,
     u.username,
     regex_match(path,'(S-[0-9]+(-[0-9]+)+)', '') AS sid,
     'registry/user' AS source,
@@ -131,5 +141,9 @@ SELECT
 FROM registry 
 LEFT JOIN  users u ON sid = u.uuid
 LEFT JOIN path_map on name LIKE path_map.code||'%'
-WHERE path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppLaunch\%' 
-OR path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched\%' 
+WHERE (path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppLaunch\%' 
+   OR path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched\%' 
+   OR path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\ShowJumpView\%'
+   OR path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\TrayButtonClicked\%')
+   AND u.username LIKE '$$username$$' 
+   AND sid LIKE '$$user_sid$$'
