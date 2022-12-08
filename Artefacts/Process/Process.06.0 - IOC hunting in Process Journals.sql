@@ -1,17 +1,20 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Check for process execution, data from 'sophos_process_journal' with joins on  |
-| 'user' and 'file'. Choose the start date and then how many days to collect.    |
+| 'user' and 'file'.                                                             |
 |                                                                                |
 | VARIABLES                                                                      |
 | begin(date) = datetime of when to start hunting                                |
 | days(string) = how many days to search through                                 |
+| ioc1(string) = IOC to hunt (process, cmd, path, sha256 of the process)         |
+| ioc2(string) = IOC to hunt (process, cmd, path, sha256 of the process)         |
+| ioc3(string) = IOC to hunt (process, cmd, path, sha256 of the process)         |
 |                                                                                |
 | TIP                                                                            |
-| You can do multiple days, but you are asking for a lot of data so if it fails  |
-| do one day at a time.                                                          |
+| If you only want to use one variable put something that wont be found in the   |
+| others e.g. zzzzzzzz                                                           |
 |                                                                                |
-| Version: 1.1                                                                   |
+| Version: 1.3                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -33,17 +36,20 @@ SELECT DISTINCT
    u.username,
    spj.sid,
    spj.sha256,
-   spj.file_size,  
+   spj.file_size, 
    CASE WHEN f.btime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) ELSE 'Not on disk' END AS creation_time,
+   CASE WHEN f.mtime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) ELSE 'Not on disk' END AS modified_time,
    CASE WHEN f.ctime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) ELSE 'Not on disk' END AS last_changed,
-   CASE WHEN f.mtime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) ELSE 'Not on disk' END AS modified_time,
    CASE WHEN f.atime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) ELSE 'Not on disk' END AS last_accessed,
    spj.parent_sophos_pid, 
-   CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
+   CAST ( (Select spj2.path from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) Parent_Path,
    'Process Journal/File/Users' AS Data_Source,
-   'Process.05.0' AS Query 
+   'Process.06.0' AS Query 
 FROM for
- LEFT JOIN sophos_process_journal spj ON spj.time >= for.x and spj.time <= for.x+1200  
- LEFT JOIN users u ON spj.sid = u.uuid
- LEFT JOIN file f ON spj.path = f.path
-GROUP BY spj.time, spj.sophos_pid, spj.cmd_line
+   LEFT JOIN sophos_process_journal spj ON spj.time >= for.x and spj.time <= for.x+1200
+   LEFT JOIN users u ON spj.sid = u.uuid 
+   LEFT JOIN file f ON spj.path = f.path
+WHERE (spj.sha256 LIKE '$$ioc1$$' OR spj.sha256 LIKE '$$ioc2$$' OR spj.sha256 LIKE '$$ioc3$$') 
+   OR (spj.process_name LIKE '$$ioc1$$' OR spj.process_name LIKE '$$ioc2$$' OR spj.process_name LIKE '$$ioc3$$') 
+   OR (spj.path LIKE '$$ioc1$$' OR spj.path LIKE '$$ioc2$$' OR spj.path LIKE '$$ioc3$$') 
+   OR (spj.cmd_line LIKE '$$ioc1$$' OR spj.cmd_line LIKE '$$ioc2$$' OR spj.cmd_line LIKE '$$ioc3$$') 
