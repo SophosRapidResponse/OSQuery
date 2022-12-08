@@ -5,6 +5,9 @@
 | It can expose hidden and commonly accessed locations, including those present on|
 | external drives or network shares                                               |
 |                                                                                 |
+| Location                                                                        |
+| NTUSER\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths            |
+|                                                                                 |
 | VARIABLE                                                                        |
 | - username (type: STRING)                                                       |
 | - user_sid (type: STRING)                                                       |
