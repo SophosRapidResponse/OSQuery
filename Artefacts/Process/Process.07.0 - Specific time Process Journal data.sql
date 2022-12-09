@@ -5,8 +5,8 @@
 | small amounts of data from specific times.                                     |
 |                                                                                |
 | VARIABLES                                                                      |
-| begin(date) = datetime of when to start hunting                                |
-| end(date) = when to stop hunting                                               |
+| - start_time (TYPE: DATE) = datetime of when to start hunting                  |
+| - end_time (TYPE: DATE) = when to stop hunting                                 |
 |                                                                                |
 | TIP                                                                            |
 | If you want to collect multiple days worth of data you can either set the      |
@@ -20,26 +20,26 @@
 \********************************************************************************/
 
 SELECT 
-CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS TEXT) Datetime,  
-spj.sophos_pid AS SophosPID, 
-spj.path AS Path, 
-spj.cmd_line AS CMDLine, 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) AS 'First_Created_On_Disk(btime)', 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) AS 'Last_Changed(ctime)', 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) AS 'Last_Modified(mtime)', 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) AS 'Last_Accessed(atime)', 
-spj.parent_sophos_pid AS Parent_SophosPID, 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS Process_Start_Time, 
-CASE WHEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) = 0 
-THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) END AS Process_End_Time, 
-spj.file_size AS Size, 
-spj.sid AS SID, 
-u.username AS Username, 
-spj.sha256 AS SHA256, 
-'Process Journal/Users/File' AS Data_Source,
-'Process.07.0' AS Query 
-FROM sophos_process_journal spj 
-JOIN file f ON spj.path = f.path 
-JOIN users u ON spj.sid = u.uuid 
-WHERE spj.time >= CAST($$begin$$ AS INT) 
-AND spj.time <= CAST($$end$$ AS INT)  
+    strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS date_time,
+    spj.path,
+    spj.process_name,
+    spj.cmd_line,
+    spj.sophos_pid,
+    CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS TEXT) AS Process_Start_Time, 
+    CASE WHEN spj.end_time = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch'))  END AS Process_End_Time,
+    spj.sid,
+    u.username,
+    spj.sha256,
+    CASE WHEN f.btime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) ELSE 'Not on disk' END AS creation_time,
+    CASE WHEN f.mtime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) ELSE 'Not on disk' END AS modified_time,
+    spj.parent_sophos_pid,
+    CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
+    'Process Journal/Users/File' AS Data_Source,
+    'Process.07.0' AS Query
+FROM sophos_process_journal spj
+LEFT JOIN users u ON spj.sid = u.uuid
+LEFT JOIN file f ON spj.path = f.path
+WHERE spj.time >= $$start_time$$
+    AND spj.time <= $$end_time$$
+GROUP BY spj.time, spj.sophos_pid, spj.cmd_line
+ORDER BY spj.time DESC
