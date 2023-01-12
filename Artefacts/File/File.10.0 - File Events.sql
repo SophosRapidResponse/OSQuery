@@ -7,7 +7,9 @@
 | Useful to run against the TA working directory or any other folder of interest |
 |                                                                                |
 | VARIABLE                                                                       |
-| - path (type: string)                                                          |
+| - path        (type: string)                                                   |
+| - start_time  (type: date)                                                     |
+| - end_time    (type: date)                                                     |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
@@ -29,7 +31,6 @@ CASE sfj.event_type
     WHEN 8 THEN 'Accessed'
     WHEN 9 THEN 'BinaryFileMapped'
  ELSE '-' END AS event_type,
-sfj.file,
 sfj.path, 
 sfj.target_path,
 sfj.file_size,
