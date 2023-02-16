@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Lists all browser extension, webapps and addons installed on host. The query   |
-| covers: Firefox Browser, Chrome-based browser, Internet Explorer               |
+| covers: Firefox Browser, Chrome-based browser, and Internet Explorer           |
 |                                                                                |
 | VARIABLE                                                                       |
 | - user (type: STRING)                                                          |
@@ -11,7 +11,7 @@
 | The variable "extension" allow searches for extension name or ID               |
 | The wildcard (%) can be used to get all data                                   |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -26,6 +26,7 @@ SELECT DISTINCT
     firefox_addons.version,
     firefox_addons.description,
     firefox_addons.path,
+    '-' AS install_timestamp,
     '-' AS registry_path,
     '-' AS update_url,
     firefox_addons.location,
@@ -34,11 +35,7 @@ SELECT DISTINCT
     firefox_addons.active,
     firefox_addons.disabled,
     firefox_addons.autoupdate,
-    firefox_addons.native,
-    '-' AS local_rep,
-    '-' AS global_rep,
-    '-' AS ml_score,
-    '-' AS pua_score
+    firefox_addons.native
 FROM users
 LEFT JOIN firefox_addons
     USING (uid)
@@ -55,6 +52,7 @@ SELECT DISTINCT
     chrome_extensions.version,
     chrome_extensions.description,
     chrome_extensions.path,
+    chrome_extensions.install_timestamp,
     '-' AS registry_path,
     chrome_extensions.update_url,
     '-' AS location,
@@ -63,11 +61,7 @@ SELECT DISTINCT
     '-' AS active,
     '-' AS disabled,
     '-' AS autoupdate, 
-    '-' AS native,
-    '-' AS local_rep,
-    '-' AS global_rep,
-    '-' AS ml_score,
-    '-' AS pua_score
+    '-' AS native
 FROM users
 LEFT JOIN chrome_extensions
     USING (uid)
@@ -84,6 +78,7 @@ SELECT DISTINCT
     ie_extensions.version,
     '-' AS description,
     ie_extensions.path,
+    '-' AS install_timestamp,
     ie_extensions.registry_path,
     '-' AS update_url,
     '-' AS location,
@@ -92,16 +87,9 @@ SELECT DISTINCT
     '-' AS active,
     '-' AS disabled,
     '-' AS autoupdate, 
-    '-' AS native,
-    sophos_file_properties.local_rep,
-    sophos_file_properties.global_rep,
-    sophos_file_properties.ml_score,
-    sophos_file_properties.pua_score
+    '-' AS native
 FROM ie_extensions
-LEFT JOIN sophos_file_properties
-    ON ie_extensions.path = sophos_file_properties.path
 WHERE ie_extensions.path != ''
-
 )
 
 SELECT 
@@ -113,6 +101,7 @@ SELECT
     version,
     description,
     path,
+    DATETIME(install_timestamp, 'unixepoch') AS install_time,
     registry_path,
     update_url,
     location,
@@ -121,10 +110,6 @@ SELECT
     active,
     disabled,
     autoupdate, 
-    native,
-    local_rep,
-    global_rep,
-    ml_score,
-    pua_score
+    native
 FROM browsers
 WHERE username LIKE '$$user$$' AND (name LIKE '$$extension$$' OR identifier LIKE '$$extension$$')
