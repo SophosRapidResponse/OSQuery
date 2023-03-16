@@ -30,7 +30,7 @@ WITH Path_List_info AS ( SELECT
    'EVTX' AS Data_Source,
    'Services.02.0' AS Query
 FROM sophos_windows_events swe
-JOIN users u ON swe.user_id = u.uuid
+LEFT JOIN users u ON swe.user_id = u.uuid
 LEFT JOIN services ON (Service_Name IN (services.name, services.display_name))
 WHERE swe.source = 'System' AND swe.eventid = 7045
 )
