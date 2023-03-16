@@ -95,7 +95,7 @@ WITH Path_List_info AS ( SELECT
    'System.evtx' AS Data_Source,
    'Services.02.0' AS Query
 FROM sophos_windows_events swe
-JOIN users u ON swe.user_id = u.uuid
+LEFT JOIN users u ON swe.user_id = u.uuid
 WHERE swe.source = 'System' AND swe.eventid = 7045
 AND (
 Image_Path LIKE '%powershell%JAB%' 
