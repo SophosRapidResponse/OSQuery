@@ -41,6 +41,6 @@ snj.data_sent,
 snj.data_recv,
 '3CX DesktopApp - Network Traffic' AS query
 FROM process_pid ep 
-JOIN sophos_network_journal snj USING (sophos_pid)
+LEFT JOIN sophos_network_journal snj USING (sophos_pid)
 LEFT JOIN sophos_process_activity ON (ep.sophos_pid = sophos_process_activity.sophos_pid AND sophos_process_activity.subject IN ('Dns','Url','Http','ModernWebFlow'))
 
