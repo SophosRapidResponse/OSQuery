@@ -1,6 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Applications executed by users, comes from UserAssist.                         |
+| UserAssist Registry Key tracks when a user executes an application from Windows|
+| Explorer.                                                                      |
 |                                                                                |
 | VARIABLE                                                                       |
 | username(username) - username                                                  |
@@ -8,12 +9,13 @@
 | TIP                                                                            |
 | If you want to bring back everything use % for username                        |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn & Karl the Hack Ackerman                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-WITH Path_Map (Code, Path) AS ( VALUES
+WITH path_map (code, path) AS ( 
+   VALUES
    ('{6D809377-6AF0-444B-8957-A3773F02200E}', 'C:\Program Files'),
    ('{008CA0B1-55B4-4C56-B8A8-4DE4B299D3BE}', 'C:\Users\[user-name]\AccountPictures'),
    ('{DE61D971-5EBC-4F02-A3A9-6C82895E5C04}', 'Control Panel\All Control Panel Items\Get Programs'),
@@ -113,25 +115,25 @@ WITH Path_Map (Code, Path) AS ( VALUES
    ('{491E922F-5643-4AF4-A7EB-4E7A138D8174}', 'Libraries\Videos'),
    ('{F38BF404-1D43-42F2-9305-67DE0B28FC23}', 'C:\Windows')
    )
-   
---SELECT * FROM Path_Map
-   
 
 SELECT 
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime(ua.last_execution_time,'unixepoch')) AS Execution_Time, 
+STRFTIME('%Y-%m-%dT%H:%M:%SZ',DATETIME(ua.last_execution_time,'unixepoch')) AS execution_time, 
 ua.path,
-REPLACE(ua.path, Path_Map.code, path_map.Path) Path_on_disk,
-ua.count AS Count, 
-u.username AS Username, 
-ua.sid AS SID, 
-CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) FROM file f WHERE REPLACE(ua.path, Path_Map.code, path_map.Path) = f.path) AS text) First_Created_On_Disk, 
-CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) FROM file f WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = f.path) AS text) Last_Changed, 
-CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) FROM file f WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = f.path) AS text) Last_Modified, 
-CAST ( ( SELECT strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) FROM file f WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = f.path) AS text) Last_Accessed, 
-CAST ( ( SELECT h.sha256 FROM hash h WHERE REPLACE(ua.path, Path_Map.code, path_map.Path)  = h.path) AS text) SHA256,
-'UserAssist' AS Data_Source,
-'UserAssist.01.0' AS Query
-from userassist ua LEFT JOIN path_map on ua.path LIKE path_map.code||'%'
-JOIN users u ON ua.sid = u.uuid
+REPLACE(REPLACE(ua.path, path_map.code, path_map.path), '[user-name]', u.username) AS path_on_disk,
+ua.count, 
+u.username, 
+ua.sid, 
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.btime, 'unixepoch'))) AS TEXT) AS first_created_on_disk,
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.ctime, 'unixepoch'))) AS TEXT) AS last_changed,
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.mtime, 'unixepoch'))) AS TEXT) AS last_modified,
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.atime, 'unixepoch'))) AS TEXT) AS last_accessed,
+h.sha256,
+'UserAssist' AS data_source,
+'UserAssist information' AS Query
+FROM userassist ua 
+LEFT JOIN path_map ON ua.path LIKE path_map.code || '%'
+LEFT JOIN users AS u ON ua.sid = u.uuid
+LEFT JOIN file AS f ON path_on_disk = f.path 
+LEFT JOIN hash h ON REPLACE(ua.path, path_map.code, path_map.Path) = h.path
 WHERE u.username LIKE '$$username$$'
-ORDER BY Execution_Time ASC
+ORDER BY execution_time ASC
