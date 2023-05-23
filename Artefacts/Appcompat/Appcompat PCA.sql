@@ -20,17 +20,16 @@
 
 
 SELECT
+SUBSTR(grep.line, 1, INSTR(grep.line, '|') - 1) AS program_fullpath,
+strftime('%Y-%m-%dT%H:%M:%SZ',SUBSTR(grep.line, INSTR(grep.line, '|') + 1)) AS last_execution_time,
+hash.sha256,
+authenticode.subject_name AS certificate_subject_name,
 f.path,
 strftime('%Y-%m-%dT%H:%M:%SZ', datetime(f.mtime,'unixepoch')) AS last_modified_time,
-SUBSTR(grep.line, 1, INSTR(grep.line, '|') - 1) AS program_fullpath,
-strftime('%Y-%m-%dT%H:%M:%SZ',SUBSTR(grep.line, INSTR(grep.line, '|') + 1)) AS program_last_execution,
-hash.sha256 AS program_sha256,
-authenticode.subject_name AS certificate_subject_name,
 'AppCompat PCA' AS query 
 FROM file f
 LEFT JOIN grep USING (path)
 LEFT JOIN hash ON program_fullpath = hash.path
 LEFT JOIN authenticode ON program_fullpath = authenticode.path
-WHERE f.directory LIKE 'C:\Windows\appcompat\pca\' 
+WHERE f.directory = 'C:\Windows\appcompat\pca\'
 AND f.filename = 'PcaAppLaunchDic.txt'
-AND program_fullpath LIKE '$$path$$'
