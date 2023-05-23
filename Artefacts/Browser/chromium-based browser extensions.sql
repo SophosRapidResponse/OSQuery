@@ -9,14 +9,17 @@
 
 SELECT DISTINCT
     chrome_extensions.browser_type,
-    chrome_extensions.name,
-    users.username,
-    chrome_extensions.identifier,
+    chrome_extensions.name AS extension_name,
+    chrome_extensions.identifier AS extension_identified,
     chrome_extensions.version,
     chrome_extensions.description,
     chrome_extensions.path,
+    users.username,
+    users.uuid AS SID,
+    users.uid,
     DATETIME( chrome_extensions.install_timestamp, 'unixepoch') AS install_time,
-    chrome_extensions.update_url
+    chrome_extensions.update_url, 
+    'Chromium-based extensions' AS query
 FROM users
 LEFT JOIN chrome_extensions
     USING (uid)
