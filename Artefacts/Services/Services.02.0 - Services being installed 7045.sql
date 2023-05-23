@@ -14,43 +14,45 @@
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-WITH Path_List_info AS ( SELECT
-   strftime('%Y-%m-%dT%H:%M:%SZ',swe.datetime) AS Datetime,
-   swe.eventid AS Event_ID,
-   JSON_EXTRACT(swe.data, '$.EventData.AccountName') AS Account_Name,
-   JSON_EXTRACT(swe.data, '$.EventData.ServiceName') AS Service_Name,
-   JSON_EXTRACT(swe.data, '$.EventData.ImagePath') AS Image_Path,
-   swe.user_id AS SID,
-   u.username AS Username,
-   u.directory AS Directory,
-   JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS Service_Type,
-   JSON_EXTRACT(swe.data, '$.EventData.StartType') AS Start_Type,
-   services.module_path AS Module_Path,
-   services.description AS Description,
-   'EVTX' AS Data_Source,
-   'Services.02.0' AS Query
+WITH Path_List_info AS ( 
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',swe.datetime) AS date_time,
+swe.eventid AS Event_ID,
+JSON_EXTRACT(swe.data, '$.EventData.AccountName') AS Account_Name,
+JSON_EXTRACT(swe.data, '$.EventData.ServiceName') AS Service_Name,
+JSON_EXTRACT(swe.data, '$.EventData.ImagePath') AS Image_Path,
+swe.user_id AS SID,
+u.username AS Username,
+u.directory AS Directory,
+JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS Service_Type,
+JSON_EXTRACT(swe.data, '$.EventData.StartType') AS Start_Type,
+services.module_path AS Module_Path,
+services.description AS Description,
+'EVTX' AS Data_Source,
+'Services.02.0' AS Query
 FROM sophos_windows_events swe
 LEFT JOIN users u ON swe.user_id = u.uuid
 LEFT JOIN services ON (Service_Name IN (services.name, services.display_name))
-WHERE swe.source = 'System' AND swe.eventid = 7045
+WHERE swe.source = 'System' 
+AND swe.eventid = 7045
 )
 
 SELECT 
-  DateTime, 
-  Event_ID, 
-  Account_Name, 
-  Service_Name, 
-  Image_path,
-  SID, 
-  username, 
-  Directory, 
-  Service_Type, 
-  Start_Type, 
-  Module_Path,
-  Description,
-  CAST ( (WITH RECURSIVE Counter(x) AS ( VALUES ( ( 1 ) ) UNION ALL SELECT x+1 FROM Counter WHERE x < length(Image_path) )
+date_time, 
+Event_ID, 
+Account_Name, 
+Service_Name, 
+Image_path,
+SID, 
+username, 
+Directory, 
+Service_Type, 
+Start_Type, 
+Module_Path,
+Description,
+CAST ( (WITH RECURSIVE Counter(x) AS ( VALUES ( ( 1 ) ) UNION ALL SELECT x+1 FROM Counter WHERE x < length(Image_path) )
 	SELECT GROUP_CONCAT(substr(Image_path, x, 1),CHAR(8729) ) FROM counter)
   AS TEXT) Safe_Image_path,
-  Data_source,
-  Query
+Data_source,
+Query
 FROM Path_List_info
