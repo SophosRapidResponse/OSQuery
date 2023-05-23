@@ -15,18 +15,19 @@
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-WITH Path_List_info AS ( SELECT
-   strftime('%Y-%m-%dT%H:%M:%SZ',swe.datetime) AS Datetime,
-   swe.eventid AS Event_ID,
-   JSON_EXTRACT(swe.data, '$.EventData.AccountName') AS Account_Name,
-   JSON_EXTRACT(swe.data, '$.EventData.ServiceName') AS Service_Name,
-   JSON_EXTRACT(swe.data, '$.EventData.ImagePath') AS Image_Path,
-   swe.user_id AS SID,
-   u.username AS Username,
-   u.directory AS Directory,
-   JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS Service_Type,
-   JSON_EXTRACT(swe.data, '$.EventData.StartType') AS Start_Type,
-   CASE
+WITH Path_List_info AS ( 
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',swe.datetime) AS date_time,
+swe.eventid AS Event_ID,
+JSON_EXTRACT(swe.data, '$.EventData.AccountName') AS Account_Name,
+JSON_EXTRACT(swe.data, '$.EventData.ServiceName') AS Service_Name,
+JSON_EXTRACT(swe.data, '$.EventData.ImagePath') AS Image_Path,
+swe.user_id AS SID,
+u.username AS Username,
+u.directory AS Directory,
+JSON_EXTRACT(swe.data, '$.EventData.ServiceType') AS Service_Type,
+JSON_EXTRACT(swe.data, '$.EventData.StartType') AS Start_Type,
+CASE
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%powershell%JAB%' THEN 'Low'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%H4s%' THEN 'Medium'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%powershell%invoke%' THEN 'Medium'
@@ -57,9 +58,9 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%KrbSCM%' THEN 'High'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%krbrelay%' THEN 'High'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%echo%\pipe\%' THEN 'High'
-	ELSE ''
-	END AS 'Potential_FP_Chance',
-	CASE
+	ELSE NULL
+END AS 'Potential_FP_Chance',
+CASE
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%powershell%JAB%' THEN 'When an b64 ecoded string starts with JAB or JABz it is highly likely to be Cobalt Strike. shorturl.at/mFZ68'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%H4s%' THEN 'When an b64 ecoded string starts with H4s it is highly likely to be Cobalt Strike. shorturl.at/mFZ68'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%powershell%invoke%' THEN 'PowerShell command to execute commands on local or remote computers. shorturl.at/mFZ68'
@@ -90,13 +91,14 @@ WITH Path_List_info AS ( SELECT
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ServiceName') LIKE '%KrbSCM%' THEN 'Default service name created by KrbRelayUp'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%krbrelay%' THEN 'Service associated with KrbRelayUp attack'
 	WHEN JSON_EXTRACT(swe.data, '$.EventData.ImagePath') LIKE '%echo%\pipe\%' THEN 'GetSystem - used in Cobalt Beacon and Meterpreter'
-	ELSE ''
-	END AS 'Description',
-   'System.evtx' AS Data_Source,
-   'Services.02.0' AS Query
+ELSE NULL
+END AS 'Description',
+'System.evtx' AS Data_Source,
+'Services.02.0' AS Query
 FROM sophos_windows_events swe
 LEFT JOIN users u ON swe.user_id = u.uuid
-WHERE swe.source = 'System' AND swe.eventid = 7045
+WHERE swe.source = 'System' 
+AND swe.eventid = 7045
 AND (
 Image_Path LIKE '%powershell%JAB%' 
 OR Image_Path LIKE '%SQB%' 
@@ -133,22 +135,22 @@ OR Image_Path LIKE '%echo%\pipe\%'
 )
 
 SELECT
-  Datetime,
-  Event_ID, 
-  Account_Name, 
-  Service_Name, 
-  Image_path,
-  SID, 
-  username, 
-  Directory, 
-  Service_Type, 
-  Start_Type, 
-  Potential_FP_Chance,
-  Description,
-  CAST ( (WITH RECURSIVE Counter(x) AS ( VALUES ( ( 1 ) ) UNION ALL SELECT x+1 FROM Counter WHERE x < length(Image_path) )
+date_time,
+Event_ID, 
+Account_Name, 
+Service_Name, 
+Image_path,
+SID, 
+username, 
+Directory, 
+Service_Type, 
+Start_Type, 
+Potential_FP_Chance,
+Description,
+CAST ( (WITH RECURSIVE Counter(x) AS ( VALUES ( ( 1 ) ) UNION ALL SELECT x+1 FROM Counter WHERE x < length(Image_path) )
 	SELECT GROUP_CONCAT(substr(Image_path, x, 1),CHAR(8729) ) FROM counter)
-  AS TEXT) Safe_Image_path,
-  Data_source,
-  Query
+AS TEXT) Safe_Image_path,
+Data_source,
+Query
 FROM Path_List_info
-ORDER BY Datetime DESC
+ORDER BY date_time DESC
