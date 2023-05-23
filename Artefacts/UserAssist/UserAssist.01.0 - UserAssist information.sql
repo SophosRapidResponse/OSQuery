@@ -116,17 +116,17 @@ WITH path_map (code, path) AS (
    ('{F38BF404-1D43-42F2-9305-67DE0B28FC23}', 'C:\Windows')
    )
 
-SELECT 
+SELECT DISTINCT
 STRFTIME('%Y-%m-%dT%H:%M:%SZ',DATETIME(ua.last_execution_time,'unixepoch')) AS execution_time, 
 ua.path,
 REPLACE(REPLACE(ua.path, path_map.code, path_map.path), '[user-name]', u.username) AS path_on_disk,
 ua.count, 
 u.username, 
 ua.sid, 
-CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.btime, 'unixepoch'))) AS TEXT) AS first_created_on_disk,
-CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.ctime, 'unixepoch'))) AS TEXT) AS last_changed,
-CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.mtime, 'unixepoch'))) AS TEXT) AS last_modified,
-CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.atime, 'unixepoch'))) AS TEXT) AS last_accessed,
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.btime, 'unixepoch'))) AS TEXT) AS creation_time,
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.mtime, 'unixepoch'))) AS TEXT) AS modified_time,
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.ctime, 'unixepoch'))) AS TEXT) AS changed_time,
+CAST((STRFTIME('%Y-%m-%dT%H:%M:%SZ', DATETIME(f.atime, 'unixepoch'))) AS TEXT) AS accessed_time,
 h.sha256,
 'UserAssist' AS data_source,
 'UserAssist information' AS Query
