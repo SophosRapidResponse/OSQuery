@@ -17,7 +17,7 @@
 \********************************************************************************/
 
 SELECT
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS date_time,
 eventid AS EventID,  
 CASE   
    WHEN eventid = 21 THEN eventid || ' - Logon succeeded' 
@@ -31,11 +31,14 @@ CASE
 END AS Description, 
 'TS Local' AS Source, 
 JSON_EXTRACT(data, '$.UserData.User') AS Username, 
-'-' AS Source_Machine_Network, 
+NULL AS Source_Machine_Network, 
 JSON_EXTRACT(data, '$.UserData.Address') AS Source_IP, 
-'-' AS Process_Name, 
-'-' AS Logon_Type, 
-'-' AS User_SID, 
+NULL AS Process_Name, 
+NULL AS Logon_Type, 
+NULL AS User_SID, 
+NULL AS Logon_Status_Code,
+NULL AS Target_Domain_Name,
+NULL AS Authentication_package,
 JSON_EXTRACT(data, '$.UserData.Session') AS SessionID, 
 JSON_EXTRACT(data, '$.UserData.SessionID') AS Session_ID,
 'TS Local Session EVTX' AS Data_Source,
