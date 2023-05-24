@@ -17,7 +17,7 @@
 \********************************************************************************/
 
 SELECT
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS date_time,
 eventid AS EventID, 
 CASE
    WHEN eventid = 4624 THEN eventid || ' - Successful Login' 
@@ -32,8 +32,9 @@ JSON_EXTRACT(data, '$.EventData.LogonType') AS Logon_Type,
 JSON_EXTRACT(data, '$.EventData.TargetUserSid') AS User_SID, 
 JSON_EXTRACT(data, '$.EventData.Status') AS Logon_Status_Code,
 JSON_EXTRACT(data, '$.EventData.TargetDomainName') AS Target_Domain_Name,
-'-' AS SessionID, 
-'-' AS Session_ID,
+JSON_EXTRACT(data, '$.EventData.AuthenticationPackageName') AS Authentication_package,
+NULL AS SessionID, 
+NULL AS Session_ID,
 'Security EVTX' AS Data_Source,
 'Logins.01.1' AS Query 
 FROM sophos_windows_events 

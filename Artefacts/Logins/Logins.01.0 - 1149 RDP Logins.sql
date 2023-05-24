@@ -17,18 +17,23 @@
 \********************************************************************************/
 
 SELECT
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS date_time, 
 eventid AS EventID, 
-CASE WHEN eventid = 1149 THEN eventid || ' - User authentication succeeded' END AS Description, 
+CASE 
+    WHEN eventid = 1149 THEN eventid || ' - User authentication succeeded' 
+END AS Description, 
 'TS Remote' AS Source, 
 JSON_EXTRACT(data, '$.UserData.Param1') AS Username, 
 JSON_EXTRACT(data, '$.UserData.Param2') AS Source_Machine_Network, 
 JSON_EXTRACT(data, '$.UserData.Param3') AS Source_IP, 
-'-' AS Process_Name, 
-'-' AS Logon_Type, 
-'-' AS User_SID, 
-'-' AS SessionID, 
-'-' AS Session_ID,
+NULL AS Process_Name, 
+NULL AS Logon_Type, 
+NULL AS User_SID, 
+NULL AS Logon_Status_Code,
+NULL AS Target_Domain_Name,
+NULL AS Authentication_package,
+NULL AS SessionID, 
+NULL AS Session_ID,
 'TS Remote Connection EVTX' AS Data_Source,
 'Logins.01.0' AS Query 
 FROM sophos_windows_events 
