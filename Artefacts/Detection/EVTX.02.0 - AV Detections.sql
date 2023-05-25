@@ -14,7 +14,10 @@ strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS date_time,
 source,
 eventid,
 NULL AS Category,
-NULL AS threat_name,
+CASE 
+   WHEN provider_name IN ('Sophos System Protection') THEN REGEX_MATCH(JSON_EXTRACT(data, '$.EventData.Data'), '^(?:[^,]*,){2}([^,]*),', 1)
+   ELSE NULL 
+END AS threat_name,
 CASE 
    WHEN provider_name IN ('Sophos System Protection','HitmanPro.Alert') THEN REGEX_MATCH(JSON_EXTRACT(data, '$.EventData.Data'), '^([^,]*,[^,]*),', 1)
    ELSE NULL 
@@ -22,9 +25,9 @@ END AS path,
 data as raw,
 'AV Detections' AS query
 FROM sophos_windows_events 
-WHERE (source = 'Application' 
-AND provider_name IN ('Sophos System Protection', 'HitmanPro.Alert', 'Symantec AntiVirus', 'CbDefense') 
-AND eventid IN (42, 911, 5, 47, 51, 17, 33, 49))
+WHERE source = 'Application' 
+AND provider_name IN ('Sophos System Protection', 'HitmanPro.Alert', 'Symantec AntiVirus', 'CbDefense')
+AND eventid IN (42, 911, 5, 47, 51, 17, 33, 49)
 
 UNION 
 
@@ -40,4 +43,4 @@ data as raw,
 'AV Detections' AS query
 FROM sophos_windows_events 
 WHERE source = 'Microsoft-Windows-Windows Defender/Operational' 
-AND eventid in ('1006', '1007', '1008', '1009', '1010', '1011' , '1116' , '1117' , '1118')
+AND eventid IN (1006, 1007, 1008, 1009, 1010, 1011, 1116, 1117, 1118)
