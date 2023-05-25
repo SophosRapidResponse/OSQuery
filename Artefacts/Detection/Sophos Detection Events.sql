@@ -1,50 +1,68 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query gets all detection events from Sophos journals.                      |
-| It uses a variable called (filename) that can be used to search for a string   |
-| such as (filename, file path, domain, IP).                                     |
+| Gets all detection events from Sophos journals.                                |
+| Uses a variable (filename) that can be used to search for a string such as     |
+| filename, file path, domain, IP, etc.                                          |
+|                                                                                |
 | EXAMPLE:                                                                       |
 | - malware.exe                                                                  |
 | - C:\Users\%                                                                   |
 | - % (wildcard gets everything)                                                 |
 |                                                                                |
 | VARIABLES                                                                      |
-| - filename (string)                                                            |
-| - start_time (date)                                                            |
-| - end_time (date)                                                              |
+| - start_time (Type: date)                                                      |
+| - end_time (Type: date)                                                        |
+| - filename (Type: string)                                                      |
 |                                                                                |
-| Version: 1.0                                                                   |
-| Author: The Rapid Response Team | Elida Leite                                  |
+| PLATFORM                                                                       |
+| - Windows/Linux                                                                |
+| Version: 1.1                                                                   |
+| Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-SELECT
-    strftime('%Y-%m-%dT%H:%M:%SZ',datetime(time,'unixepoch')) AS datetime,
-    primary_item_name As item_detected,
-    detection_name As threat_name,
-    threat_source As threat_detection,
-    detection_thumbprint As thumbprint_sha256,
-    CASE
-    WHEN JSON_EXTRACT(primary_item, '$.action') = 0 THEN 'Not Blocked'
-    WHEN JSON_EXTRACT(primary_item, '$.action') = 1 THEN 'Blocked'
-    WHEN JSON_EXTRACT(primary_item, '$.blocked') = 1 THEN 'Blocked'
-    WHEN JSON_EXTRACT(primary_item, '$.blocked') = 0 THEN 'Not Blocked'
-    WHEN JSON_EXTRACT(primary_item, '$.cleanUp') = 0  THEN 'Not Cleaned'
-    WHEN JSON_EXTRACT(primary_item, '$.cleanUp') = 1 THEN 'Cleaned'
-    ELSE '-' END as status,
-    primary_item_type As type,
-    sid As sid_user_logged,
-    CASE WHEN sid = '' THEN '-' ELSE CAST ( (Select u.username from users u where sid = u.uuid) AS text ) END AS username,
-    primary_item_spid As sophos_PID,
-    CAST ( (Select cmd_line from sophos_process_journal spj where spj.sophos_pid = primary_item_spid) AS text) cmd_line, 
-    CASE
-    WHEN threat_source = 'HMPA' THEN regex_match(raw, '(Process Trace).*(?=Thumbprint)', 0)
-    ELSE '-' END As Process_Trace,
-    'Detection Journal/Users' AS Data_Source,
-    'Sophos Detection' AS Query
-FROM sophos_detections_journal
-WHERE item_detected LIKE '%$$filename$$%'
-    AND time >= $$start_time$$
-    AND time <= $$end_time$$
 
+SELECT
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(detection.time,'unixepoch')) AS date_time,
+CAST(detection.primary_item_name AS TEXT) AS item_detected,
+detection.detection_name As threat_name,
+detection.threat_source As threat_detection,
+CASE 
+    WHEN detection.threat_source = 'Device Control' THEN NULL 
+    ELSE detection.detection_thumbprint
+END AS thumbprint,
+CASE
+    WHEN JSON_EXTRACT(detection.primary_item, '$.action') = 0 THEN 'Not Blocked'
+    WHEN JSON_EXTRACT(detection.primary_item, '$.action') = 1 THEN 'Blocked'
+    WHEN JSON_EXTRACT(detection.primary_item, '$.action') = 'alertedOnly' THEN 'alertedOnly'
+    WHEN JSON_EXTRACT(detection.primary_item, '$.blocked') = 1 THEN 'Blocked'
+    WHEN JSON_EXTRACT(detection.primary_item, '$.blocked') = 0 THEN 'Not Blocked'
+    WHEN JSON_EXTRACT(detection.primary_item, '$.cleanUp') = 0  THEN 'Not Cleaned'
+    WHEN JSON_EXTRACT(detection.primary_item, '$.cleanUp') = 1 THEN 'Cleaned'
+    ELSE NULL 
+END AS status,
+detection.primary_item_type As type,
+detection.sid,
+u.username,
+detection.primary_item_spid As sophos_pid,
+CASE 
+    WHEN detection.primary_item_spid IS NOT NULL THEN CAST(process.cmd_line AS TEXT) 
+    ELSE NULL
+END AS cmd_line,
+CASE 
+    WHEN detection.threat_source = 'HMPA' THEN regex_match(raw, '(Process Trace).*(?=Thumbprint)', 0)
+    ELSE NULL 
+END As Process_Trace,
+detection.raw,
+'Detection Journal/Users' AS Data_Source,
+'Sophos Detection' AS Query
+FROM sophos_detections_journal detection
+LEFT JOIN users AS u 
+    ON detection.sid = u.uuid
+LEFT JOIN sophos_process_journal AS process 
+    ON detection.primary_item_spid = process.sophos_pid
+WHERE detection.raw LIKE '$$filename$$'
+    AND detection.time >= $$start_time$$
+    AND detection.time <= $$end_time$$
+GROUP BY detection.time
 
