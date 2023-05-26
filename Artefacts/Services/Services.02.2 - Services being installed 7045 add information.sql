@@ -59,10 +59,10 @@ we.provider_name,
 'Services being installed 7045 with add information' AS query
 FROM windows_events AS we
 LEFT JOIN hash AS h ON
-    h.path LIKE we.path_formatted
+    h.path LIKE LOWER(we.path_formatted)
 LEFT JOIN sophos_file_properties AS sfp ON
-    sfp.path = we.path_formatted
+    sfp.path = LOWER(we.path_formatted)
 LEFT JOIN file 
-    ON we.path_formatted = file.path
+    ON LOWER(we.path_formatted) = file.path
 LEFT JOIN users u 
     ON we.user_id = u.uuid
