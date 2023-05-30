@@ -7,9 +7,6 @@
 | %SystemRoot%\appcompat\pca folder. The file saves the full path of a GUI-based |
 | program and the last execution timestamp (UTC)                                 |
 |                                                                                |
-| VARIABLE                                                                       |
-| - path (TYPE: string)                                                          |
-|                                                                                |
 | REFERENCE                                                                      |
 | https://aboutdfir.com/new-windows-11-pro-22h2-evidence-of-execution-artifact/  |
 |                                                                                |
