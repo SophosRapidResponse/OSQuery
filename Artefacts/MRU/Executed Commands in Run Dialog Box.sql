@@ -20,10 +20,10 @@
 \********************************************************************************/
 
 SELECT 
-    datetime(mtime,'unixepoch') AS modified_time,
+    strftime('%Y-%m-%dT%H:%M:%SZ',datetime(mtime,'unixepoch')) AS last_modified_time,
+    REPLACE(data,'\1','') AS command,
+    name,
     key, 
-    name, 
-    data,
     u.username,
     regex_match(path,'(S-[0-9]+(-[0-9]+)+)', '') AS sid,
     'registry/user' AS source,
@@ -31,5 +31,4 @@ SELECT
 FROM registry 
 LEFT JOIN  users u ON sid = u.uuid
 WHERE path LIKE 'HKEY_USERS\%\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU\%'
-    AND u.username LIKE '$$username$$' 
-    AND sid LIKE '$$user_sid$$'
+AND name <> 'MRUList'
