@@ -23,27 +23,30 @@ WITH for(x) AS (
 )
 
 SELECT DISTINCT
-   strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS date_time,
-   spj.path, 
-   spj.process_name,
-   spj.cmd_line,
-   spj.sophos_pid, 
-   strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS Process_Start_Time, 
-   CASE WHEN spj.end_time = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) END AS Process_End_Time, 
-   u.username,
-   spj.sid,
-   spj.sha256,
-   spj.file_size,  
-   CASE WHEN f.btime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) ELSE 'Not on disk' END AS creation_time,
-   CASE WHEN f.ctime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) ELSE 'Not on disk' END AS last_changed,
-   CASE WHEN f.mtime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) ELSE 'Not on disk' END AS modified_time,
-   CASE WHEN f.atime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) ELSE 'Not on disk' END AS last_accessed,
-   spj.parent_sophos_pid, 
-   CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
-   'Process Journal/File/Users' AS Data_Source,
-   'Process.05.0' AS Query 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS date_time,
+spj.path, 
+spj.process_name,
+spj.cmd_line,
+spj.sophos_pid, 
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS Process_Start_Time, 
+CASE 
+   WHEN spj.end_time = 0 THEN '' 
+   ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) 
+END AS Process_End_Time, 
+u.username,
+spj.sid,
+spj.sha256,
+spj.file_size,  
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) AS creation_time,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.ctime,'unixepoch')) AS last_changed,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) AS modified_time,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) AS last_accessed,
+spj.parent_sophos_pid, 
+CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
+'Process Journal/File/Users' AS Data_Source,
+'Process.05.0' AS Query 
 FROM for
- LEFT JOIN sophos_process_journal spj ON spj.time >= for.x and spj.time <= for.x+1200  
+ LEFT JOIN sophos_process_journal spj 
+   ON spj.time >= for.x and spj.time <= for.x+1200
  LEFT JOIN users u ON spj.sid = u.uuid
  LEFT JOIN file f ON spj.path = f.path
-GROUP BY spj.time, spj.sophos_pid, spj.cmd_line

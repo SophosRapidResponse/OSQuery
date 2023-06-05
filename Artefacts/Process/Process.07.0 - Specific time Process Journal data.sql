@@ -14,32 +14,33 @@
 | or you could use the other query 'Process.04.0' which is better for mass       |
 | collection across multiple days.                                               |
 |                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 SELECT 
-    strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS date_time,
-    spj.path,
-    spj.process_name,
-    spj.cmd_line,
-    spj.sophos_pid,
-    CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS TEXT) AS Process_Start_Time, 
-    CASE WHEN spj.end_time = 0 THEN '' ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch'))  END AS Process_End_Time,
-    spj.sid,
-    u.username,
-    spj.sha256,
-    CASE WHEN f.btime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) ELSE 'Not on disk' END AS creation_time,
-    CASE WHEN f.mtime != '' THEN strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) ELSE 'Not on disk' END AS modified_time,
-    spj.parent_sophos_pid,
-    CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
-    'Process Journal/Users/File' AS Data_Source,
-    'Process.07.0' AS Query
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.time,'unixepoch')) AS date_time,
+spj.path,
+spj.process_name,
+spj.cmd_line,
+spj.sophos_pid,
+CAST(strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.process_start_time,'unixepoch')) AS TEXT) AS Process_Start_Time, 
+CASE 
+    WHEN spj.end_time = 0 THEN NULL 
+    ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(spj.end_time,'unixepoch')) 
+END AS Process_End_Time,
+spj.sid,
+u.username,
+spj.sha256,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) AS creation_time,
+strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.btime,'unixepoch')) AS modified_time,
+spj.parent_sophos_pid,
+CAST ( (Select spj2.cmd_line from sophos_process_journal spj2 where spj2.sophos_pid = spj.parent_sophos_pid) AS text) parent_cmd_line,
+'Process Journal/Users/File' AS Data_Source,
+'Process.07.0' AS Query
 FROM sophos_process_journal spj
 LEFT JOIN users u ON spj.sid = u.uuid
 LEFT JOIN file f ON spj.path = f.path
-WHERE spj.time >= $$start_time$$
-    AND spj.time <= $$end_time$$
-GROUP BY spj.time, spj.sophos_pid, spj.cmd_line
-ORDER BY spj.time DESC
+WHERE spj.time >= CAST($$start_time$$ AS INT)
+    AND spj.time <= CAST($$end_time$$ AS INT)
