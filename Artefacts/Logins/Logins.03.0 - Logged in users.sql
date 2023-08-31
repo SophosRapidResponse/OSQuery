@@ -8,7 +8,7 @@
 \********************************************************************************/
 
 SELECT
-strftime('%Y-%m-%dT%H:%M:%SZ', datetime(time,'unixepoch')) datetime,
+strftime('%Y-%m-%dT%H:%M:%SZ', datetime(time,'unixepoch')) date_time,
 type,
 user,
 tty,
