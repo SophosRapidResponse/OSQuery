@@ -1,13 +1,11 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets all RDP login events (EID 1149,21,22,25)from Terminal Services Remote and |
-| Local Session Connections in which the source IP is coming from an external IP |
-| range. The query might output "unknown" when source ip is under the IPv6 range |
+| Gets RDP login events from the Terminal Services Remote (EID 1149) and Local   |
+| Session Connections (EID 21,22,25) event logs which the source IP is coming    |
+| from an external IP range. "unknown" results are given when the source IP is   |
+| under the IPv6 range                                                           |
 |                                                                                |
-| REFERENCE                                                                      |
-| https://attack.mitre.org/techniques/T1021/001/                                 |
-|                                                                                |
-| Version: 1.0                                                                   |
+| Version: 1.1                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -21,10 +19,10 @@ CASE eventid
    WHEN 25 THEN eventid || ' - Session reconnection successful'
    ELSE NULL
 END AS description,
-'TS LocalSession' AS source,
 JSON_EXTRACT(data, '$.UserData.User') AS username,
 SUBSTR(JSON_EXTRACT(data, '$.UserData.User'), 1, INSTR(JSON_EXTRACT(data, '$.UserData.User'), '\') - 1) AS domain,
 JSON_EXTRACT(data, '$.UserData.Address') AS source_IP,
+JSON_EXTRACT(data, '$.UserData.SessionID') AS session_ID,
 CASE
     WHEN JSON_EXTRACT(data, '$.UserData.Address') GLOB '*[a-zA-Z]*' THEN 'private_IP'
     WHEN INSTR(JSON_EXTRACT(data, '$.UserData.Address'), '192.168.') = 1 THEN 'private_IP'  
@@ -36,6 +34,7 @@ CASE
     WHEN JSON_EXTRACT(data, '$.UserData.Address') = '' THEN 'private_IP'
    ELSE 'external_IP'
 END AS status,
+'TS LocalSession EVTX' AS data_source,
 'Logins.01.4' AS query
 FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operational'
@@ -51,10 +50,10 @@ CASE eventid
    WHEN 1149 THEN eventid || ' - User authentication succeeded'
    ELSE NULL
 END AS description,
-'TS RemoteConnection' AS source,
 JSON_EXTRACT(data, '$.UserData.Param1') AS username,
 JSON_EXTRACT(data, '$.UserData.Param2') AS domain,
 JSON_EXTRACT(data, '$.UserData.Param3') AS source_IP,
+NULL AS Session_ID,
 CASE
     WHEN INSTR(JSON_EXTRACT(data, '$.UserData.Param3'), '192.168.') = 1 THEN 'private_IP'
     WHEN INSTR(JSON_EXTRACT(data, '$.UserData.Param3'), '172.') = 1 AND CAST(SUBSTR(JSON_EXTRACT(data, '$.UserData.Param3'), 5, 2) AS INTEGER) BETWEEN 16 AND 31 THEN 'private_IP'
@@ -65,6 +64,7 @@ CASE
     WHEN JSON_EXTRACT(data, '$.UserData.Param3') = '' THEN 'private_IP'
     ELSE 'external_IP'
 END AS status,
+'TS RemoteConnection EVTX' AS data_source,
 'Logins.01.4' AS query
 FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'
