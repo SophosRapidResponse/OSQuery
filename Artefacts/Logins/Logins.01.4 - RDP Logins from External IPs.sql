@@ -1,9 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets RDP login events from the Terminal Services Remote (EID 1149) and Local   |
-| Session Connections (EID 21,22,25) event logs which the source IP is coming    |
-| from an external IP range. "unknown" results are given when the source IP is   |
-| under the IPv6 range                                                           |
+| Gets RDP login events from the Terminal Services Remote EID 1149 and Local     |
+| Session Connections EID 21,22,25 event logs which the source IP is coming from |
+| an external IP range. "unknown" results are given when the source IP is within |
+| the IPv6 range.                                                                |
 |                                                                                |
 | Version: 1.1                                                                   |
 | Author: The Rapid Response Team                                                |
@@ -70,3 +70,4 @@ FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'
     AND eventid = 1149
     AND (status = 'external_IP' OR status = 'unknown')
+
