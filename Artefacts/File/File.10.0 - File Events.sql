@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Gets all file events (creation, deletion, renamed) that occurred in a specific |
-| file or directory. The query also provides information about the process linked|
-| to the file event as well as the user ID.                                      |                                                                       
+| file or directory. Provides information about the process associated to the    |
+| file event as well as the user SID.                                            |
 |                                                                                |
 | Useful to run against the TA working directory or any other folder of interest |
 |                                                                                |
@@ -10,6 +10,7 @@
 | - path        (type: string)                                                   |
 | - start_time  (type: date)                                                     |
 | - end_time    (type: date)                                                     |
+| - sophos_pid  (type: string)                                                   |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
@@ -61,6 +62,7 @@ spj.sid
 FROM sophos_file_journal sfj
 JOIN sophos_process_journal spj USING (sophos_pid)
 WHERE sfj.path LIKE '$$path$$'
+AND sfj.sophos_pid LIKE '$$sophos_pid$$'
 AND sfj.time >= $$start_time$$
 AND sfj.time <= $$end_time$$
 
