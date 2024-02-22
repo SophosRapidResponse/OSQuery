@@ -7,6 +7,7 @@
 | Details in the XML include the new user created, email address and details for  |
 | the password change.                                                            |
 |                                                                                 |
+| Query Type: Endpoint                                                            |
 | Author: The Rapid Response Team  | Lee Kirkpatrick                              |
 | github.com/SophosRapidResponse                                                  |
 \*********************************************************************************/

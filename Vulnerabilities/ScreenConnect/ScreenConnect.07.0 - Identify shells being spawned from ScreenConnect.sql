@@ -14,6 +14,7 @@
 | The parent_cmdline field contains the version number. If this is under 23.9.8  |
 | then it is vulnerable version of ScreenConnect.                                |
 |                                                                                |
+| Query Type: Data Lake                                                          |
 | Author: MDR Team                                                               |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -45,7 +46,6 @@ WITH main_query AS (
  WHERE
  query_name = 'running_processes_windows_sophos'
  AND lower(parent_name) LIKE '%screenconnect.clientservice.exe%'
- AND lower(name) IN ('cmd.exe','powershell.exe')
 ),
 clean_query AS (
  SELECT

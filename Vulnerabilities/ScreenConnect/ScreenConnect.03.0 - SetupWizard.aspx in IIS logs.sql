@@ -6,6 +6,7 @@
 | The query will bring results when finding the string: SetupWizard.aspx/ in IIS |
 | logs.                                                                          |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Author: The Rapid Response Team | Lee Kirkpatrick                              |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/

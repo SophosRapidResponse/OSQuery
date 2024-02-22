@@ -3,21 +3,25 @@
 | Identifies machines running ScreenConnect Server vulnerable to Authentication  |
 | Bypass (CVE-2024-1709 & CVE-2024-1708)                                         |
 |                                                                                |
-| Author: The Rapid Response Team | Elida Leite                                  |
+| Query Type: Data Lake                                                          |
+| Author: The MDR team                                                           |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
-SELECT DISTINCT
-   f.filename,
-   f.path,
-   f.product_version,
-    'file' AS data_source,
-    'ScreenConnect.02.' AS query
- FROM
-   file AS f
- JOIN
-   (SELECT REPLACE(path, '"', '') AS path FROM services WHERE name = 'ScreenConnect Web Server') AS s
- ON
-   f.path = s.path
- WHERE
-   (f.product_version < '23.9.8' OR f.product_version LIKE '23.9.7%');
+SELECT
+    customer_id,
+    meta_hostname,
+    name,
+    version,
+    language,
+    install_source,
+    publisher,
+    identifying_number,
+    install_date
+FROM
+xdr_data
+WHERE
+  licence = 'MTR'
+  AND query_name = 'windows_programs'
+AND LOWER(name) = 'screenconnect'
+and version < '23.9.8%
