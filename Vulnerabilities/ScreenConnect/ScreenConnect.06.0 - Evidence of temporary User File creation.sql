@@ -4,8 +4,8 @@
 | This file can be an indicator for possible exploitation of CVE-2024-1709.      |
 |                                                                                |
 | VARIABLES                                                                      |
-| - start_time                                                                   |
-| - end-time                                                                     |
+| - begin_time                                                                   |
+| - end_time                                                                     |
 |                                                                                |
 | CVE-2024-1708 and CVE-2024-1709                                                |
 | https://www.huntress.com/blog/a-catastrophe-for-control-understanding-the-     |
@@ -28,5 +28,5 @@ JOIN sophos_process_journal USING (sophos_pid)
 WHERE
 sfj.path LIKE 'C:\Windows\Temp\ScreenConnect\%\%.xml'
 AND sfj.event_type = 0
-AND sfj.time > $$start_time$$
+AND sfj.time > $$begin_time$$
 AND sfj.time < $$end_time$$

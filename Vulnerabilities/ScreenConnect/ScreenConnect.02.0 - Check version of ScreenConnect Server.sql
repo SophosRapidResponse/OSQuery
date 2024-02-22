@@ -3,7 +3,7 @@
 | Identifies machines running ScreenConnect Server vulnerable to Authentication  |
 | Bypass (CVE-2024-1709 & CVE-2024-1708)                                         |
 |                                                                                |
-| Author: The Rapid Response Team                                                |
+| Author: The Rapid Response Team | Elida Leite                                  |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 

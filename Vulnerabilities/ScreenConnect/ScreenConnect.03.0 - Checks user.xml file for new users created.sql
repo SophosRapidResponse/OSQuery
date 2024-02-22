@@ -1,13 +1,13 @@
 /*************************** Sophos.com/RapidResponse ****************************\
 | DESCRIPTION                                                                     |
-| Checka the User.xml file found in the ScreenConnect\App_Data folder for possible|
+| Check the User.xml file found in the ScreenConnect\App_Data folder for possible |
 | signs of exploitation in the ScreenConnect Server. The content of the file will |
 | be updated when an attacker executes the exploit and creates a new user.        |
 |                                                                                 |
-| Details in the XML include the new user created, email address,and details for  |
+| Details in the XML include the new user created, email address and details for  |
 | the password change.                                                            |
 |                                                                                 |
-| Author: The Rapid Response Team                                                 |
+| Author: The Rapid Response Team  | Lee Kirkpatrick                              |
 | github.com/SophosRapidResponse                                                  |
 \*********************************************************************************/
 

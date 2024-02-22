@@ -2,10 +2,11 @@
 | DESCRIPTION                                                                     |
 | Identify the IP addresses that the ScreenConnect application running on machines|
 | is connecting to. these IP addresses can be utilized in external tools like     |
-| Shodan to assess if the ScreenConnect server corresponding to these endpoints   |
-| is vulnerable to CVE-2024-1709 and CVE-2024-1708.                               |
+| Shodan.io and Censys.io to assess if the ScreenConnect server corresponding to  |
+| these endpoints is vulnerable to CVE-2024-1709 and CVE-2024-1708.               |
 |                                                                                 |
-| Author: The Rapid Response Team                                                 |
+| Query type: Data Lake                                                           |
+| Author: The Rapid Response Team | Elida Leite                                   |
 | github.com/SophosRapidResponse                                                  |
 \*********************************************************************************/
 

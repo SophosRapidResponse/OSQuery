@@ -3,11 +3,10 @@
 | Look for the trailing slash after SetupWizard.aspx in the IIS logs, which can  |
 | be an indicator of possible exploitation of Screenconnect auth bypass.         |
 |                                                                                |
-| The query will bring results when finding the string: SetupWizard.aspx in IIS  |
-| logs for February 2024. To allow the query to be adaptable for other months,   |
-| you can change the value for filename: u_ex_YYMM%.log.                         |
+| The query will bring results when finding the string: SetupWizard.aspx/ in IIS |
+| logs.                                                                          |
 |                                                                                |
-| Author: The Rapid Response Team                                                |
+| Author: The Rapid Response Team | Lee Kirkpatrick                              |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 

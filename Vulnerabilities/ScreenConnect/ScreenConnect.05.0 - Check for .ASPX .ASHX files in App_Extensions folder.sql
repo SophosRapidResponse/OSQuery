@@ -1,13 +1,13 @@
 /*************************** Sophos.com/RapidResponse ****************************\
 | DESCRIPTION                                                                     |
 | Detect potential exploitation of CVE-2024-1708 on a machine hosting a           |
-| ScreenConnect server by looking for .ASPX files written in the                  |
+| ScreenConnect server by looking for .ASPX and .ASHX files written in the        |
 | \ScreenConnect\App_Extensions folder.                                           |
 |                                                                                 |
 | https://www.huntress.com/blog/a-catastrophe-for-control-understanding-the-      |
 | screenconnect-authentication-bypass                                             |
 |                                                                                 |
-| Author: The Rapid Response Team                                                 |
+| Author: The Rapid Response Team | Lee Kirkpatrick                               |
 | github.com/SophosRapidResponse                                                  |
 \*********************************************************************************/
 
