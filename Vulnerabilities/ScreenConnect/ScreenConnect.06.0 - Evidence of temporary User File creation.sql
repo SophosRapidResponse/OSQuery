@@ -11,7 +11,7 @@
 | https://www.huntress.com/blog/a-catastrophe-for-control-understanding-the-     |
 | screenconnect-authentication-bypass                                            |
 |                                                                                |
-| Author: The Rapid Response Team                                                |
+| Author: The Rapid Response Team | Lee Kirkpatrick                              |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 

@@ -8,8 +8,8 @@
 | been patched already by ConnectWise.                                           |
 |                                                                                |
 | If the description field results shows 'Self-Hosted' then the command lines    |
-| being spawned are from a self-hosted version of ScreenConnect that is very     |
-| possibly vulnerable and may have been exploited.                               |
+| being spawned are from a self-hosted version of ScreenConnect that is          |
+| potentially vulnerable and may have been exploited.                            |
 |                                                                                |
 | The parent_cmdline field contains the version number. If this is under 23.9.8  |
 | then it is vulnerable version of ScreenConnect.                                |
