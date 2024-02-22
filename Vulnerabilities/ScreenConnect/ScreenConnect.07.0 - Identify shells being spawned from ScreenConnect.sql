@@ -11,6 +11,7 @@
 | being spawned are from a self-hosted version of ScreenConnect that is          |
 | potentially vulnerable and may have been exploited.                            |
 |                                                                                |
+| The value in instance_url field provides the name of the On-Prem Server        |
 | The parent_cmdline field contains the version number. If this is under 23.9.8  |
 | then it is vulnerable version of ScreenConnect.                                |
 |                                                                                |
