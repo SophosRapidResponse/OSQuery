@@ -26,4 +26,4 @@ WHERE
   licence = 'MTR'
   AND query_name = 'windows_programs'
 AND LOWER(name) = 'screenconnect'
-and version < '23.9.8%
+and version < '23.9.8%'
