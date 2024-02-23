@@ -18,7 +18,7 @@ grep.line,
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.mtime,'unixepoch')) AS 'last_modified_time', 
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.btime,'unixepoch')) AS 'created_time',
 'file' AS data_source,
-'ScreenConnect.03.' AS query
+'ScreenConnect.04.' AS query
 FROM file 
 CROSS JOIN grep ON (grep.path = file.path) 
 WHERE 

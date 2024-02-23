@@ -22,7 +22,7 @@ strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.mtime,'unixepoch')) AS 'Last_Modified(m
 strftime('%Y-%m-%dT%H:%M:%SZ',datetime(f.atime,'unixepoch')) AS 'Last_Accessed(atime)', 
 h.sha256,
 'file' AS data_source,
-'ScreenConnect.05.' AS query
+'ScreenConnect.06.' AS query
 FROM file f 
 JOIN hash h ON f.path = h.path 
 WHERE 

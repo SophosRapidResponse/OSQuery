@@ -13,7 +13,7 @@ SELECT DISTINCT
    f.path,
    f.product_version,
     'file' AS data_source,
-    'ScreenConnect.02.' AS query
+    'ScreenConnect.01.' AS query
  FROM
    file AS f
  JOIN

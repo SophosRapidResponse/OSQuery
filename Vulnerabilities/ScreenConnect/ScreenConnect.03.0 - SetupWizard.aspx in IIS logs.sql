@@ -20,7 +20,7 @@ SELECT
     strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.mtime,'unixepoch')) AS 'last_modified_time', 
     strftime('%Y-%m-%dT%H:%M:%SZ',datetime(file.btime,'unixepoch')) AS 'created_time',
     'grep/file' AS data_source,
-    'ScreenConnect.01.' AS Query
+    'ScreenConnect.03.' AS Query
 FROM 
     file
 CROSS JOIN 

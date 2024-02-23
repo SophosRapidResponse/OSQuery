@@ -82,7 +82,8 @@ SELECT
  main_query.cmdline AS parent_cmdline,
  clean_query.cmdline AS cmdline,
  clean_query.sophos_pid AS process_id,
- 'datalake' AS source_data
+ 'datalake' AS source_data,
+ 'ScreenConnect.07.' AS query
 FROM
  clean_query
  JOIN main_query ON clean_query.parent_sophos_pid = main_query.sophos_pid
