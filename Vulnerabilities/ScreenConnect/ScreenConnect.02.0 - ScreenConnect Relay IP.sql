@@ -30,7 +30,7 @@ JOIN
 ON
     data.cmdline = s.cmdline
 'datalake' AS data_source,
-'ScreenConnect.04.' AS query
+'ScreenConnect.02.' AS query
 WHERE query_name = 'running_processes_windows_sophos'
 AND data.name LIKE 'ScreenConnect.%.exe'
 AND (s.remote_address NOT LIKE '192.168.%' OR s.remote_address NOT LIKE '10.%')

@@ -17,7 +17,9 @@ SELECT
     install_source,
     publisher,
     identifying_number,
-    install_date
+    install_date,
+    'datalake' AS data_source,
+    'ScreenConnect.01.1' AS query
 FROM
 xdr_data
 WHERE

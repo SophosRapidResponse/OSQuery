@@ -23,7 +23,7 @@ sophos_process_journal.cmd_line,
 sfj.path,
 sfj.file as 'filename',
 'process/file journals' AS data_source,
-'ScreenConnect.06.' AS query
+'ScreenConnect.05.' AS query
 FROM sophos_file_journal AS sfj
 JOIN sophos_process_journal USING (sophos_pid)
 WHERE
