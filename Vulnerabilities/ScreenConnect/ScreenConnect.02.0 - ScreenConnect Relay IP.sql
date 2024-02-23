@@ -23,14 +23,14 @@ CASE
     WHEN s.remote_address LIKE '10.%' THEN 'private_IP'
     WHEN s.remote_address LIKE '127.%' THEN 'private_IP'
     ELSE 'public_IP'
-END AS ip_classification
+END AS ip_classification,
+'datalake' AS data_source,
+'ScreenConnect.02.' AS query
 FROM xdr_data data
 JOIN
     (SELECT remote_address, remote_port, cmdline FROM xdr_data WHERE query_name = 'open_sockets') AS s
 ON
     data.cmdline = s.cmdline
-'datalake' AS data_source,
-'ScreenConnect.02.' AS query
 WHERE query_name = 'running_processes_windows_sophos'
 AND data.name LIKE 'ScreenConnect.%.exe'
 AND (s.remote_address NOT LIKE '192.168.%' OR s.remote_address NOT LIKE '10.%')
