@@ -7,17 +7,14 @@
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 WITH public_ip AS (
-    SELECT SUBSTR(result, 1, LENGTH(result) - 1) AS ip FROM curl WHERE url='
-https://ipv4.icanhazip.com'
+    SELECT SUBSTR(result, 1, LENGTH(result) - 1) AS ip FROM curl WHERE url='https://ipv4.icanhazip.com'
 ),
 shodan_response AS (
     SELECT result AS shodan_result 
-    FROM curl WHERE url=CONCAT('
-https://api.shodan.io/shodan/host/'
-, (SELECT ip FROM public_ip), '?key=$$shodan_key$$')
+    FROM curl WHERE url=CONCAT('https://api.shodan.io/shodan/host/', (SELECT ip FROM public_ip), '?key=$$shodan_key$$')
 )
 SELECT 
-   (SELECT ip from public_ip) as IP,
+   (SELECT ip from public_ip) as ip,
     JSON_EXTRACT((SELECT shodan_result FROM shodan_response), '$.city') AS City,
     JSON_EXTRACT((SELECT shodan_result FROM shodan_response), '$.country_name') AS Country,
     JSON_EXTRACT((SELECT shodan_result FROM shodan_response), '$.os') AS OS,
