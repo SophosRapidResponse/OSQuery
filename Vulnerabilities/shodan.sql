@@ -3,7 +3,7 @@
 | Use the Shodan API to get information on the public IP of each device		 	 |
 |                                                                                |
 | Query Type: Endpoint                                                           |
-| Author: @mvaldivieso                                 				 |
+| Author: @mvaldivieso                                 				 			 |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 WITH public_ip AS (
