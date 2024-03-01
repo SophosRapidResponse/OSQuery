@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Use the Shodan API to get information the public IP of each device		 |
+| Use the Shodan API to get information on the public IP of each device		 	 |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Author: @mvaldivieso                                 				 |
