@@ -1,3 +1,15 @@
+/*************************** Sophos.com/RapidResponse ***************************\
+| DESCRIPTION                                                                    |
+| Extracts and converts the hexadecimal wordsheel values from NTUSER             |
+|                                                                                |
+|                                                                                |
+| Query Type: Endpoint                                                           |
+| Version: 1.0                                                                   |
+| Author: The Rapid Response Team | Lee Kirkpatrick                              |
+| github.com/SophosRapidResponse                                                 |
+\********************************************************************************/
+
+
 WITH RECURSIVE
   hex_conversion AS (
     SELECT
@@ -62,3 +74,4 @@ JOIN
   hex_conversion hex ON p.data = hex.data
 WHERE
   p.remaining = 0;
+
