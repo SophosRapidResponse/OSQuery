@@ -58,13 +58,11 @@ OR name LIKE '%Remote Utilities%'
 OR name LIKE '%SupRemo%'
 OR name LIKE '%TigerVNC%'
 OR name LIKE '%UltraViewer%'
-OR name LIKE 'TightVNC%'
-OR name LIKE 'TightVNC%'
-OR name LIKE 'TightVNC%'
-OR name LIKE 'TightVNC%'
-OR name LIKE 'TightVNC%'
-OR name LIKE 'TightVNC%'
-OR name LIKE 'TightVNC%'
+OR name LIKE '%tacticalrmm%'
+OR name LIKE '%meshcentral%'
+OR name LIKE '%remotepc%'
+OR name LIKE '%rustdesk%'
+OR name LIKE '%action1%'
 
 UNION ALL
 
