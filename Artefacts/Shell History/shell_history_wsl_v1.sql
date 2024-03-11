@@ -1,6 +1,6 @@
  /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Pulls the bash history WSL                                                     |
+| Pulls the bash history for WSL version 1 devices                               |
 |                                                                                |
 |                                                                                |
 | Query Type: Endpoint                                                           |
