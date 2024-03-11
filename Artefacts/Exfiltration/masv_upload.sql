@@ -10,9 +10,9 @@
 \********************************************************************************/
 
 SELECT grep.*
-	FROM file
-	CROSS JOIN grep ON (grep.path = file.path)
-	WHERE 
-  file.path LIKE 'C:\Users\%\AppData\Roaming\masv\logs\main.log'
-  AND
-	grep.pattern IN ('upload','Upload')
+FROM file
+CROSS JOIN grep ON (grep.path = file.path)
+WHERE 
+file.path LIKE 'C:\Users\%\AppData\Roaming\masv\logs\main.log'
+AND
+grep.pattern IN ('upload','Upload')
