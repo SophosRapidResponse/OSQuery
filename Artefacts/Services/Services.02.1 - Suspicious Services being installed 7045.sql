@@ -95,7 +95,7 @@ CASE
 ELSE NULL
 END AS 'Description',
 'System.evtx' AS Data_Source,
-'Services.02.0' AS Query
+'Services.02.1' AS Query
 FROM sophos_windows_events swe
 LEFT JOIN users u ON swe.user_id = u.uuid
 WHERE swe.source = 'System' 
