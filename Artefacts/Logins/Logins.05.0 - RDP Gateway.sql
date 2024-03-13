@@ -6,6 +6,7 @@
 | Should be run on servers that have RD Gateway service installed. Returns user  |
 | information, device information, and connection details.                       |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -33,3 +34,4 @@ JSON_EXTRACT(data,'$.UserData.SessionDuration') AS session_duration,
 FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TerminalServices-Gateway/Operational'
     AND eventid IN (302,303)
+    AND time > 0

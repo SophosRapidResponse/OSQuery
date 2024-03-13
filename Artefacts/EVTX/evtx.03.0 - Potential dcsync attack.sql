@@ -23,7 +23,7 @@
 | - Correlate events 4662 and 4624 (Logon Type 3) on the DC that received the    |
 | replication request to check if the request came from other DC or not          |
 |                                                                                |
-| #!PLATFORM_TYPE = windows                                                      |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The rapid response team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -55,6 +55,7 @@ WHERE source = 'Security'
             OR JSON_EXTRACT(data, '$.EventData.Properties') LIKE '%9923a32a-3607-11d2-b9be-0000f87a36b2%'
             OR JSON_EXTRACT(data, '$.EventData.Properties') LIKE '%Replicating Directory Changes all%'
         )
+    AND time > 0
 )
 
 SELECT 

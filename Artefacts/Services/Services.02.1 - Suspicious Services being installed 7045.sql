@@ -11,6 +11,7 @@
 | is still human readable and can be decoded with CyberChef here:                |
 | https://tinyurl.com/2db7zxyk                                                   |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Author: @AltShiftPrtScn & Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -94,7 +95,7 @@ CASE
 ELSE NULL
 END AS 'Description',
 'System.evtx' AS Data_Source,
-'Services.02.0' AS Query
+'Services.02.1' AS Query
 FROM sophos_windows_events swe
 LEFT JOIN users u ON swe.user_id = u.uuid
 WHERE swe.source = 'System' 
@@ -132,6 +133,7 @@ OR Service_Name LIKE '%KrbSCM%'
 OR Image_Path LIKE '%krbrelay%'
 OR Image_Path LIKE '%echo%\pipe\%'
 )
+AND swe.time > 0
 )
 
 SELECT

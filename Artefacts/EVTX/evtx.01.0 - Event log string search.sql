@@ -10,6 +10,7 @@
 | TIP                                                                            |
 | Think of this query as what you run when you are out of ideas :-)              |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn & Bill Kearney                                         |
 | github.com/SophosRapidResponse                                                 |
@@ -39,3 +40,4 @@ source LIKE 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operatio
 source LIKE 'Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational' OR
 source LIKE 'Microsoft-Windows-TerminalServices-Printers/Operational' OR
 source LIKE 'OAlerts')
+AND time > 0

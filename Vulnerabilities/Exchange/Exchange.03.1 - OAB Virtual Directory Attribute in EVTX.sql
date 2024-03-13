@@ -11,6 +11,7 @@
 | ExchangeOABVirtualDirectoryAttributeContainingPotentialWebshell.yaml                    |
 | https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5136|
 |                                                                                         |
+| Query Type: Endpoint                                                                    |
 | Author: The Rapid Response Team                                                         |
 | github.com/SophosRapidResponse                                                          |
 \*****************************************************************************************/
@@ -38,4 +39,5 @@ AND source = 'Security'
 AND JSON_EXTRACT(data, '$.EventData.ObjectClass') LIKE '%msExchOABVirtualDirectory%'
 AND JSON_EXTRACT(data, '$.EventData.AttributeLDAPDisplayName') IN ('msExchExternalHostName', 'msExchInternalHostName')
 AND JSON_EXTRACT(data, '$.EventData.AttributeValue') LIKE '%script%'
+AND time > 0
 ORDER BY event_time DESC

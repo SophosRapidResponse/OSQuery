@@ -10,6 +10,7 @@
 | REFERENCE:                                                                     |
 | - https://attack.mitre.org/techniques/T1003/003/                               |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author:  Robert Weiland                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -29,3 +30,4 @@ WHERE source = 'Application'
 AND Provider_Name = 'ESENT' 
 AND eventid = 325 
 AND data like '%ntds.dit%'
+AND time > 0

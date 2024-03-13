@@ -7,6 +7,7 @@
 | REFERENCE:                                                                     |
 | https://support.kaspersky.com/KESWin/11.6.0/en-US/209858.htm                   |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -29,5 +30,6 @@ data AS raw,
 FROM sophos_windows_events 
 WHERE source = 'Kaspersky Endpoint Security'
     AND eventid IN ('302', '303', '331')
+    AND time > 0
 ORDER BY datetime DESC
 

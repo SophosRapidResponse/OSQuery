@@ -12,6 +12,7 @@
 | https://blog.netwrix.com/2021/11/30/how-to-detect-pass-the-hash-attacks/             |
 | https://attack.mitre.org/techniques/T1550/002/                                       |
 |                                                                                      |
+| Query Type: Endpoint                                                                 |
 | Version: 1.0                                                                         |
 | Author: The Rapid Response Team | Stephen McNally                                    |
 | github.com/SophosRapidResponse                                                       |
@@ -35,3 +36,4 @@ WHERE
     AND Logon_Type = 9
     AND Auth_Package = 'Negotiate' 
     AND Logon_Process = 'seclogo'
+    AND time > 0

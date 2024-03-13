@@ -13,6 +13,7 @@
 | https://attack.mitre.org/techniques/T1558/001/                                         |
 | https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4769|
 |                                                                                        |
+| Query Type: Endpoint                                                                   |
 | Author: The Rapid Response Team                                                        |
 | github.com/SophosRapidResponse                                                         |
 \****************************************************************************************/
@@ -37,3 +38,4 @@ WHERE
     AND Service_Name LIKE '%$'
     AND Ticket_Option IN ('0x40810000','0x40800000','0x40810010') 
     AND Ticket_Encryption IN ('0x17','0x18')
+    AND time > 0

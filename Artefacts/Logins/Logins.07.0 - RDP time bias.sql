@@ -6,6 +6,7 @@
 | zone from the customer maybe suspicious. Run the RDP logins query to find the  |
 | user that logged in around that time.                                          |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -20,3 +21,4 @@ JSON_EXTRACT(data, '$.EventData.TimezoneBiasHour') AS timezone_bias_hour,
 FROM sophos_windows_events  
 WHERE source = 'Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational' 
     AND eventid IN (104)
+    AND time > 0

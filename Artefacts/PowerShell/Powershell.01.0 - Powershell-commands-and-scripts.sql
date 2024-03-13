@@ -17,6 +17,7 @@
 | there. So if you spot a long script that ends abruptly open it in NotePad to   |
 | double check.                                                                  |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.3                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -57,6 +58,7 @@ FROM sophos_windows_events
 WHERE source = 'Windows PowerShell' 
    AND eventid = 400
    AND Script !=''
+   AND time > 0
 
 UNION ALL
 

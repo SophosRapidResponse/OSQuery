@@ -11,6 +11,7 @@
 | TIP                                                                            |
 | Use wildcards for each variable if you want to bring all users back.           |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -41,3 +42,4 @@ WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Opera
 AND eventid = 1149 
 AND JSON_EXTRACT(data, '$.UserData.Param1') LIKE '$$username$$' 
 AND JSON_EXTRACT(data, '$.UserData.Param3') LIKE '$$source_ip$$'
+AND time > 0

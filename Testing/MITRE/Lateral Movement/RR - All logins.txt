@@ -18,6 +18,7 @@ JSON_EXTRACT(data, '$.UserData.Param3') AS Source_IP,
 '-' AS Session_ID 
 FROM sophos_windows_events 
 WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational' and eventid = 1149 
+AND time > 0
 UNION ALL 
 SELECT datetime, eventid, 
 CASE   
@@ -35,6 +36,7 @@ JSON_EXTRACT(data, '$.EventData.TargetUserSid') AS User_SID,
 '-' AS Session_ID 
 FROM sophos_windows_events 
 WHERE source = 'Security' and (eventid = 4624 OR eventid = 4625) 
+AND time > 0
 UNION ALL 
 SELECT datetime, eventid, 
 CASE   
@@ -57,4 +59,6 @@ JSON_EXTRACT(data, '$.UserData.Address') AS Source_IP,
 JSON_EXTRACT(data, '$.UserData.Session') AS SessionID, 
 JSON_EXTRACT(data, '$.UserData.SessionID') AS Session_ID 
 FROM sophos_windows_events 
-WHERE source = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operational' ORDER BY datetime DESC; 
+WHERE source = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operational' 
+AND time > 0 
+ORDER BY datetime DESC; 

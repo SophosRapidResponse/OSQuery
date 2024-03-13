@@ -10,6 +10,7 @@
 | If you know a compromised account this can help identify what they were        |
 | logging into, also good when you know a specific machine is being targetted.   |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -26,6 +27,8 @@ JSON_EXTRACT(swe.data, '$.EventData.ProcessName') AS ProcessName,
 'Security EVTX' AS Data_Source,
 'Logins.04.0' AS Query 
 FROM sophos_windows_events swe  
-WHERE swe.source = 'Security' AND swe.eventid = 4648
-AND (Source_Username LIKE '$$username$$' OR Target_Username LIKE '$$username$$') AND Target_Computer_Name LIKE '$$target_computer$$'
-
+WHERE swe.source = 'Security' 
+AND swe.eventid = 4648
+AND (Source_Username LIKE '$$username$$' OR Target_Username LIKE '$$username$$') 
+AND Target_Computer_Name LIKE '$$target_computer$$'
+AND swe.time > 0
