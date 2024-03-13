@@ -13,6 +13,7 @@
 | REFERENCE:                                                                     |
 | https://github.com/deepinstinct/Lsass-Shtinkering                              |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -40,6 +41,7 @@ WHERE source = 'Application'
     AND eventid = 1000
     AND LOWER(Faulting_Application) = 'lsass.exe'
     AND (LOWER(Faulting_Module) = 'unknown' OR LOWER(Faulting_Module_Path) LIKE '%unknown%')
+    AND time > 0
 
 UNION 
 

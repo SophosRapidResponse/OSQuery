@@ -4,6 +4,7 @@
 | EID 1040 (Installer started) and EID 1033 (Application installed) in the        |
 | Application Event Log.                                                          |
 |                                                                                 |
+| Query Type: Endpoint                                                            |
 | Version: 1.0                                                                    |
 | Author: The Rapid Response Team                                                 |
 | github.com/SophosRapidResponse                                                  |
@@ -37,5 +38,6 @@ LEFT JOIN authenticode auth ON auth.path = msi_installer
 WHERE swe.source = 'Application' 
     AND swe.provider_name = 'MsiInstaller' 
     AND swe.eventid IN ('1033','1040')
+    AND time > 0
 GROUP BY swe.datetime, msi_installer
 ORDER BY swe.datetime DESC

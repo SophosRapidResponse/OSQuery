@@ -9,6 +9,7 @@
 | is still human readable and can be decoded with CyberChef here:                |
 | https://tinyurl.com/2db7zxyk                                                   |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.1                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -35,6 +36,7 @@ LEFT JOIN users u ON swe.user_id = u.uuid
 LEFT JOIN services ON (Service_Name IN (services.name, services.display_name))
 WHERE swe.source = 'System' 
 AND swe.eventid = 7045
+AND time > 0
 )
 
 SELECT 

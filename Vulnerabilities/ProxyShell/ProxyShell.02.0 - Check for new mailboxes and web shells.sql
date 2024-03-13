@@ -1,5 +1,4 @@
 /*************************** Sophos.com/RapidResponse ***************************\
-|                                                                                |
 | DESCRIPTION                                                                    |
 | Looks for the last part of the ProxyShell exploit where a new mailbox is       |
 | created and used to drop the webshell on the Exchange server. The usernames    |
@@ -8,6 +7,7 @@
 | MORE INFO                                                                      |
 | shorturl.at/dnrCS - ProxyShell vulnerabilities in Microsoft Exchange           |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.2                                                                   |
 | Author: @AltShiftPrtScn & Karl the Hack Ackerman                               |
 | github.com/SophosRapidResponse                                                 |

@@ -4,6 +4,7 @@
 | WER app crash report in the Application Event Log EID 1000 to 1002.            |
 | TACTIC: Execution                                                              |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.1                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |

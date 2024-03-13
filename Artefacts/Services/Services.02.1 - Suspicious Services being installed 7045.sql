@@ -11,6 +11,7 @@
 | is still human readable and can be decoded with CyberChef here:                |
 | https://tinyurl.com/2db7zxyk                                                   |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Author: @AltShiftPrtScn & Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
@@ -132,6 +133,7 @@ OR Service_Name LIKE '%KrbSCM%'
 OR Image_Path LIKE '%krbrelay%'
 OR Image_Path LIKE '%echo%\pipe\%'
 )
+AND time > 0
 )
 
 SELECT

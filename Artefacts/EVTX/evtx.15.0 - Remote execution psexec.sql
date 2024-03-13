@@ -9,6 +9,7 @@
 | Windows overwrites the Security event logs as needed (oldest first). Therefore, the  |
 | query might not bring any results if the logs has rolled                             |
 |                                                                                      |
+| Query Type: Endpoint                                                                 |
 | Author: The Rapid Response Team | Lee Kirkpatrick                                    |
 | github.com/SophosRapidResponse                                                       |
 \**************************************************************************************/
@@ -24,6 +25,7 @@ FROM sophos_windows_events
 WHERE source = 'System'
     AND eventid = 7045
     AND (LOWER(ServiceName) LIKE '%psexe%' OR LOWER(ImagePath) LIKE '%psexe%')
+    AND time > 0
 )
 
 SELECT

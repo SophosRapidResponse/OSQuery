@@ -6,6 +6,7 @@
 | REFERENCE:                                                                            |
 | https://github.com/rapid7/metasploit-framework/blob/master/lib/rex/proto/smb/client.rb|
 |                                                                                       |
+| Query Type: Endpoint                                                                  |
 | Version: 1.0                                                                          |
 | Author: The Rapid Response Team | Lee Kikpatrick                                      |
 | github.com/SophosRapidResponse                                                        |
@@ -33,3 +34,4 @@ FROM sophos_windows_events
 WHERE source = 'Security'
     AND (eventid IN (4624,4625) AND regex_match(JSON_EXTRACT(data, '$.EventData.WorkstationName'),'^[A-Za-z0-9]{16}$', 0) AND AuthenticationPackageName = 'NTLM')
     OR (eventid = 4776 AND regex_match(JSON_EXTRACT(data, '$.EventData.Workstation'),'^[A-Za-z0-9]{16}$', 0))
+    AND time > 0

@@ -12,6 +12,7 @@
 | TIP                                                                            |
 | Use wildcards for each variable if you want to bring all users back.           |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -44,3 +45,4 @@ AND (eventid = 4624 OR eventid = 4625)
 AND JSON_EXTRACT(data, '$.EventData.TargetUserName')  LIKE '$$username$$'
 AND JSON_EXTRACT(data, '$.EventData.IpAddress') LIKE '$$source_ip$$'
 AND JSON_EXTRACT(data, '$.EventData.WorkstationName') LIKE '$$workstation$$'
+AND time > 0

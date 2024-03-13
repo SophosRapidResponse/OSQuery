@@ -3,6 +3,7 @@
 | Gets antivirus events in the windows Application and Defender/Operational logs |
 | for Sophos, Windows Defender, Symantec, and CarbonBlack products.              |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.2                                                                   |
 | Author: Sophos Rapid Response Team                                             |
 | github.com/SophosRapidResponse                                                 |
@@ -29,6 +30,7 @@ FROM sophos_windows_events
 WHERE source = 'Application' 
 AND provider_name IN ('Sophos System Protection', 'HitmanPro.Alert', 'Symantec AntiVirus', 'CbDefense')
 AND eventid IN (42, 911, 5, 47, 51, 17, 33, 49)
+AND time > 0
 
 UNION 
 
@@ -46,3 +48,4 @@ data as raw,
 FROM sophos_windows_events 
 WHERE source = 'Microsoft-Windows-Windows Defender/Operational' 
 AND eventid IN (1006, 1007, 1008, 1009, 1010, 1011, 1116, 1117, 1118)
+AND time > 0

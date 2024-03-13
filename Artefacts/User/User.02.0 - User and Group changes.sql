@@ -7,6 +7,7 @@
 | VARIABLES                                                                      |
 | days(string) = how many days back from NOW to search                           |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn / Elida Leite                                          |
 | github.com/SophosRapidResponse                                                 |
@@ -46,4 +47,7 @@ SELECT
    'Security EVTX' AS Data_Source,
    'User.02.0' AS Query
 FROM sophos_windows_events
-WHERE source = 'Security' AND time > STRFTIME('%s','NOW','-$$days$$ DAYS') AND eventid IN ('4726', '4730', '4734', '4758', '4740','4727', '4754', '4731', '4720', '4767', '4725', '4722','4723','4724', '4728','4732','4756', '4729','4733','4757') ORDER BY Datetime DESC
+WHERE source = 'Security' 
+AND time > STRFTIME('%s','NOW','-$$days$$ DAYS') 
+AND eventid IN ('4726', '4730', '4734', '4758', '4740','4727', '4754', '4731', '4720', '4767', '4725', '4722','4723','4724', '4728','4732','4756', '4729','4733','4757') 
+ORDER BY Datetime DESC

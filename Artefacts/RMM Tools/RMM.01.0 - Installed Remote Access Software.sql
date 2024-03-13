@@ -13,6 +13,7 @@
 | AnyDesk                                                                        |
 | TightVNC                                                                       |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -33,7 +34,7 @@ install_source AS Install_Source,
 publisher AS Publisher,
 uninstall_string AS Uninstall_String,
 'Programs' AS Data_Source,
-'T1219 - Installed Remote Access Software' AS Query  
+'RMM.01.0' AS Query
 FROM programs
 WHERE name LIKE 'ScreenConnect Client%'
 OR name LIKE 'TeamViewer%'
@@ -78,10 +79,11 @@ swe.user_id AS SID,
 '' AS Publisher,
 '' AS Uninstall_String,
 'System Events' AS Data_Source,
-'T1219 - Installed Remote Access Software' AS Query  
+'RMM.01.0' AS Query  
 FROM sophos_windows_events swe
 JOIN users u ON swe.user_id = u.uuid
-WHERE swe.source = 'System' AND swe.eventid = 7045
+WHERE swe.source = 'System' 
+AND swe.eventid = 7045
 AND ((Service_Name LIKE 'AteraAgent%'
 OR Service_Name LIKE 'ScreenConnect Client%'
 OR Service_Name LIKE 'Splashtop%'
@@ -96,3 +98,4 @@ OR Image_Path LIKE '%AnyDesk.exe%'
 OR Image_Path LIKE '%TeamViewer_Service.exe'
 OR Image_Path LIKE '%rutserv.exe%'
 OR Image_Path LIKE '%ScreenConnect.ClientService.exe%'))
+AND time > 0

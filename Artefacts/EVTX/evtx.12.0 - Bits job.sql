@@ -12,6 +12,7 @@
 | REFERENCE                                                                      |
 | https://attack.mitre.org/techniques/T1197/                                     |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |

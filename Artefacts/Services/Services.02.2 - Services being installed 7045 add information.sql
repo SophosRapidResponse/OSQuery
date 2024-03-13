@@ -8,6 +8,7 @@
 | start_time (type: DATE)                                                        |
 | end_time (type: DATE)                                                          |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
