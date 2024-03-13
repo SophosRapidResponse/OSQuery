@@ -1,9 +1,10 @@
 /******************************* Sophos.com/RapidResponse ********************************\
 | DESCRIPTION                                                                             |
-| Uses Windows Event ID 5136 to detect potential webshell deployment by exploitation of   |
-| CVE-2021-27065. It looks for changes to the InternalHostName or ExternalHostName        |
-| properties of Exchange OAB Virtual Directory objects in AD Directory Services where     |
-| the new objects contain potential webshell objects                                      |
+| Retrieves all EID: 5136 in the Windows Security event logs, aiming to identify potential|
+| webshells possibly linked to the exploitation of CVE-2021-27065.                        |
+| Looks for changes in the InternalHostName or ExternalHostName properties of Exchange    |
+| OAB Virtual Directory objects in AD Directory Services where the new objects contain    |
+| potential webshell                                                                      |
 |                                                                                         |
 | REFERENCE                                                                               |
 | CVE-2021-27065                                                                          |
@@ -40,4 +41,4 @@ AND JSON_EXTRACT(data, '$.EventData.ObjectClass') LIKE '%msExchOABVirtualDirecto
 AND JSON_EXTRACT(data, '$.EventData.AttributeLDAPDisplayName') IN ('msExchExternalHostName', 'msExchInternalHostName')
 AND JSON_EXTRACT(data, '$.EventData.AttributeValue') LIKE '%script%'
 AND time > 0
-ORDER BY event_time DESC
+ORDER BY datetime DESC

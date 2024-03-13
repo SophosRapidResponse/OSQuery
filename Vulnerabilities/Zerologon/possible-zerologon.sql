@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Detects possible Zerologon exploitation                                        |
+| Detects possible Zerologon exploitation listed as CVE-2020-1472.               |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
