@@ -133,7 +133,7 @@ OR Service_Name LIKE '%KrbSCM%'
 OR Image_Path LIKE '%krbrelay%'
 OR Image_Path LIKE '%echo%\pipe\%'
 )
-AND time > 0
+AND swe.time > 0
 )
 
 SELECT

@@ -38,6 +38,6 @@ LEFT JOIN authenticode auth ON auth.path = msi_installer
 WHERE swe.source = 'Application' 
     AND swe.provider_name = 'MsiInstaller' 
     AND swe.eventid IN ('1033','1040')
-    AND time > 0
+    AND swe.time > 0
 GROUP BY swe.datetime, msi_installer
 ORDER BY swe.datetime DESC

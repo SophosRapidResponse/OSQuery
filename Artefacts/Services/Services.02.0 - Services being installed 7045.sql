@@ -36,7 +36,7 @@ LEFT JOIN users u ON swe.user_id = u.uuid
 LEFT JOIN services ON (Service_Name IN (services.name, services.display_name))
 WHERE swe.source = 'System' 
 AND swe.eventid = 7045
-AND time > 0
+AND swe.time > 0
 )
 
 SELECT 

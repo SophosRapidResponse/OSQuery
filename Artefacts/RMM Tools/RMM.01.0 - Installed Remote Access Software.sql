@@ -98,4 +98,4 @@ OR Image_Path LIKE '%AnyDesk.exe%'
 OR Image_Path LIKE '%TeamViewer_Service.exe'
 OR Image_Path LIKE '%rutserv.exe%'
 OR Image_Path LIKE '%ScreenConnect.ClientService.exe%'))
-AND time > 0
+AND swe.time > 0

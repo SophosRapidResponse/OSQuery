@@ -31,5 +31,4 @@ WHERE swe.source = 'Security'
 AND swe.eventid = 4648
 AND (Source_Username LIKE '$$username$$' OR Target_Username LIKE '$$username$$') 
 AND Target_Computer_Name LIKE '$$target_computer$$'
-AND time > 0
-
+AND swe.time > 0
