@@ -69,30 +69,3 @@ WHERE source = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operation
 AND JSON_EXTRACT(data, '$.UserData.User') LIKE '$$username$$' 
 AND JSON_EXTRACT(data, '$.UserData.Address') LIKE '$$source_ip$$' 
 AND time > 0
-
-UNION ALL
-
-SELECT
-strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime, 
-eventid AS EventID, 
-CASE
-   WHEN eventid = 4624 THEN eventid || ' - Successful Login' 
-   WHEN eventid = 4625 THEN eventid || ' - Failed login' 
-END AS Description, 
-'Security' AS Source, 
-JSON_EXTRACT(data, '$.EventData.TargetUserName') AS Username, 
-JSON_EXTRACT(data, '$.EventData.WorkstationName') AS Source_Machine_Network, 
-JSON_EXTRACT(data, '$.EventData.IpAddress') AS Source_IP, 
-JSON_EXTRACT(data, '$.EventData.ProcessName') AS Process_Name, 
-JSON_EXTRACT(data, '$.EventData.LogonType') AS Logon_Type, 
-JSON_EXTRACT(data, '$.EventData.TargetUserSid') AS User_SID, 
-'-' AS SessionID, 
-'-' AS Session_ID,
-'Security EVTX' AS Data_Source,
-'Logins.01.3' AS Query 
-FROM sophos_windows_events 
-WHERE source = 'Security'
-AND (eventid = 4624 OR eventid = 4625)
-AND JSON_EXTRACT(data, '$.EventData.TargetUserName')  LIKE '$$username$$' 
-AND JSON_EXTRACT(data, '$.EventData.IpAddress') LIKE '$$source_ip$$'
-AND time > 0
