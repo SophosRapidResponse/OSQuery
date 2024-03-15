@@ -18,7 +18,7 @@
 | REFERENCE                                                                      |
 | https://attack.mitre.org/techniques/T1059/001/                                 |
 |                                                                                |
-| #!PLATFORM_TYPE = windows                                                      |
+| Query Type: Endpoint                                                           |
 | Version: 1.5                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |

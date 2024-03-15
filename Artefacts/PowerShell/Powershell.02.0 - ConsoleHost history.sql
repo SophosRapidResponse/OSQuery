@@ -20,5 +20,5 @@ SELECT
  'Grep/File' AS Data_Source,
  'PowerShell_ConsoleHistory' AS Query
 FROM file f
-WHERE f.path LIKE 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt'
+WHERE f.path LIKE 'C:\Users\%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt' OR f.path LIKE 'C:\windows\system32\config\systemprofile\appdata\roaming\microsoft\windows\powershell\psreadline\consolehost_history.txt'
    AND Console_History != ''

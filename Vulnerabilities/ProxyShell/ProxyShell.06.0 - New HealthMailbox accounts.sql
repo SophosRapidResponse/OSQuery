@@ -1,17 +1,23 @@
 /*************************** Sophos.com/RapidResponse ***************************\
-|                                                                                |
 | DESCRIPTION                                                                    |
 | Looking for new suspicious HealthMailbox accounts.                             |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
 WITH Event_Data(Event_id, time, Data) AS (
-SELECT eventid, time, JSON_EXTRACT(swe.data, '$.EventData.Data') AS Data
-FROM sophos_windows_events swe
-WHERE source = 'MSExchange Management' AND data LIKE '%New-Mailbox,%' AND data LIKE '%HealthMailbox%'
+SELECT 
+eventid, 
+time, 
+JSON_EXTRACT(data, '$.EventData.Data') AS Data
+FROM sophos_windows_events
+WHERE source = 'MSExchange Management' 
+AND data LIKE '%New-Mailbox,%' 
+AND data LIKE '%HealthMailbox%'
+AND time > 0
 )
 
 SELECT

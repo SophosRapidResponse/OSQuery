@@ -11,6 +11,7 @@
 | TIP                                                                            |
 | Use wildcards for each variable if you want to bring all users back.           |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -47,3 +48,4 @@ FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operational'
 AND JSON_EXTRACT(data, '$.UserData.User') LIKE '$$username$$' 
 AND JSON_EXTRACT(data, '$.UserData.Address') LIKE '$$source_ip$$' 
+AND time > 0

@@ -4,6 +4,7 @@
 | all permanent WMI event consumers installed on the host. Useful to find WMI    |
 | persistance. TACTIC: Persistence"                                              |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -23,5 +24,7 @@ SELECT
     'EVTX' AS data_source,
     'WMI.02.0' AS query 
 FROM sophos_windows_events
-WHERE source = 'Microsoft-Windows-WMI-Activity/Operational' AND eventid = '5861'
+WHERE source = 'Microsoft-Windows-WMI-Activity/Operational' 
+AND eventid = '5861'
+AND time > 0
 ORDER BY datetime DESC

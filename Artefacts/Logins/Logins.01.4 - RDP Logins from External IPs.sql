@@ -5,6 +5,7 @@
 | an external IP range. "unknown" results are given when the source IP is within |
 | the IPv6 range.                                                                |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.1                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -40,6 +41,7 @@ FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operational'
     AND eventid IN (21,22,25)
     AND (status = 'external_IP' OR status = 'unknown')
+    AND time > 0
 
 UNION ALL
 
@@ -70,4 +72,5 @@ FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational'
     AND eventid = 1149
     AND (status = 'external_IP' OR status = 'unknown')
+    AND time > 0
 

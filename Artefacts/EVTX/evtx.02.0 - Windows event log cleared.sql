@@ -7,6 +7,7 @@
 | https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-1102|
 | https://support.sophos.com/support/s/article/KB-000038860?language=en_US               |
 |                                                                                        |
+| Query Type: Endpoint                                                                   |
 | Version: 1.0                                                                           |
 | Author: The Rapid Response Team                                                        |
 | github.com/SophosRapidResponse                                                         |
@@ -33,4 +34,5 @@ WHERE provider_name = 'Microsoft-Windows-Eventlog'
     source LIKE 'System' OR
     source LIKE 'Security')
     AND eventid IN (104,1102)
+    AND time > 0
 ORDER BY datetime DESC

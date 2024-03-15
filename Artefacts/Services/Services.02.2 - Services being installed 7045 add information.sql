@@ -1,15 +1,17 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Look for services being installed via the System event log and Event ID 7045   |
-| for a specific time frame. Gets additional information such as hashes, cert    |
-| information, and file timestamps                                               |
+| Retrieves all service installation events associated with EID 7045 from the    |
+| Windows System event logs within a specified time frame. The query provides    |
+| additional details such as file hashes, certificate information, and filesystem|
+| timestamps.                                                                    |
 |                                                                                |
 | VARIABLE                                                                       |
 | start_time (type: DATE)                                                        |
 | end_time (type: DATE)                                                          |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
-| Author: The Rapid Response Team                                                |
+| Author: The Rapid Response Team | Elida Leite                                  |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
 
@@ -20,9 +22,9 @@ datetime,
 eventid,
 source,
 provider_name,
+REPLACE(JSON_EXTRACT(data, '$.EventData.ImagePath'), '"', '') AS path_formatted,
 user_id,
-data,
-EXPAND_ENV(REPLACE(REPLACE(JSON_EXTRACT(data, '$.EventData.ImagePath'), '"', ''), '\SystemRoot', '%SystemRoot%')) AS path_formatted
+data
 FROM
 sophos_windows_events
 WHERE eventid = 7045
@@ -56,13 +58,13 @@ JSON_EXTRACT(sfp.local_rep_data, '$.reputationData.signerInfo[0].thumbprint') AS
 we.source,
 we.provider_name,
 'EVTX' AS data_source,
-'Services being installed 7045 with add information' AS query
+'Service.02.2' AS query
 FROM windows_events AS we
 LEFT JOIN hash AS h ON
-    h.path LIKE LOWER(we.path_formatted)
+    h.path LIKE LOWER(path_formatted)
 LEFT JOIN sophos_file_properties AS sfp ON
-    sfp.path = LOWER(we.path_formatted)
-LEFT JOIN file 
-    ON LOWER(we.path_formatted) = file.path
+    sfp.path = LOWER(path_formatted)
+LEFT JOIN file ON 
+   file.path LIKE LOWER(path_formatted)
 LEFT JOIN users u 
     ON we.user_id = u.uuid

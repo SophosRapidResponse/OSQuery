@@ -6,6 +6,7 @@
 |                                                                                  |
 | The events can be FP on servers but suspicious on workstations                   |
 |                                                                                  |
+| Query Type: Endpoint                                                             |
 | Version: 1.0                                                                     |
 | Author: The Rapid Response Team | Lee Kikpatrick                                 |
 | github.com/SophosRapidResponse                                                   | 
@@ -27,4 +28,5 @@ FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-VHDMP-Operational' 
 AND eventid = 12
 AND (LOWER(filename) LIKE '%.iso%' OR LOWER(filename) LIKE '%.vhd%' OR LOWER(filename) LIKE '%.img%')
+AND time > 0
 GROUP BY path

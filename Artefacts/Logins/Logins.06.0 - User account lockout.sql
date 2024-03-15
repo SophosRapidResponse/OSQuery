@@ -6,6 +6,7 @@
 | VARIABLES                                                                      |
 | username(string) - Account that was locked                                     |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -26,4 +27,4 @@ FROM sophos_windows_events
 WHERE source = 'Security' 
 	AND eventid = 4740
 	AND JSON_EXTRACT(data, '$.EventData.TargetUserName') LIKE '$$username$$'
-
+	AND time > 0

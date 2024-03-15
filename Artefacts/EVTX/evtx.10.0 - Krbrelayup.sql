@@ -14,6 +14,7 @@
 | https://github.com/cube0x0/KrbRelay                                            |
 | https://attack.mitre.org/techniques/T1558/003/                                 |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team | Lee Kirkpatrick                              |
 | github.com/SophosRapidResponse                                                 |
@@ -47,6 +48,7 @@ WHERE source = 'Security'
     AND LogonType = '3'
     AND SourceIP = '127.0.0.1'
     AND TargetUserSid LIKE 'S-1-5-21-%-500'
+    AND time > 0
 
 UNION
 

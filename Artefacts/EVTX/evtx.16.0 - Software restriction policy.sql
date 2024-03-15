@@ -8,6 +8,7 @@
 | https://www.isssource.com/wp-content/uploads/2012/02/ISSSource-Application_    |
 | Whitelisting_Using_SRP.pdf                                                     |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -36,4 +37,5 @@ FROM sophos_windows_events
 WHERE source LIKE 'Application'
     AND provider_name = 'Microsoft-Windows-SoftwareRestrictionPolicies'
     AND eventid IN ('865','866','867','868','882')
+    AND time > 0
 GROUP BY blocked_program

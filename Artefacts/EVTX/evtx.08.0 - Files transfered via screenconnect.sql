@@ -9,6 +9,7 @@
 | Unfortunately only the filename and not the path is recorded. However, using   |
 | the Sophos File Journal can reveal this.                                       |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
 | github.com/SophosRapidResponse                                                 |
@@ -35,3 +36,4 @@ WHERE
     AND eventid = 0 
     AND provider_name LIKE '%ScreenConnect%'
     AND data LIKE '%Transferred files%'
+    AND time > 0

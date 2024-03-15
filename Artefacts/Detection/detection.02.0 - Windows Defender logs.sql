@@ -3,6 +3,7 @@
 | Gets detections events in the Windows Defender/Operational logs. The query     |
 | looks for the EIDs 1006, 1007, 1008, 1009, 1010, 1011, 1116, 1117, 1118.       |
 |                                                                                |
+| Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
@@ -21,5 +22,6 @@ data as raw,
 FROM sophos_windows_events 
 WHERE source = 'Microsoft-Windows-Windows Defender/Operational' 
 AND eventid in ('1006', '1007', '1008', '1009', '1010', '1011' , '1116' , '1117' , '1118')
+AND time > 0
 
 
