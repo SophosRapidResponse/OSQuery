@@ -4,7 +4,7 @@
 | and technique used in processes.                                               |
 |                                                                                |
 | VARIABLES                                                                      |
-| sophos_pid (sophosPID) = datetime of when to start hunting                     |
+| sophos_pid (sophosPID)                                                         |
 |                                                                                |
 | Author: Sophos MDR & Elida Leite                                               |
 | github.com/SophosRapidResponse                                                 |
