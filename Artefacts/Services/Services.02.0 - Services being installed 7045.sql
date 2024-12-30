@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Look for services being installed via the System event log and Event ID 7045.  |
+| Looks for services being installed via the System event log and event ID 7045. |
 |                                                                                |
 | SAFE IMAGE PATH                                                                |
 | Some image paths contain malicious scripts or encoded PowerShell that once     |

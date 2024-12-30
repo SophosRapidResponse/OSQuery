@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets all events in the Kaspersky event logs 'Kaspersky Endpoint Security'. The |
-| query looks for the EIDs 302, 303, and 332, which relate to malicious objects  |
-| and applications found on the device.                                          |
+| Gets all events from the Kaspersky Endpoint Security logs, focusing on Event   |
+| IDs 302, 303, and 332, which indicate malicious objects and applications       |
+| detected on the device.                                                        |
 |                                                                                |
 | REFERENCE:                                                                     |
 | https://support.kaspersky.com/KESWin/11.6.0/en-US/209858.htm                   |

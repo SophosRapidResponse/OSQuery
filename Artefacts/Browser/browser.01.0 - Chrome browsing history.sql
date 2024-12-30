@@ -47,4 +47,3 @@ FROM Table_of_Strings
 WHERE LENGTH(String) > 5 AND String LIKE '%http%'
 GROUP BY String 
 ORDER BY String ASC
-

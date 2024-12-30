@@ -1,7 +1,7 @@
 /****************************** Sophos.com/RapidResponse ******************************\
 | DESCRIPTION                                                                          |
 | The query gets the creation time for when a user account profile is created on disk. |
-| The account profile is usually created when the user logs on to a computer for the   |
+| The account profile is usually created when the user signs in to a computer for the  |
 | first time.                                                                          |
 |                                                                                      |
 |                                                                                      |

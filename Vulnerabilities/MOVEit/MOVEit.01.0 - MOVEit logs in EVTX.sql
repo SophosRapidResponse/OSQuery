@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Collects all logs from MoveIt, which is located at MOVEit event logs.          |
-| The query gather data from EID: 0 that provides information about file name,   |
-| file path, size, IP address, and username.                                     |
+| Collects all event logs from MOVEit. The query gathers data from event ID 0    |
+| that provides information about file name, file path, size, IP address, and    |
+| username.                                                                      |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |

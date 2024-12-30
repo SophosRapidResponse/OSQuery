@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Lists process events on Linux and macOS systems via Audit/OpenBSM subsystems   |
-| within a time range                                                            |
+| within a specified time range.                                                 |
 |                                                                                |
 | VARIABLES                                                                      |
 | -start_time (type: date)                                                       |

@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets all event ID 5861 from WMI-Activity/Operational logs. This event records  |
-| all permanent WMI event consumers installed on the host. Useful to find WMI    |
-| persistance. TACTIC: Persistence"                                              |
+| Gets all occurrences of event ID 5861 from the WMI-Activity/Operational logs.  |
+| This event records all permanent WMI event consumers installed on the host.    |
+| It's useful for identifying WMI persistance.                                   |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |

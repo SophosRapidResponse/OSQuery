@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| List Windows Services and their properties.                                    |
+| Lists Windows services and their properties.                                   |
 |                                                                                |
 | VARIABLES                                                                      |
 | string_type(string) - name, display_name, status, start_type, path,            |

@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| List all WMI entries from the four WMI tables: wmi_cli_event_consumers,        |
-| wmi_event_filters, wmi_filter_consumer_binding, wmi_script_event_consumers     |
-| TACTIC: persistence                                                            |
+| Lists all WMI entries from the four WMI tables: wmi_cli_event_consumers,       |
+| wmi_event_filters, wmi_filter_consumer_binding, and wmi_script_event_consumers.|
+| This helps identify persistence.                                               |
 |                                                                                |
 | VARIABLES                                                                      |
 | - value (type: string) - string to search for                                  |

@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| List running processes on machines, variables for name, path, cmdline and if   |
-| it is still on disk.                                                           |
+| Lists running processes on devices with variables for name, path, command line,|
+| if it's still on disk.                                                         |
 |                                                                                |
 | VARIABLE                                                                       |
 | string_type(string) - pid, parent, name, path, cmdline, on_disk                |

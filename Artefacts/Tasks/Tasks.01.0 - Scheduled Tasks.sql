@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Lists all tasks in the Windows task scheduler.                                 |
+| Lists all tasks in the Windows Task Scheduler.                                 |
 |                                                                                |
 | VARIABLES                                                                      |
 | name(string) - name of the scheduled task                                      |
@@ -29,6 +29,6 @@ SELECT
 	CASE WHEN next_run_time < 0 THEN 'Not scheduled to run again'
 	ELSE strftime('%Y-%m-%dT%H:%M:%SZ',datetime(next_run_time,'unixepoch')) END AS 'Next_Run_Time',
 	'Scheduled_Tasks' AS Data_Source,
-	'T1053.002 - Windows Tasks Scheduler' AS Query
+	'Task.01.0' AS Query
 FROM scheduled_tasks st
 WHERE name LIKE '$$name$$' AND action LIKE '$$action$$'

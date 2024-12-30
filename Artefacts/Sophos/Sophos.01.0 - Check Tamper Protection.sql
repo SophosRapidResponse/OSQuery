@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Check if Sophos Tamper Protection is disabled.                                 |
+| Checks if Sophos Tamper Protection is turned off.                              |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |

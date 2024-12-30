@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Looking for new suspicious HealthMailbox accounts.                             |
+| Looks for new, suspicious HealthMailbox accounts.                              |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |

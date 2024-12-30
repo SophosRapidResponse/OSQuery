@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query checks when the Sophos Journals were first created for each journal  |
+| The query checks when the Sophos journals were first created for each journal  |
 | type.                                                                          |
 |                                                                                |
 |                                                                                |

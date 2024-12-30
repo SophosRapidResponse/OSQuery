@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| This will check the registry for the 'LanmanNT' value in 'HKLM\System\         |
-| CurrentControlSet\Control\ProductOptions\ProductType' key, if it exists it     |
-| means that server is a domain controller.                                      |
+| Checks the registry for the 'LanmanNT' value in the                            |
+| 'HKLM\System\CurrentControlSet\Control\ProductOptions\ProductType' key. If it  |
+| exists, it means that the server is a domain controller.                       |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |

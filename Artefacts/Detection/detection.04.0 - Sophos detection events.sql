@@ -1,8 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets all detection events from Sophos detection journal within a time range.   |
-| The variable 'filename' can be used to search for a filename, file path, IP,   |
-| domain, and so on.                                                             |
+| Gets all detection events from the Sophos detection journal within a specified |
+| time range.                                                                    |
 |                                                                                |
 | EXAMPLE:                                                                       |
 | - malware.exe                                                                  |
@@ -12,7 +11,7 @@
 | VARIABLES                                                                      |
 | - start_time (type: date)                                                      |
 | - end_time (type: date)                                                        |
-| - filename (type: string)                                                      |
+| - value (type: string)                                                         |
 |                                                                                |
 | Version: 1.2                                                                   |
 | Author: The Rapid Response Team                                                |
@@ -54,7 +53,7 @@ detection.raw,
 FROM sophos_detections_journal detection
 LEFT JOIN users AS u 
     ON (detection.sid = u.uuid OR detection.sid = u.uid)
-WHERE detection.raw LIKE '$$filename$$'
+WHERE detection.raw LIKE '$$value$$'
     AND detection.time >= $$start_time$$
     AND detection.time <= $$end_time$$
 GROUP BY detection.time

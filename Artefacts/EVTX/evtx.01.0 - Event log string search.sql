@@ -1,14 +1,10 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| This query is used when you have a computer name, ip, username or some unique  |
-| string and you want to see if it exists anywhere. The query checks multiple    |
-| EVTX files for any references to this string and returns the raw data.         |
+| Use this query to search for a hostname, IP, username, or unique string across |
+| multiple EVTX logs. It returns raw data for any references found.              |
 |                                                                                |
 | VARIABLES                                                                      |
 | value(string) - the string you are looking for                                 |
-|                                                                                |
-| TIP                                                                            |
-| Think of this query as what you run when you are out of ideas :-)              |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |

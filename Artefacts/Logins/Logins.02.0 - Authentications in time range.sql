@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets all successful and failed login events (EID 4624, 4625) from the          |
-| sophos_winsec_journal table.                                                   |
+| Gets all successful and failed logins (event ID 4624 and 4625) from the        |
+| 'sophos_winsec_journal' table.                                                 |
 |                                                                                |
 | VARIABLES                                                                      |
 | - username (type: Username)                                                    |

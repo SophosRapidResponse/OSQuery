@@ -1,12 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Hunts for potential DCSync attacks. Lists EID 4662 that uses the access mask   |
-| 0x100 (Control Access) and contain properties that represent each of the       |
-| functions associated with the replication attempt. TACTIC: Credential Access   |
-|                                                                                |
-| The DCSync attack simulates the behavior of a Domain Controller and asks other |
-| Domain Controllers to replicate information using the Directory Replication    |
-| Service Remote Protocol (MS-DRSR).                                             |
+| Searches for potential DCSync Attacks. The DCSync attack simulates the behavior|
+| of a Domain Controller requesting replication from other Domain Controllers    |
+| using the Directory Replication Service Remote Protocol (MS-DRSR).             |
 |                                                                                |
 | Adversaries can use the DCSync technique to compromise major credentials such  |
 | as the Kerberos krbtgt keys used legitimately for tickets creation. This attack|
@@ -73,7 +69,7 @@ COUNT(*) AS event_count,
 CAST (MIN(datetime) AS TEXT) AS first_occurrance,
 CAST (MAX(datetime) AS TEXT) AS last_occurrance,
 data AS raw,
-'Security' AS data_source,
+'EVTX' AS data_source,
 'evtx.03.0' AS query
 FROM dcsyn
 GROUP BY date, subject_username

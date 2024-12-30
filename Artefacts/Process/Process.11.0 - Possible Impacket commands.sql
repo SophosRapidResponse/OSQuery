@@ -1,9 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Find suspicious commandline that might indicate use of Impacket tool.          |
-| Impacket is a collection of python scripts that can be used with Microsoft     |
-| network protocols. Adversaries may leverage Impackets for lateral movement and |
-| remote code execution                                                          |
+| Find suspicious command-line entries that might indicate use of the impacket   |
+| tool. Impacket is a collection of Python scripts for working with Microsoft    |
+| network protocols. Adversaries may leverage impacket for lateral movement and  |
+| remote code execution.                                                         |
 |                                                                                |
 | VARIABLES                                                                      |
 | - star_time (type: DATE)                                                       |
