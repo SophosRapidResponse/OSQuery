@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Look for suspicious services being installed via the System event log and      |
-| Event ID 7045. This is a good query for finding Cobalt Strike services as      |
+| Looks for suspicious services being installed via the System event log and     |
+| event ID 7045. This is a good query for finding Cobalt Strike services like    |
 | PsExec and other suspicious services.                                          |
 |                                                                                |
 | SAFE IMAGE PATH                                                                |

@@ -1,8 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Look for services being installed, started/stopped, changed, or crashed via the|
-| System event log and event IDs: 7034, 7035, 7036, 7040, 7045 and Security event|
-| log event ID: 4697                                                             |
+| Search in the System event logs for services that were installed, started,     |
+| stopped, modified, or crashed, focusing on event IDs 7034, 7035, 7036, 7040,   |
+| and 7045. In the Security event log, gets event ID 4697 which is related to    |
+| service creation events.                                                       |
 |                                                                                |
 | Services logs should be investigated around the time of a suspected compromise |
 | Services started on boot illustrate persistence. Services can crash due to     |

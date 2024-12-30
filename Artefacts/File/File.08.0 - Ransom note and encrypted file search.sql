@@ -1,10 +1,10 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| This looks for files with the same name or extension on the root and one       |
-| folder down for every logical drive, as well as every users desktop. This is   |
-| best used in looking for ransom notes or encrypted files. The intention is     |
-| not to find all of them but just get a quick confirmation about whether or not |
-| a computer has been affected by a ransomware attack.                           |
+| This looks for files with the same name or extension on the root and one folder|
+| down for every logical drive and every user's desktop. It is best used when    |
+| looking for ransom notes or encrypted files. The intention is not to find all  |
+| of them but just to get a quick confirmation about whether or not a computer   |
+| has been affected by a ransomware attack.                                      |
 |                                                                                |
 | VARIABLE                                                                       |
 | filename(string) = ransom note name, or extension of encrypted files           |

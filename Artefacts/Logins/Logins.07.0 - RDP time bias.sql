@@ -1,9 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Looks for EID 104 events in Windows-RemoteDesktopService-RDPCoreTS/Operational,|
-| which show the time bias of the client connecting. The time bias is the        |
+| Looks for event ID 104 in Windows-RemoteDesktopServices-RDPCoreTS/Operational  |
+| which shows the time bias of the client connecting. The time bias is the       |
 | difference between the local time zone and UTC. A login with a different time  |
-| zone from the customer maybe suspicious. Run the RDP logins query to find the  |
+| zone from the customer may be suspicious. Use the RDP logins query to find the |
 | user that logged in around that time.                                          |
 |                                                                                |
 | Query Type: Endpoint                                                           |

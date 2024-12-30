@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| List GPO scripts files, search by filename and dates.                          |
+| List GPO scripts and files. Search by filename and dates.                      |
 |                                                                                |
 | VARIABLES                                                                      |
 | filename(string) - filename of script                                          |

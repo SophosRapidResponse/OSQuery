@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| UserAssist Registry Key tracks when a user executes an application from Windows|
+| UserAssist registry key tracks when a user starts an application from Windows  |
 | Explorer.                                                                      |
 |                                                                                |
 | VARIABLE                                                                       |

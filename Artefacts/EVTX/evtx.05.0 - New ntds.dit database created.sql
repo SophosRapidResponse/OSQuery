@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Hunts for a possible theft of the NTDS database. Looks for the EID 325 in the  |
-| Application logs for new database created. TACTIC: Credential Access           |
+| Searches the Application logs for event ID 325, which indicates the creation   |
+| of a new database. This could indicate the theft of the NTDS database.         |                                                                                |
 |                                                                                |
 | There are other event IDs of interest in ESENT that can provide additional     |
 | information, such as EID: 216, 326, 327. However, due to the high amount of FP |

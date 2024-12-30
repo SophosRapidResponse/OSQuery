@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ****************************\
 | DESCRIPTION                                                                     |
-| Hunts for suspicious WMI Consumers (CommandLine and ActiveScript)               |
-| TACTIC: persistence                                                             |
+| Searches for suspicious WMI consumers (CommandLine and ActiveScript). This helps|
+| identify persistence.                                                           |
 |                                                                                 |
 | If an event of interest is found the event filter should be determined          |
 |                                                                                 |

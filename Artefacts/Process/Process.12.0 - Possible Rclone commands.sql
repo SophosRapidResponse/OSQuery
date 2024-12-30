@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Look for evidence of Rclone execution on Windows devices.                      |
-| The query might bring FP results                                               |
+| Looks for evidence of Rclone on Windows devices. The query might return false  |
+| positives.                                                                     |
 |                                                                                |
 | VARIABLES                                                                      |
 | - start_time(date)                                                             |

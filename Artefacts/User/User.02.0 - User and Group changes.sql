@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| This collects various event IDs from the Security event log that relate to     |
-| user and group changes, including account creation, password resets, adding to |
-| groups and account deletion.                                                   |
+| Gets various event IDs from the Security event log that relate to user and     |
+| group changes, including account creation, password resets, adding to groups,  |
+| and account deletion.                                                          |
 |                                                                                |
 | VARIABLES                                                                      |
 | days(string) = how many days back from NOW to search                           |

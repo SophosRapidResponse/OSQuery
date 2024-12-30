@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Collect all user details or search for specific users.                         |
+| Collects all user details or searches for specific users.                      |
 |                                                                                |
 | VARIABLES                                                                      |
 | username(username) = username to search for                                    |

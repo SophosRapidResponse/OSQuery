@@ -31,7 +31,7 @@ meta_hostname,
 MIN(date) AS first_ingestion_time,
 MAX(date) AS last_ingestion_time,
 'xdr_data' AS data_source,
-'Sophos.05.0' AS query
+'Sophos.06.0' AS query
 FROM data
 WHERE meta_hostname LIKE '$$hostname$$'
 GROUP BY meta_hostname

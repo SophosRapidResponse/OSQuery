@@ -2,7 +2,7 @@
 | DESCRIPTION                                                                     |
 | Lists all processes with open network connections. It also collects additional  |
 | information about the event such as the user who triggers the process, if it's  |
-| still on disk, file hashes                                                      |
+| still on disk, and file hashes.                                                 |
 |                                                                                 |
 | TIP                                                                             |
 | If you want to bring all data from closed/open connection, please remove first  |

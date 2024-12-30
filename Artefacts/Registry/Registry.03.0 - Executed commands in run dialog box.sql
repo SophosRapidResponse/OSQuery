@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ****************************\
 | DESCRIPTION                                                                     |
 | Lists all the most recent commands run in the Run dialog (RunMRU) for a specific|
-| username. Use it to find evidence of execution and/or lateral movement.         |
+| username. Use it to find evidence of process startup and/or lateral movement.   |
 |                                                                                 |
 | The MRUList key holds a list that can contain up to 26 commands indicated with a|
 | letter from a to z. The order in which the commands were executed is from the   |

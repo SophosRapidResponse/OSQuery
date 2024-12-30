@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| List devices that have Sophos forensic snapshot available                      |
+| Lists devices that have Sophos forensic snapshot available.                    |
 |                                                                                |
 | REFERENCE:                                                                     |
 | https://support.sophos.com/support/s/article/KB-000038358?language=en_US       |

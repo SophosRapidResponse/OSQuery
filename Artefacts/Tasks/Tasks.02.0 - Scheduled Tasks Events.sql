@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Lists all scheduled tasks events in the Windows event logs: Task Scheduler     |
-| during a selected timeframe                                                    |
+| Lists all scheduled tasks events in the Windows Task Scheduler event logs      |
+| during a selected timeframe.                                                   |
 |                                                                                |
 | VARIABLES                                                                      |
 | - start_time (type: DATE)                                                      |
@@ -31,7 +31,7 @@ SELECT DISTINCT
     JSON_EXTRACT(data,'$.EventData.ActionName') AS action_name,
     JSON_EXTRACT(data,'$.EventData.EnginePID') AS engine_pid,
     JSON_EXTRACT(data,'$.EventData.TaskInstanceId') AS task_instanceID,
-    'Scheduled Task Events' AS query
+    'Task.02.0' AS query
 FROM sophos_windows_events
 WHERE source = 'Microsoft-Windows-TaskScheduler/Operational'
     AND eventid IN ('106','140','141','200')

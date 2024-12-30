@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Check for process execution, data from 'sophos_process_journal' with joins on  |
-| 'user' and 'file'. Choose the start date and then how many days to collect.    |
+| Checks for process execution using data from 'sophos_process_journal'. Choose  |
+| the start date and how many days to collect.                                   |
 |                                                                                |
 | VARIABLES                                                                      |
 | begin(date) = datetime of when to start hunting                                |

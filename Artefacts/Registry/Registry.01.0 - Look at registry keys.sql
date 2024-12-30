@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Look at registry keys by path.                                                 |
+| Looks at registry keys by path.                                                |
 |                                                                                |
 | VARIABLE                                                                       |
 | path(string) = registry key path                                               |

@@ -1,9 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query gets URL activity from the Sophos journals: URL, HTTP, and DNS.      |
-| The URL should be passed as a variable otherwise the query won't bring results | 
-| due to the high amount of data collected by these journals. The query also     |
-| uses Sophos process journal to provide additional context about the event      |
+| The query gets URL activity from the Sophos URL, HTTP, and DNS journals. Enter |
+| the URL as a variable. Otherwise the query won't generate results due to the   |
+| large amount of data collected by these journals. The query also uses the      |
+| Sophos Process Journal to provide additional context about the event.          |
 |                                                                                |
 | TIP                                                                            |
 | This query can be used to get information about files downloaded/executed by   |

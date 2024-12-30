@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Lists all macOS applications installed in known search paths                   |
+| Lists all macOS applications installed in standard search paths                |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |

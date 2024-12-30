@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Get values from system and user job scheduling with cron                       |
+| Gets values from system and user job scheduling with cron.                     |
 |                                                                                |
 | Platforms: MacOS/Linux                                                         |
 |                                                                                |
@@ -17,5 +17,5 @@ SELECT
     day_of_month,
     month,
     day_of_week,
-    'crontab' AS Query
+    'task.03.0' AS Query
 FROM crontab

@@ -1,8 +1,6 @@
-/*************************** Sophos.com/RapidResponse ***************************\
-| REQUIRES SOPHOS JOURNALS                                                       |
-|                                                                                |
+/*************************** Sophos.com/RapidResponse ***************************\                                                                               |
 | DESCRIPTION                                                                    |
-| Uses file and process journals to look at what interactions a file had.        |
+| Uses file and Process Journals to see what interactions a file had.            |
 |                                                                                |
 | VARIABLES                                                                      |
 | sha256(sha256) = sha256 of the file you are interested in                      |

@@ -1,8 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
-| REQUIRES SOPHOS JOURNALS                                                       |
-|                                                                                |
 | DESCRIPTION                                                                    |
-| Uses file and process journals to look at file access history.                 |
+| Uses file and Process Journals to see file access history.                     |
 |                                                                                |
 | VARIABLES                                                                      |
 | path(filepath) = path of the file you are interested in                        |

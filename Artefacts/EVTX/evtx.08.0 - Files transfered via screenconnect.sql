@@ -1,13 +1,11 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets logs from file transfer activity in ScreenConnect.                        |
-| TACTIC: Command and Control                                                    |
+| Gets logs of file transfer activity in ScreenConnect from the Application event|
+| logs.                                                                          |
 |                                                                                |
-| If a threat actor is using the legitimate remote access tool ScreenConnect to  |
-| to tranfer files to the victims device, or execute files through               |
-| ScreenConnect, these events are recorded in the Application Event log.         |
-| Unfortunately only the filename and not the path is recorded. However, using   |
-| the Sophos File Journal can reveal this.                                       |
+| Only filenames are recorded in the Application logs. However, analysts can     |
+| leverage other sources, such as the Sophos File Journal, to query and obtain   |
+| detailed information about the file, including the full file path.             | 
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.0                                                                   |
@@ -28,6 +26,7 @@ WHEN data LIKE '%Transferred files%' THEN
 	END
 END AS file_transfered,
 data AS raw_data,
+'EVTX' AS data_source,
 'EVTX.08.0' AS Query
 FROM 
     sophos_windows_events
