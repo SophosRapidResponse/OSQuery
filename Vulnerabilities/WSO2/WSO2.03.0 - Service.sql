@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| The query lists all service associated with SWO2 application. If the service is|
-| related to WSO2 Identity Server product it will also output if the application |
-| is vulnerable to CVE-2022-29464                                                |
+| The query lists all services associated with WSO2 application. If the service  |
+| is related to the WSO2 Identity Server product, it will also output if the     |
+| application is vulnerable to CVE-2022-29464.                                   |
 |                                                                                |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |

@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Checks for network connections in the data from 'sophos_network_journal',      |
-| 'sophos_ip_journal', 'sophos_http_journal' and 'sophos_dns_journal'.  it       |
+| 'sophos_ip_journal', 'sophos_http_journal' and 'sophos_dns_journal'. It        |
 | includes information about the associated process and user.                    |
 |                                                                                |
 | VARIABLES                                                                      |

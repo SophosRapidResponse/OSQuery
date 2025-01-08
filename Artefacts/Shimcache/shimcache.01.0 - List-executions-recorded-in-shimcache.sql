@@ -1,6 +1,6 @@
 /*********************** Sophos.com/RapidResponse ***********************\
 | DESCRIPTION                                                            |
-| Gets a list of applications in Windows Shimcache, aka AppCompatCache.  |
+| Gets a list of applications in Windows Shimcache (AppCompatCache).     |
 |                                                                        |
 | Version: 1.0                                                           |
 | Author: @AltShiftPrtScn                                                |

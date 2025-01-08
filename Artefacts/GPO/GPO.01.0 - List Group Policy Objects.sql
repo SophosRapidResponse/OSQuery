@@ -1,13 +1,12 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| List GPO scripts and files. Search by filename and dates.                      |
+| Lists GPO scripts and files. Search by filename.                               |
 |                                                                                |
 | VARIABLES                                                                      |
 | filename(string) - filename of script                                          |
 |                                                                                |
 | TIP                                                                            |
-| If you want to bring back everything use % in 'filename' and btime for         |
-| 'time_type' then set 'begin' as a few years ago.                               |
+| If you want to bring back everything use % in 'filename'                       |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |
