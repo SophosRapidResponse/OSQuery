@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Check for files on disk based on their path and timestamp. If they exist,      |
+| Checks for files on disk based on their path and timestamp. If they exist,     |
 | collects basic information including path, timestamps, hashes, and size.       |
 |                                                                                |
 | VARIABLES                                                                      |

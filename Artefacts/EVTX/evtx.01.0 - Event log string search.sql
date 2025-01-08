@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Use this query to search for a hostname, IP, username, or unique string across |
-| multiple EVTX logs. It returns raw data for any references found.              |
+| Use this query to search for a hostname, IP address, username, or unique string|
+| across multiple EVTX logs. It returns raw data for any references found.       |
 |                                                                                |
 | VARIABLES                                                                      |
 | value(string) - the string you are looking for                                 |

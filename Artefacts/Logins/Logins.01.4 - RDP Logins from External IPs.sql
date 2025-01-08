@@ -1,9 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Gets RDP login events (event ID 1149) from the Terminal Services Remote and    |
-| local sessions (event ID 21, 22, and 25) from the Local Session Manager event  |
-| logs where the source IP comes from an external IP range. \"unknown\" results  |
-| are given when the source IP is within the IPv6 range.                         |
+| local sessions (event IDs 21, 22, and 25) from the Local Session Manager event |
+| logs where the source IP address comes from an external IP range. \"unknown\"  |
+| results are given when the source IP address is within the IPv6 range.         |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.1                                                                   |

@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Check for process execution, data from 'sophos_process_journal'. Similar but   |
-| simpler to 'Process.04.0'. This is good for collecting small amounts of data   |
-| from specific times.                                                           |
+| Checks for process execution in 'sophos_process_journal'. Similar but simpler  |
+| to 'Process.05.0'. Use this to collect small amounts of data from specific     |
+| times.                                                                         |
 |                                                                                |
 | VARIABLES                                                                      |
 | - start_time (TYPE: DATE) = datetime of when to start hunting                  |

@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets all events from the Kaspersky Endpoint Security logs, focusing on Event   |
+| Gets all event from the Kaspersky Endpoint Security logs, focusing on Event    |
 | IDs 302, 303, and 332, which indicate malicious objects and applications       |
 | detected on the device.                                                        |
 |                                                                                |

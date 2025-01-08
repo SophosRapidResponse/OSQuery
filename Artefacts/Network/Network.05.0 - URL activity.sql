@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | The query gets URL activity from the Sophos URL, HTTP, and DNS journals. Enter |
-| the URL as a variable. Otherwise the query won't generate results due to the   |
+| the URL as a variable. Otherwise, the query won't generate results due to the  |
 | large amount of data collected by these journals. The query also uses the      |
 | Sophos Process Journal to provide additional context about the event.          |
 |                                                                                |
@@ -14,7 +14,7 @@
 | - $$end_time$$ (date) = datetime of when to start hunting                      |
 | - $$url$$ (string) = IP, URL, domain, file extension (.exe, .js, .ps1)         |
 |                                                                                |
-| Version: 1.0                                                                   |                                                                         
+| Version: 1.0                                                                   |
 | Author: The Rapid Response Team                                                |
 | github.com/SophosRapidResponse                                                 |
 \********************************************************************************/
