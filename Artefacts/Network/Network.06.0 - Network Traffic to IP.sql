@@ -1,8 +1,8 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets a sum of all traffic (bytes and MB) going to a specified IP. The query    |
-| also returns information about the process, command line, and user associated  |
-| with the traffic.                                                              |
+| Gets a sum of all traffic (bytes and MB) going to a specified IP address. The  |
+| query also returns information about the process, command line, and user       |
+| associated with the traffic.                                                   |
 |                                                                                |
 | VARIABLE                                                                       |
 | - start_time (type: DATE)                                                      |
@@ -33,7 +33,7 @@ FROM
 WHERE
     destination = '$$ip$$'
     AND data_sent > 0
-    AND time BETWEEN $$begin$$ AND $$end$$
+    AND time BETWEEN $$start_time$$ AND $$end_time$$
 GROUP BY sophos_pid, destination, destination_port
 )
 

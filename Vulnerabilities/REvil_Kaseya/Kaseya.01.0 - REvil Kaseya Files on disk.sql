@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Check for REvil/Kaseya files still on disk.                                    |
+| Checks for REvil and Kaseya files still on disk.                               |
 |                                                                                |
 | Version: 1.0                                                                   |
 | Author: @AltShiftPrtScn                                                        |

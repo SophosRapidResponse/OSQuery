@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Displays the process tree for a specified Sophos PID                           |
+| Shows the process tree for a specified Sophos PID.                             |
 |                                                                                |
 | VARIABLES                                                                      |
 | sophos_pid (sophosPID)                                                         |

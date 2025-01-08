@@ -1,6 +1,6 @@
 /****************************** Sophos.com/RapidResponse ******************************\
 | DESCRIPTION                                                                           |
-| Searches the Security event logs for events related to Metasploit host authentication |
+| Searches the Security event logs for events related to Metasploit host authentication.|
 |                                                                                       |
 | REFERENCE:                                                                            |
 | https://github.com/rapid7/metasploit-framework/blob/master/lib/rex/proto/smb/client.rb|

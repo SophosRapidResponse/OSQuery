@@ -1,4 +1,4 @@
-/*************************** Sophos.com/RapidResponse ***************************\                                                                               |
+/*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Uses file and Process Journals to see what interactions a file had.            |
 |                                                                                |

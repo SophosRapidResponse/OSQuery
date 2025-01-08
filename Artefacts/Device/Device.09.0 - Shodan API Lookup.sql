@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| This query uses the Shodan API to get information about the public IP address  |
+| This query uses the Shodan API to get information about public IP address      |
 | associated with each device. Note that the returned public IP may correspond to|
 | the internet gateway rather than the specific device itself.                   |
 |                                                                                |

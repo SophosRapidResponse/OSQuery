@@ -1,7 +1,7 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets events from the Windows Application event logs from antivirus products    |
-| such as Sophos, Symantec, and Carbon Black.                                    |
+| Gets events from the Windows Application event logs of antivirus products such |
+| as Sophos, Symantec, and Carbon Black.                                         |
 |                                                                                |
 | Query Type: Endpoint                                                           |
 | Version: 1.2                                                                   |

@@ -1,6 +1,6 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
-| Gets detection events from the Windows Defender/Operational logs, focusing on  |
+| Gets detection event from the Windows Defender/Operational logs, focusing on   |
 | Event IDs 1006, 1007, 1008, 1009, 1010, 1011, 1116, 1117, and 1118.            |
 |                                                                                |
 | Query Type: Endpoint                                                           |

@@ -1,9 +1,9 @@
 /*************************** Sophos.com/RapidResponse ***************************\
 | DESCRIPTION                                                                    |
 | Gets a sum of all traffic (in bytes and MB) captured by the network journal    |
-| daily and a sum of all data sent to external IPs. The query can detect traffic |
-| spikes that might indicate data exfiltration. However, it might generate false |
-| positives for traffic related to IPv6.                                         |
+| daily and a sum of all data sent to external IP addresses. The query can detect|
+| traffic spikes that might indicate data exfiltration. However, it might        |
+| generate false positives for traffic related to IPv6.                          |
 |                                                                                |
 | VARIABLES                                                                      |
 | - start_time: (date)                                                           |
