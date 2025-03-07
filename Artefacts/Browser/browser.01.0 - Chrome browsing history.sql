@@ -20,7 +20,7 @@ WITH RECURSIVE
    Counter(x) AS (VALUES ( ( 0 ) ) UNION ALL SELECT x+1 FROM Counter WHERE x < 240000),
 
    -- DUMP the file as a LONG HEX STRING
-   RAW_DUMP AS ( SELECT SUBSTR(GROUP_CONCAT(HEX(line),''),0,240000) FileBody FROM grep WHERE pattern IN (CHAR(0),CHAR(10),CHAR(32)) AND path LIKE 'C:\Users\$$username$$\AppData\Local\Google\Chrome\User Data\Default\History'),
+   RAW_DUMP AS ( SELECT SUBSTR(GROUP_CONCAT(HEX(line),''),0,240000) FileBody FROM grep WHERE pattern IN (CHAR(0),CHAR(10),CHAR(32)) AND path = 'C:\Users\$$username$$\AppData\Local\Google\Chrome\User Data\Default\History'),
 
   -- Build a single line with unprintable characters converted to CHAR(10) 'NewLine'
    CLEAN_DUMP AS ( 
