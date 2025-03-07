@@ -1,8 +1,9 @@
 /*************************** Sophos.com/RapidResponse ****************************\
 | DESCRIPTION                                                                     |
 | The Background Activity Moderator (BAM) is a Windows service responsible for    |
-| managing the activity of background applications. It records full path of the   |
-| executable file that was run on the system and last execution date and time.    |
+| managing the activity of background applications. It records the full path of   |
+| the executable file that was run on the system and the last date and time it was|
+| run.                                                                            |
 |                                                                                 |
 | VARIABLE:                                                                       |
 | - username (type: STRING)                                                       |

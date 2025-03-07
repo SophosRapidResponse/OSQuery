@@ -32,4 +32,3 @@ WHERE source = 'Kaspersky Endpoint Security'
     AND eventid IN ('302', '303', '331')
     AND time > 0
 ORDER BY datetime DESC
-
