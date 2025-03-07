@@ -16,9 +16,10 @@ strftime('%Y-%m-%dT%H:%M:%SZ',datetime) AS Datetime,
 source,
 provider_name,
 eventid AS EventID,
-CASE WHEN eventid = 4624 THEN JSON_EXTRACT(data, '$.EventData.WorkstationName')
-WHEN eventid = 4625 THEN JSON_EXTRACT(data, '$.EventData.WorkstationName')
-WHEN eventid = 4776 THEN JSON_EXTRACT(data, '$.EventData.Workstation') 
+CASE 
+    WHEN eventid = 4624 THEN CAST(JSON_EXTRACT(data, '$.EventData.WorkstationName') AS TEXT)
+    WHEN eventid = 4625 THEN CAST(JSON_EXTRACT(data, '$.EventData.WorkstationName') AS TEXT)
+    WHEN eventid = 4776 THEN CAST(JSON_EXTRACT(data, '$.EventData.Workstation') AS TEXT)
 END AS Workstation,
 JSON_EXTRACT(data, '$.EventData.IpAddress') AS Source_IP,
 JSON_EXTRACT(data, '$.EventData.Status') AS Status,

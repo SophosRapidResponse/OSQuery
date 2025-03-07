@@ -2,7 +2,7 @@
 | DESCRIPTION                                                                    |
 | Uses grep to search for specific patterns or content within a file. Based on a |
 | provided pattern, it returns matching lines from a specified file. If a pattern|
-| isn't specified (%), it returns all lines from the file.                       |                                                              |
+| isn't specified (%), it returns all lines from the file.                       |
 |                                                                                |
 | EXAMPLE                                                                        |
 | patten = 'hello'                                                               |
